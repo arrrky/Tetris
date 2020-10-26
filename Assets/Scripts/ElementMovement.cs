@@ -10,7 +10,7 @@ public class ElementMovement : MonoBehaviour
 
     void Start()
     {        
-        //InvokeRepeating("FallingDown", 1f, 1f);
+        InvokeRepeating("FallingDown", 1f, 1f);
     }
 
     
@@ -87,7 +87,7 @@ public class ElementMovement : MonoBehaviour
     // Записываем новую (временную) матрицу в оригинальную и обновляем поле
     protected static void WriteAndUpdate(int[,] tempMatrix)
     {
-        PlayingFieldManager.playingFieldMatrix = tempMatrix;
+        PlayingFieldManager.playingFieldMatrix = tempMatrix;        
         PlayingFieldManager.FullRowCheck();
         PlayingFieldManager.UpdateThePlayingField();
     }
@@ -175,9 +175,7 @@ public class ElementMovement : MonoBehaviour
     private static BorderCheck borderCheck = null;
 
     public void HorizontalMovement()
-    {
-        Debug.Log(PlayingFieldManager.topLeftPositionOfCurrentElement);
-
+    {   
         leftBorderRotateRestriction = PlayingFieldManager.currentElementSize - 1;
         rightBorderRotateRestriction = PlayingFieldManager.Width - PlayingFieldManager.currentElementSize - 1;
 

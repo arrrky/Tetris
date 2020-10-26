@@ -41,11 +41,12 @@ public class PlayingFieldManager : MonoBehaviour
     public static int currentElementSize;
     public static Vector2 topLeftPositionDefault = new Vector2(SpawnManager.spawnPoint, 0);
     public static Vector2 topLeftPositionOfCurrentElement;
+    private static int fullRowsCount = 0;
 
     [SerializeField]
     private GameObject blockPrefab;
     [SerializeField]
-    private GameObject parentOfBlocks;
+    private GameObject parentOfBlocks;    
 
     void Start()
     {
@@ -99,7 +100,7 @@ public class PlayingFieldManager : MonoBehaviour
                 else
                     playingField[y, x].SetActive(false);
             }
-        }
+        }        
     }
 
     // Меняем состояние элементов с 1 на 2 (падающие на упавшие)
@@ -127,16 +128,28 @@ public class PlayingFieldManager : MonoBehaviour
                 rowSum += playingFieldMatrix[y, x];
             }
             if (rowSum == Width * 2) // в ряду должно быть 10 (Width) элементов со значением 2 (Fallen)
+            {
+                fullRowsCount++;
                 DeleteFullRow(y);
+            }
         }        
     }
 
     public static void DeleteFullRow(int rowNumber)
     {
+        
         for (int x = Width - 1; x >= 0; x--)
         {
-            playingFieldMatrix[rowNumber, x] = 0;
+            playingFieldMatrix[rowNumber, x] = (int)FieldState.Empty;
         }
+
+        FullRowCheck(); // повторная проверка на случай, если заполненых рядов несколько
+        if (fullRowsCount != 0)
+        {
+            ScoreController.IncreaseScore(fullRowsCount);
+        }
+        Debug.Log($"Your score: {ScoreController.Score}");
+        fullRowsCount = 0; 
 
         // Смещаем вниз на все элементы над уничтоженным рядом
         for (int y = rowNumber - 1; y >= 0; y--)
@@ -148,7 +161,7 @@ public class PlayingFieldManager : MonoBehaviour
                     return;
                 playingFieldMatrix[y + 1, x] = playingFieldMatrix[y, x];
             }     
-        }       
+        }          
     }
 
     // Если перед смещением в оригинальной матрице уже были упавшие элементы - запишем их во временную матрицу
