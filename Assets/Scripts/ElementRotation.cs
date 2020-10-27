@@ -1,17 +1,16 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class ElementRotate : MonoBehaviour
+public class ElementRotation : MonoBehaviour
 {
+    [SerializeField]
+    private PlayingFieldManager PlayingFieldManager;
+
     private int[,] currentElementMatrix; 
     private int xShift;
     private int yShift;
 
-
-    public void RotateTest()
-    {
-        
+    private void PrepareRotate()
+    {        
         currentElementMatrix = new int[PlayingFieldManager.currentElementSize, PlayingFieldManager.currentElementSize]; // все матрицы элементов квадратные по дефолту
 
         xShift = (int)PlayingFieldManager.topLeftPositionOfCurrentElement.x;
@@ -28,12 +27,12 @@ public class ElementRotate : MonoBehaviour
                 if (PlayingFieldManager.playingFieldMatrix[y + yShift, x + xShift] == (int)PlayingFieldManager.FieldState.Falling)
                     currentElementMatrix[y, x] = PlayingFieldManager.playingFieldMatrix[y + yShift, x + xShift];
             }
-        }
-        RotateAndWrite();
+        }       
     }
 
-    private void RotateAndWrite()
+    public void Rotate()
     {
+        PrepareRotate();
         int[,] temp = new int[PlayingFieldManager.currentElementSize, PlayingFieldManager.currentElementSize];
 
         // Меняем столбцы и строки местами, заполняя temp матрицу уже перевернутым элементом

@@ -474,7 +474,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   elementMovement: {fileID: 2104277126}
-  elementRotate: {fileID: 2104277127}
+  elementRotate: {fileID: 2104277124}
 --- !u!4 &2031245098 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4816276428203978745, guid: 19419db80d7063540b65ca0e6afdf805, type: 3}
@@ -491,9 +491,9 @@ GameObject:
   - component: {fileID: 2104277123}
   - component: {fileID: 2104277122}
   - component: {fileID: 2104277125}
+  - component: {fileID: 2104277126}
   - component: {fileID: 2104277124}
   - component: {fileID: 2104277127}
-  - component: {fileID: 2104277126}
   m_Layer: 0
   m_Name: PlayingField
   m_TagString: Untagged
@@ -515,6 +515,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blockPrefab: {fileID: 8520220381069669123, guid: 06dc67bbae15964409005b78bd1b0c16, type: 3}
   parentOfBlocks: {fileID: 768341142}
+  scoreController: {fileID: 1410449721}
+  spawnManager: {fileID: 2104277125}
+  currentElementSize: 0
+  topLeftPositionDefault: {x: 0, y: 0}
+  topLeftPositionOfCurrentElement: {x: 0, y: 0}
 --- !u!4 &2104277123
 Transform:
   m_ObjectHideFlags: 0
@@ -540,9 +545,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 2104277121}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 194df8b305e62884a93f8a4c4e73c952, type: 3}
+  m_Script: {fileID: 11500000, guid: c85c7210542eca147bf5543feeb06b64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PlayingFieldManager: {fileID: 2104277122}
 --- !u!114 &2104277125
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -555,7 +561,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: adc20a41774b84040bf6ef4078bae5f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentElementSize: 0
+  playingFieldManager: {fileID: 2104277122}
+  elementsArrays: {fileID: 2104277127}
 --- !u!114 &2104277126
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -568,6 +575,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc63771c7e6772e4bb79361f403c73b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playingFieldManager: {fileID: 2104277122}
 --- !u!114 &2104277127
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -577,6 +585,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 2104277121}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c85c7210542eca147bf5543feeb06b64, type: 3}
+  m_Script: {fileID: 11500000, guid: 194df8b305e62884a93f8a4c4e73c952, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

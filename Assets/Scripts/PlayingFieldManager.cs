@@ -1,9 +1,16 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayingFieldManager : MonoBehaviour
 {
+    [SerializeField]
+    private GameObject blockPrefab;
+    [SerializeField]
+    private GameObject parentOfBlocks;
+    [SerializeField]
+    private ScoreController scoreController;
+    [SerializeField]
+    private SpawnManager spawnManager;
+
     // Вопрос о целесообразности использования этого enum'a остается открытым
     // Вроде так оно более читаемо, и понятно что такое 0, 1 и 2 
     // С другой стороны в методах приходится постоянно кастить их к int'ам
@@ -15,10 +22,10 @@ public class PlayingFieldManager : MonoBehaviour
         Fallen = 2
     }
 
-    private static int width = 10;
-    private static int height = 20;
+    private int width = 10;
+    private int height = 20;
 
-    public static int Width
+    public int Width
     {
         get
         {
@@ -26,7 +33,7 @@ public class PlayingFieldManager : MonoBehaviour
         }
     }
 
-    public static int Height
+    public int Height
     {
         get
         {
@@ -34,35 +41,29 @@ public class PlayingFieldManager : MonoBehaviour
         }
     }
 
-    // Матрица-поле заполняется 3-мя типами значений-состояний: 0 - пустое место, 1 - двигающийся блок, 2 - упавший блок
-    public static int[,] playingFieldMatrix = new int[Height, Width];
-    private static GameObject[,] playingField = new GameObject[Height, Width];
-    public static int[,] currentElementArray = null;
-    public static int currentElementSize;
-    public static Vector2 topLeftPositionDefault = new Vector2(SpawnManager.spawnPoint, 0);
-    public static Vector2 topLeftPositionOfCurrentElement;
+    private GameObject[,] playingField;
     private static int fullRowsCount = 0;
 
-    [SerializeField]
-    private GameObject blockPrefab;
-    [SerializeField]
-    private GameObject parentOfBlocks;    
+    // Матрица-поле заполняется 3-мя типами значений-состояний: 0 - пустое место, 1 - двигающийся блок, 2 - упавший блок
+    public int[,] playingFieldMatrix;
+    public int[,] currentElementArray;
+    public int currentElementSize;
+    public Vector2 topLeftPositionDefault;
+    public Vector2 topLeftPositionOfCurrentElement;
 
     void Start()
     {
+        playingFieldMatrix = new int[Height, Width];
+        playingField = new GameObject[Height, Width];
         FillThePlayingField();
-        topLeftPositionOfCurrentElement = topLeftPositionDefault;        
-        //CreateRandomFieldState();   
-        SpawnManager.SpawnRandomElement(playingFieldMatrix);
-        //SpawnManager.SpawnElement(ElementsArrays.elementsArrays["O"], playingFieldMatrix);
-        
+
+        topLeftPositionDefault = new Vector2(SpawnManager.spawnPoint, 0);
+        topLeftPositionOfCurrentElement = topLeftPositionDefault;
+
+        spawnManager.SpawnRandomElement(playingFieldMatrix);
     }
 
-    void Update()
-    {
-    }
-
-    void FillThePlayingField()
+    private void FillThePlayingField()
     {
         // Из-за разницы в нумерации элементов матрицы-поля и отсчета координат в Unity удобнее инициализировать объекты именно таким образом.
         // Поэтому 'y' кооордината инстанирования имеет вид height - y - 1, чтобы блоки заполнялись сверху вниз (как в матрице-поле).
@@ -77,7 +78,7 @@ public class PlayingFieldManager : MonoBehaviour
     }
 
     // Тестовый метод, потом можно выпилить
-    void CreateRandomFieldState()
+    private void CreateRandomFieldState()
     {
         for (int y = 0; y < height; y++)
         {
@@ -89,22 +90,18 @@ public class PlayingFieldManager : MonoBehaviour
     }
 
     // Обновление состояния поля
-    public static void UpdateThePlayingField()
+    public void UpdateThePlayingField()
     {
-        for (int y = 0; y < height; y++)
+        for (int y = 0; y < Height; y++)
         {
-            for (int x = 0; x < width; x++)
+            for (int x = 0; x < Width; x++)
             {
-                if (playingFieldMatrix[y, x] > 0) // т.е. блок или движется, или уже упал
-                    playingField[y, x].SetActive(true);
-                else
-                    playingField[y, x].SetActive(false);
+                playingField[y, x].SetActive(playingFieldMatrix[y, x] > 0); // или 1(Falling) или 2 (Fallen)
             }
-        }        
+        }
     }
 
-    // Меняем состояние элементов с 1 на 2 (падающие на упавшие)
-    public static void FallingToFallen()
+    public void FallingToFallen()
     {
         for (int y = 0; y < Height; y++)
         {
@@ -114,30 +111,39 @@ public class PlayingFieldManager : MonoBehaviour
                     playingFieldMatrix[y, x] = (int)FieldState.Fallen;
             }
         }
-        SpawnManager.SpawnRandomElement(playingFieldMatrix);
-        //SpawnManager.SpawnElement(ElementsArrays.elementsArrays["O"], playingFieldMatrix);
+        spawnManager.SpawnRandomElement(playingFieldMatrix);
     }
 
-    public static void FullRowCheck()
+    public void FullRowCheck()
     {
         for (int y = Height - 1; y >= 0; y--)
         {
-            int rowSum = 0;
+            bool isFullRow = true;
             for (int x = Width - 1; x >= 0; x--)
             {
-                rowSum += playingFieldMatrix[y, x];
+                isFullRow &= playingFieldMatrix[y, x] == (int)FieldState.Fallen;
             }
-            if (rowSum == Width * 2) // в ряду должно быть 10 (Width) элементов со значением 2 (Fallen)
+            if (isFullRow)
             {
                 fullRowsCount++;
                 DeleteFullRow(y);
             }
-        }        
+
+            //int rowSum = 0;
+            //for (int x = Width - 1; x >= 0; x--)
+            //{
+            //    rowSum += playingFieldMatrix[y, x];
+            //}
+            //if (rowSum == Width * 2) // в ряду должно быть 10 (Width) элементов со значением 2 (Fallen)
+            //{
+            //    fullRowsCount++;
+            //    DeleteFullRow(y);
+            //}
+        }
     }
 
-    public static void DeleteFullRow(int rowNumber)
+    public void DeleteFullRow(int rowNumber)
     {
-        
         for (int x = Width - 1; x >= 0; x--)
         {
             playingFieldMatrix[rowNumber, x] = (int)FieldState.Empty;
@@ -146,34 +152,34 @@ public class PlayingFieldManager : MonoBehaviour
         FullRowCheck(); // повторная проверка на случай, если заполненых рядов несколько
         if (fullRowsCount != 0)
         {
-            ScoreController.IncreaseScore(fullRowsCount);
+            scoreController.IncreaseScore(fullRowsCount);
         }
-        Debug.Log($"Your score: {ScoreController.Score}");
-        fullRowsCount = 0; 
+        Debug.Log($"Your score: {scoreController.Score}");
+        fullRowsCount = 0;
 
         // Смещаем вниз на все элементы над уничтоженным рядом
         for (int y = rowNumber - 1; y >= 0; y--)
-        {            
+        {
             for (int x = Width - 1; x >= 0; x--)
             {
                 // Проверка, чтобы опускать падающий элемент
                 if (playingFieldMatrix[y, x] == (int)FieldState.Falling)
                     return;
                 playingFieldMatrix[y + 1, x] = playingFieldMatrix[y, x];
-            }     
-        }          
+            }
+        }
     }
 
     // Если перед смещением в оригинальной матрице уже были упавшие элементы - запишем их во временную матрицу
-    public static void FallenToTemp(int[,] tempMatrix)
+    public void FallenToTemp(int[,] tempMatrix)
     {
-        for (int y = PlayingFieldManager.Height - 1; y > 0; y--)
+        for (int y = Height - 1; y > 0; y--)
         {
-            for (int x = PlayingFieldManager.Width - 1; x >= 0; x--)
+            for (int x = Width - 1; x >= 0; x--)
             {
-                if (PlayingFieldManager.playingFieldMatrix[y, x] == (int)PlayingFieldManager.FieldState.Fallen)
+                if (playingFieldMatrix[y, x] == (int)FieldState.Fallen)
                 {
-                    tempMatrix[y, x] = (int)PlayingFieldManager.FieldState.Fallen;
+                    tempMatrix[y, x] = (int)FieldState.Fallen;
                 }
             }
         }

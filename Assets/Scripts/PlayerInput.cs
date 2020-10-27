@@ -1,28 +1,36 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerInput : MonoBehaviour
 {
     [SerializeField]
-    ElementMovement elementMovement;
+    private ElementMovement elementMovement;
     [SerializeField]
-    ElementRotate elementRotate;
+    private ElementRotation elementRotate;
 
-    private float inputTime = 0f;
-    private float delayBeforeAction = 1f;
+    private float manualFallingSpeed; // скорость падения при зажатой клавише (меньше - быстрее)  
+
+    public float ManualFallingSpeed
+    {
+        get
+        {
+            return manualFallingSpeed;
+        }
+        set
+        {
+            manualFallingSpeed = value;
+        }
+    }
 
     private void Start()
     {
+        manualFallingSpeed = 0.03f;
         StartCoroutine(FallingDownManual());
     }
 
     void Update()
     {
-        if (Input.anyKey)
-        {
-            CheckPlayerInput();
-        }
+        CheckPlayerInput();
     }
 
     private void CheckPlayerInput()
@@ -31,21 +39,9 @@ public class PlayerInput : MonoBehaviour
         {
             elementMovement.HorizontalMovement();
         }
-        //if (Input.GetButtonDown("FallingDown"))
-        //{
-        //    elementMovement.FallingDown();
-        //    inputTime = Time.time;
-        //    if (Time.time - inputTime > delayBeforeAction)
-        //    {
-        //        do
-        //        {
-        //            elementMovement.FallingDown();
-        //        } while (Input.GetButtonDown("FallingDown"));
-        //    }
-        //}
         if (Input.GetButtonDown("Rotate"))
         {
-            elementRotate.RotateTest();
+            elementRotate.Rotate();
         }
     }
 
@@ -55,7 +51,7 @@ public class PlayerInput : MonoBehaviour
         {
             yield return new WaitUntil(() => Input.GetButton("FallingDown"));
             elementMovement.FallingDown();
-            yield return new WaitForSeconds(0.03f); // скорость падения при зажатой клавише (меньше - быстрее)   
+            yield return new WaitForSeconds(manualFallingSpeed);
         }
     }
 }

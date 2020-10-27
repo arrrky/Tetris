@@ -1,12 +1,12 @@
-﻿using System.Collections;
+﻿using UnityEngine;
 using System.Collections.Generic;
-using UnityEngine;
 
 public class ElementsArrays : MonoBehaviour
 {
     // Массивы элементов
+    // Выделить в класс с именем, массивом, шансом
 
-    public static Dictionary<string, int[,]> elementsArrays = new Dictionary<string, int[,]>
+    public Dictionary<string, int[,]> dicOfElements = new Dictionary<string, int[,]>
     {
         {"O", new int[,]
             {
@@ -56,7 +56,5 @@ public class ElementsArrays : MonoBehaviour
                 {0,0,0}
             }
         }
-    };
-
-    public static readonly List<int[,]> elementsList = new List<int[,]>(elementsArrays.Values);    
+    };        
 }

@@ -4,19 +4,21 @@ using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
-    // Элемент будет спавниться или в самом верхнем ряду, или даже выходя за верхнюю границу (посмотреть как лучше)
-    // Точка спавна будет примерно посередине, и с этого значения будет заполняться матрица-поле
+    [SerializeField]
+    private PlayingFieldManager playingFieldManager;
+    [SerializeField]
+    private ElementsArrays elementsArrays;
 
-    public static int spawnPoint = 4;
-    public int currentElementSize;
+    private List<int[,]> elements;
 
+    public const int spawnPoint = 4;
 
-    void Start()
+    private void Awake()
     {
-
+        elements = new List<int[,]> (elementsArrays.dicOfElements.Values);
     }
 
-    public static void SpawnElement(int[,] element, int[,] playingFieldMatrix)
+    public void SpawnElement(int[,] element, int[,] playingFieldMatrix)
     {
         
         for (int y = 0; y < element.GetLength(0); y++)
@@ -45,14 +47,14 @@ public class SpawnManager : MonoBehaviour
     //    }
     //}
 
-    public static void SpawnRandomElement(int[,] playingFieldMatrix)
-    {  
-        int[,] element = ElementsArrays.elementsList[Random.Range(0, ElementsArrays.elementsList.Count)];
-        PlayingFieldManager.currentElementArray = element;
-        PlayingFieldManager.currentElementSize = element.GetLength(0);
+    public void SpawnRandomElement(int[,] playingFieldMatrix)
+    {
+        // Временно, все равно надо писать свой рандомайзер с разными шансами выпадения
+        int[,] element = GetRandomElement();
+        playingFieldManager.currentElementArray = element;
+        playingFieldManager.currentElementSize = element.GetLength(0);
 
-        PlayingFieldManager.topLeftPositionOfCurrentElement = PlayingFieldManager.topLeftPositionDefault;
-        //ElementsArrays.elementsArrays.TryGetValue("J", out int[,] element);
+        playingFieldManager.topLeftPositionOfCurrentElement = playingFieldManager.topLeftPositionDefault;      
 
         for (int y = 0; y < element.GetLength(0); y++)
         {
@@ -61,6 +63,11 @@ public class SpawnManager : MonoBehaviour
                 playingFieldMatrix[y, x + spawnPoint] = element[y, x];
             }
         }
-        PlayingFieldManager.UpdateThePlayingField();
+        playingFieldManager.UpdateThePlayingField();
     }   
+
+    private int[,] GetRandomElement()
+    {
+        return elements[Random.Range(0, elements.Count)];
+    }
 }

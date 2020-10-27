@@ -1,19 +1,14 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class ElementMovement : MonoBehaviour
 {
-    private int leftBorderRotateRestriction;
-    private int rightBorderRotateRestriction;
-
+    [SerializeField]
+    private PlayingFieldManager playingFieldManager;
 
     void Start()
     {        
         InvokeRepeating("FallingDown", 1f, 1f);
-    }
-
-    
+    }    
 
     //private IEnumerator FallingDownManual()
     //{
@@ -27,69 +22,67 @@ public class ElementMovement : MonoBehaviour
     //    }
     //}
 
-
-
     public void FallingDown()
     {        
         // Во временную матрицу будем записывать поле с уже смещенным элементом
-        int[,] tempMatrix = new int[PlayingFieldManager.Height, PlayingFieldManager.Width];
-        PlayingFieldManager.FallenToTemp(tempMatrix);       
+        int[,] tempMatrix = new int[playingFieldManager.Height, playingFieldManager.Width];
+        playingFieldManager.FallenToTemp(tempMatrix);       
 
         // Меняем состояние в матрице-поле снизу вверх, иначе (при проходе сверху вниз) мы будем проходить по уже измененным элементам
         // и элемент "упадет" за один проход циклов
-        for (int y = PlayingFieldManager.Height - 1; y >= 0; y--)
+        for (int y = playingFieldManager.Height - 1; y >= 0; y--)
         {
-            for (int x = 0; x < PlayingFieldManager.Width; x++)
+            for (int x = 0; x < playingFieldManager.Width; x++)
             {
                 if (y > 0)
                 {
                     if (IsFallingElementAbove(x, y))
                     {
-                        PlayingFieldManager.FallingToFallen();
+                        playingFieldManager.FallingToFallen();
                         return;
                     }
                 }
 
                 if (IsLastRow(x, y))
                 {
-                    PlayingFieldManager.FallingToFallen();
+                    playingFieldManager.FallingToFallen();
                     return;
                 }
 
                 // Смещение по вертикали, если ряд не последний
                 if (!IsLastRow(x, y))
                 {
-                    if (PlayingFieldManager.playingFieldMatrix[y, x] == (int)PlayingFieldManager.FieldState.Falling)
+                    if (playingFieldManager.playingFieldMatrix[y, x] == (int)PlayingFieldManager.FieldState.Falling)
                     {
                         tempMatrix[y + 1, x] = (int)PlayingFieldManager.FieldState.Falling;
                     }
                 }
             }
         }
-        PlayingFieldManager.topLeftPositionOfCurrentElement += new Vector2(0, 1);    
+        playingFieldManager.topLeftPositionOfCurrentElement += new Vector2(0, 1);    
         WriteAndUpdate(tempMatrix);
     }
 
     // Если текущий элемент - упавший, а над ним - падающий
-    private static bool IsFallingElementAbove(int x, int y)
+    private bool IsFallingElementAbove(int x, int y)
     {
-        return (PlayingFieldManager.playingFieldMatrix[y, x] == (int)PlayingFieldManager.FieldState.Fallen &&
-                PlayingFieldManager.playingFieldMatrix[y - 1, x] == (int)PlayingFieldManager.FieldState.Falling);
+        return (playingFieldManager.playingFieldMatrix[y, x] == (int)PlayingFieldManager.FieldState.Fallen &&
+                playingFieldManager.playingFieldMatrix[y - 1, x] == (int)PlayingFieldManager.FieldState.Falling);
     }
 
     // Если последний ряд
-    private static bool IsLastRow(int x, int y)
+    private bool IsLastRow(int x, int y)
     {
-        return (y == PlayingFieldManager.Height - 1 &&
-                PlayingFieldManager.playingFieldMatrix[y, x] == (int)PlayingFieldManager.FieldState.Falling);
+        return (y == playingFieldManager.Height - 1 &&
+                playingFieldManager.playingFieldMatrix[y, x] == (int)PlayingFieldManager.FieldState.Falling);
     }    
 
     // Записываем новую (временную) матрицу в оригинальную и обновляем поле
-    protected static void WriteAndUpdate(int[,] tempMatrix)
+    protected void WriteAndUpdate(int[,] tempMatrix)
     {
-        PlayingFieldManager.playingFieldMatrix = tempMatrix;        
-        PlayingFieldManager.FullRowCheck();
-        PlayingFieldManager.UpdateThePlayingField();
+        playingFieldManager.playingFieldMatrix = tempMatrix;        
+        playingFieldManager.FullRowCheck();
+        playingFieldManager.UpdateThePlayingField();
     }
 
     // Методы вроде рабочие, если вскроются проблемы с объединенным методом - можно использовать их
@@ -156,31 +149,28 @@ public class ElementMovement : MonoBehaviour
 
     // Пока не удаляю, потому что могут пригодиться в проверках вращения
 
-    private static bool IsLeftBorderNear(int x)
+    private bool IsLeftBorderNear(int x)
     {
         return x == 0;
     }
 
-    private static bool IsRightBorderNear(int x)
+    private bool IsRightBorderNear(int x)
     {
-        return x == PlayingFieldManager.Width - 1;
+        return x == playingFieldManager.Width - 1;
     }
 
-    private static bool IsOtherBlockNear(int x, int y, int direction)
+    private bool IsOtherBlockNear(int x, int y, int direction)
     {
-        return (PlayingFieldManager.playingFieldMatrix[y, x + direction] == (int)PlayingFieldManager.FieldState.Fallen);           
+        return (playingFieldManager.playingFieldMatrix[y, x + direction] == (int)PlayingFieldManager.FieldState.Fallen);           
     }
 
     private delegate bool BorderCheck(int x);
     private static BorderCheck borderCheck = null;
 
     public void HorizontalMovement()
-    {   
-        leftBorderRotateRestriction = PlayingFieldManager.currentElementSize - 1;
-        rightBorderRotateRestriction = PlayingFieldManager.Width - PlayingFieldManager.currentElementSize - 1;
-
-        int[,] tempMatrix = new int[PlayingFieldManager.Height, PlayingFieldManager.Width];
-        PlayingFieldManager.FallenToTemp(tempMatrix);
+    {      
+        int[,] tempMatrix = new int[playingFieldManager.Height, playingFieldManager.Width];
+        playingFieldManager.FallenToTemp(tempMatrix);
         int direction = 0;
 
         if (Input.GetButtonDown("MoveToTheRight"))
@@ -194,11 +184,11 @@ public class ElementMovement : MonoBehaviour
             borderCheck = IsLeftBorderNear;
         }
 
-        for (int y = PlayingFieldManager.Height - 1; y >= 0; y--)
+        for (int y = playingFieldManager.Height - 1; y >= 0; y--)
         {
-            for (int x = PlayingFieldManager.Width - 1; x >= 0; x--)
+            for (int x = playingFieldManager.Width - 1; x >= 0; x--)
             {
-                if (PlayingFieldManager.playingFieldMatrix[y, x] == (int)PlayingFieldManager.FieldState.Falling)
+                if (playingFieldManager.playingFieldMatrix[y, x] == (int)PlayingFieldManager.FieldState.Falling)
                 {
                     if (borderCheck(x))
                         return;
@@ -208,9 +198,8 @@ public class ElementMovement : MonoBehaviour
                 }
             }
         }
-        WriteAndUpdate(tempMatrix);
-       
-        PlayingFieldManager.topLeftPositionOfCurrentElement += new Vector2(direction, 0);       
+        WriteAndUpdate(tempMatrix);       
+        playingFieldManager.topLeftPositionOfCurrentElement += new Vector2(direction, 0);       
     }
 
     //private IEnumerator HorizontalMovementManual()
