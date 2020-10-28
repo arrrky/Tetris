@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class ElementMovement : MonoBehaviour
 {
@@ -169,14 +170,13 @@ public class ElementMovement : MonoBehaviour
         return (playingFieldManager.playingFieldMatrix[y, x + direction] == (int)PlayingFieldManager.FieldState.Fallen);
     }
 
-    private delegate bool BorderCheck(int x);
-    private static BorderCheck borderCheck = null;
+    private Func<int, bool> borderCheck;    
 
     public void HorizontalMovement()
-    {
+    {      
         int[,] tempMatrix = new int[playingFieldManager.Height, playingFieldManager.Width];
         playingFieldManager.FallenToTemp(tempMatrix);
-        int direction = 0;
+        int direction = 0;       
 
         if (Input.GetButtonDown("MoveToTheRight"))
         {
