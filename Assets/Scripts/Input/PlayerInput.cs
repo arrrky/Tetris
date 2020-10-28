@@ -53,5 +53,5 @@ public class PlayerInput : MonoBehaviour
             elementMovement.FallingDown();
             yield return new WaitForSeconds(manualFallingSpeed);
         }
-    }
+    }   
 }

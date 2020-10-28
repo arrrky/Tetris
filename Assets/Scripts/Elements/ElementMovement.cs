@@ -6,9 +6,9 @@ public class ElementMovement : MonoBehaviour
     private PlayingFieldManager playingFieldManager;
 
     void Start()
-    {        
+    {
         InvokeRepeating("FallingDown", 1f, 1f);
-    }    
+    }
 
     //private IEnumerator FallingDownManual()
     //{
@@ -22,11 +22,16 @@ public class ElementMovement : MonoBehaviour
     //    }
     //}
 
+    public void StopFallingDown()
+    {
+        CancelInvoke("FallingDown");
+    }
+
     public void FallingDown()
-    {        
+    {
         // Во временную матрицу будем записывать поле с уже смещенным элементом
         int[,] tempMatrix = new int[playingFieldManager.Height, playingFieldManager.Width];
-        playingFieldManager.FallenToTemp(tempMatrix);       
+        playingFieldManager.FallenToTemp(tempMatrix);
 
         // Меняем состояние в матрице-поле снизу вверх, иначе (при проходе сверху вниз) мы будем проходить по уже измененным элементам
         // и элемент "упадет" за один проход циклов
@@ -59,7 +64,7 @@ public class ElementMovement : MonoBehaviour
                 }
             }
         }
-        playingFieldManager.topLeftPositionOfCurrentElement += new Vector2(0, 1);    
+        playingFieldManager.topLeftPositionOfCurrentElement += new Vector2(0, 1);
         WriteAndUpdate(tempMatrix);
     }
 
@@ -75,12 +80,12 @@ public class ElementMovement : MonoBehaviour
     {
         return (y == playingFieldManager.Height - 1 &&
                 playingFieldManager.playingFieldMatrix[y, x] == (int)PlayingFieldManager.FieldState.Falling);
-    }    
+    }
 
     // Записываем новую (временную) матрицу в оригинальную и обновляем поле
     protected void WriteAndUpdate(int[,] tempMatrix)
     {
-        playingFieldManager.playingFieldMatrix = tempMatrix;        
+        playingFieldManager.playingFieldMatrix = tempMatrix;
         playingFieldManager.FullRowCheck();
         playingFieldManager.UpdateThePlayingField();
     }
@@ -161,14 +166,14 @@ public class ElementMovement : MonoBehaviour
 
     private bool IsOtherBlockNear(int x, int y, int direction)
     {
-        return (playingFieldManager.playingFieldMatrix[y, x + direction] == (int)PlayingFieldManager.FieldState.Fallen);           
+        return (playingFieldManager.playingFieldMatrix[y, x + direction] == (int)PlayingFieldManager.FieldState.Fallen);
     }
 
     private delegate bool BorderCheck(int x);
     private static BorderCheck borderCheck = null;
 
     public void HorizontalMovement()
-    {      
+    {
         int[,] tempMatrix = new int[playingFieldManager.Height, playingFieldManager.Width];
         playingFieldManager.FallenToTemp(tempMatrix);
         int direction = 0;
@@ -198,8 +203,8 @@ public class ElementMovement : MonoBehaviour
                 }
             }
         }
-        WriteAndUpdate(tempMatrix);       
-        playingFieldManager.topLeftPositionOfCurrentElement += new Vector2(direction, 0);       
+        WriteAndUpdate(tempMatrix);
+        playingFieldManager.topLeftPositionOfCurrentElement += new Vector2(direction, 0);
     }
 
     //private IEnumerator HorizontalMovementManual()
