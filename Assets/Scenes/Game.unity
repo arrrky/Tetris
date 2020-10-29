@@ -460,7 +460,7 @@ GameObject:
   - component: {fileID: 962186345}
   - component: {fileID: 962186344}
   m_Layer: 5
-  m_Name: YouWin
+  m_Name: lblYouWin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -695,7 +695,7 @@ GameObject:
   - component: {fileID: 1711629814}
   - component: {fileID: 1711629813}
   m_Layer: 5
-  m_Name: Score
+  m_Name: lblScore
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -789,7 +789,7 @@ GameObject:
   - component: {fileID: 1914513788}
   - component: {fileID: 1914513787}
   m_Layer: 5
-  m_Name: Goal
+  m_Name: lblGoal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -988,7 +988,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c85c7210542eca147bf5543feeb06b64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayingFieldManager: {fileID: 2104277122}
+  playingFieldManager: {fileID: 2104277122}
 --- !u!114 &2104277125
 MonoBehaviour:
   m_ObjectHideFlags: 0

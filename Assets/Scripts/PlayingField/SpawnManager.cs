@@ -1,6 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
+using MiscTools;
 
 public class SpawnManager : MonoBehaviour
 {
@@ -9,16 +9,23 @@ public class SpawnManager : MonoBehaviour
     [SerializeField]
     private ElementsArrays elementsArrays;
 
-    private List<int[,]> elements;
+    private List<int[,]> tempElements;
+    private List<FieldState[,]> listOfElements;
 
     public const int spawnPoint = 4;
 
     private void Awake()
     {
-        elements = new List<int[,]> (elementsArrays.dicOfElements.Values);
+        // Временное решение, связанное с полным переходом на матрицы из enum'ов
+        tempElements = new List<int[,]>(elementsArrays.dicOfElements.Values);
+        listOfElements = new List<FieldState[,]>();
+        foreach(var elements in tempElements)
+        {
+            listOfElements.Add(ElementsArrays.ConvertToFieldState(elements));
+        }        
     }
 
-    public void SpawnElement(int[,] element, int[,] playingFieldMatrix)
+    public void SpawnElement(FieldState[,] element, FieldState[,] playingFieldMatrix)
     {
         
         for (int y = 0; y < element.GetLength(0); y++)
@@ -47,10 +54,10 @@ public class SpawnManager : MonoBehaviour
     //    }
     //}
 
-    public void SpawnRandomElement(int[,] playingFieldMatrix)
-    {
+    public void SpawnRandomElement(FieldState[,] playingFieldMatrix)
+    {             
         // Временно, все равно надо писать свой рандомайзер с разными шансами выпадения
-        int[,] element = GetRandomElement();
+        FieldState[,] element = GetRandomElement();
         playingFieldManager.currentElementArray = element;
         playingFieldManager.currentElementSize = element.GetLength(0);
 
@@ -66,8 +73,8 @@ public class SpawnManager : MonoBehaviour
         playingFieldManager.UpdateThePlayingField();
     }   
 
-    private int[,] GetRandomElement()
+    private FieldState[,] GetRandomElement()
     {
-        return elements[Random.Range(0, elements.Count)];
+        return listOfElements[Random.Range(0, tempElements.Count)];
     }
 }

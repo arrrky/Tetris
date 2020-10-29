@@ -26,7 +26,7 @@ public class ScoreController : MonoBehaviour
 
         private set
         {
-            score = value;            
+            score = value;
         }
     }
 
@@ -42,7 +42,7 @@ public class ScoreController : MonoBehaviour
         }
         set
         {
-            goal = value;
+            goal = value;            
         }
     }
 
@@ -54,13 +54,14 @@ public class ScoreController : MonoBehaviour
 
     private void UpdateScore()
     {
-        lblScore.text = Score.ToString();
+        lblScore.text = $"Score: {Score.ToString()}";
     }
 
     public void IncreaseScore(int fullRowsCount)
     {
         Score += (int)Mathf.Pow(scoreForOneRow, fullRowsCount); // формула для теста!!! подумать над более интересным вариантом   
         UpdateScore();
+
         if (Score >= Goal)
         {
             StartCoroutine(GameOver());            

@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using MiscTools;
 
 public class ElementMovement : MonoBehaviour
 {
@@ -31,7 +32,7 @@ public class ElementMovement : MonoBehaviour
     public void FallingDown()
     {
         // Во временную матрицу будем записывать поле с уже смещенным элементом
-        int[,] tempMatrix = new int[playingFieldManager.Height, playingFieldManager.Width];
+        FieldState[,] tempMatrix = new FieldState[playingFieldManager.Height, playingFieldManager.Width];
         playingFieldManager.FallenToTemp(tempMatrix);
 
         // Меняем состояние в матрице-поле снизу вверх, иначе (при проходе сверху вниз) мы будем проходить по уже измененным элементам
@@ -58,9 +59,9 @@ public class ElementMovement : MonoBehaviour
                 // Смещение по вертикали, если ряд не последний
                 if (!IsLastRow(x, y))
                 {
-                    if (playingFieldManager.playingFieldMatrix[y, x] == (int)PlayingFieldManager.FieldState.Falling)
+                    if (playingFieldManager.fieldMatrix[y, x] == FieldState.Falling)
                     {
-                        tempMatrix[y + 1, x] = (int)PlayingFieldManager.FieldState.Falling;
+                        tempMatrix[y + 1, x] = FieldState.Falling;
                     }
                 }
             }
@@ -72,21 +73,21 @@ public class ElementMovement : MonoBehaviour
     // Если текущий элемент - упавший, а над ним - падающий
     private bool IsFallingElementAbove(int x, int y)
     {
-        return (playingFieldManager.playingFieldMatrix[y, x] == (int)PlayingFieldManager.FieldState.Fallen &&
-                playingFieldManager.playingFieldMatrix[y - 1, x] == (int)PlayingFieldManager.FieldState.Falling);
+        return (playingFieldManager.fieldMatrix[y, x] == FieldState.Fallen &&
+                playingFieldManager.fieldMatrix[y - 1, x] == FieldState.Falling);
     }
 
     // Если последний ряд
     private bool IsLastRow(int x, int y)
     {
         return (y == playingFieldManager.Height - 1 &&
-                playingFieldManager.playingFieldMatrix[y, x] == (int)PlayingFieldManager.FieldState.Falling);
+                playingFieldManager.fieldMatrix[y, x] == FieldState.Falling);
     }
 
     // Записываем новую (временную) матрицу в оригинальную и обновляем поле
-    protected void WriteAndUpdate(int[,] tempMatrix)
+    protected void WriteAndUpdate(FieldState[,] tempMatrix)
     {
-        playingFieldManager.playingFieldMatrix = tempMatrix;
+        playingFieldManager.fieldMatrix = tempMatrix;
         playingFieldManager.FullRowCheck();
         playingFieldManager.UpdateThePlayingField();
     }
@@ -167,14 +168,14 @@ public class ElementMovement : MonoBehaviour
 
     private bool IsOtherBlockNear(int x, int y, int direction)
     {
-        return (playingFieldManager.playingFieldMatrix[y, x + direction] == (int)PlayingFieldManager.FieldState.Fallen);
+        return (playingFieldManager.fieldMatrix[y, x + direction] == FieldState.Fallen);
     }
 
     private Func<int, bool> borderCheck;    
 
     public void HorizontalMovement()
     {      
-        int[,] tempMatrix = new int[playingFieldManager.Height, playingFieldManager.Width];
+        FieldState[,] tempMatrix = new FieldState[playingFieldManager.Height, playingFieldManager.Width];
         playingFieldManager.FallenToTemp(tempMatrix);
         int direction = 0;       
 
@@ -193,13 +194,13 @@ public class ElementMovement : MonoBehaviour
         {
             for (int x = playingFieldManager.Width - 1; x >= 0; x--)
             {
-                if (playingFieldManager.playingFieldMatrix[y, x] == (int)PlayingFieldManager.FieldState.Falling)
+                if (playingFieldManager.fieldMatrix[y, x] == FieldState.Falling)
                 {
                     if (borderCheck(x))
                         return;
                     if (IsOtherBlockNear(x, y, direction))
                         return;
-                    tempMatrix[y, x + direction] = (int)PlayingFieldManager.FieldState.Falling;
+                    tempMatrix[y, x + direction] = FieldState.Falling;
                 }
             }
         }

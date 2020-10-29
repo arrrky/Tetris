@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using MiscTools;
 
 public class PlayingFieldManager : MonoBehaviour
 {
@@ -10,18 +11,7 @@ public class PlayingFieldManager : MonoBehaviour
     private ScoreController scoreController;
     [SerializeField]
     private SpawnManager spawnManager;
-
-    // Вопрос о целесообразности использования этого enum'a остается открытым
-    // Вроде так оно более читаемо, и понятно что такое 0, 1 и 2 
-    // С другой стороны в методах приходится постоянно кастить их к int'ам
-    // Пока останется комбинированный вариант
-    public enum FieldState
-    {
-        Empty = 0,
-        Falling = 1,
-        Fallen = 2
-    }
-
+    
     private int width = 10;
     private int height = 20;
 
@@ -42,25 +32,24 @@ public class PlayingFieldManager : MonoBehaviour
     }
 
     private GameObject[,] playingField;
-    private static int fullRowsCount = 0;
-
-    // Матрица-поле заполняется 3-мя типами значений-состояний: 0 - пустое место, 1 - двигающийся блок, 2 - упавший блок
-    public int[,] playingFieldMatrix;
-    public int[,] currentElementArray;
+    private int fullRowsCount = 0;
+    
+    public FieldState[,] fieldMatrix;
+    public FieldState[,] currentElementArray;
     public int currentElementSize;
     public Vector2 topLeftPositionDefault;
     public Vector2 topLeftPositionOfCurrentElement;
 
     void Start()
-    {
-        playingFieldMatrix = new int[Height, Width];
+    {        
+        fieldMatrix = new FieldState[Height, Width];
         playingField = new GameObject[Height, Width];
         FillThePlayingField();
 
         topLeftPositionDefault = new Vector2(SpawnManager.spawnPoint, 0);
         topLeftPositionOfCurrentElement = topLeftPositionDefault;
 
-        spawnManager.SpawnRandomElement(playingFieldMatrix);
+        spawnManager.SpawnRandomElement(fieldMatrix);
     }
 
     private void FillThePlayingField()
@@ -78,16 +67,16 @@ public class PlayingFieldManager : MonoBehaviour
     }
 
     // Тестовый метод, потом можно выпилить
-    private void CreateRandomFieldState()
-    {
-        for (int y = 0; y < height; y++)
-        {
-            for (int x = 0; x < width; x++)
-            {
-                playingFieldMatrix[y, x] = Random.Range(0, 2);
-            }
-        }
-    }
+    //private void CreateRandomFieldState()
+    //{
+    //    for (int y = 0; y < height; y++)
+    //    {
+    //        for (int x = 0; x < width; x++)
+    //        {
+    //            matrix[y, x] = Random.Range(0, 2);
+    //        }
+    //    }
+    //}
 
     // Обновление состояния поля
     public void UpdateThePlayingField()
@@ -95,8 +84,8 @@ public class PlayingFieldManager : MonoBehaviour
         for (int y = 0; y < Height; y++)
         {
             for (int x = 0; x < Width; x++)
-            {
-                playingField[y, x].SetActive(playingFieldMatrix[y, x] > 0); // или 1(Falling) или 2 (Fallen)
+            {                
+                playingField[y, x].SetActive(fieldMatrix[y, x] != FieldState.Empty); 
             }
         }
     }
@@ -106,12 +95,12 @@ public class PlayingFieldManager : MonoBehaviour
         for (int y = 0; y < Height; y++)
         {
             for (int x = 0; x < Width; x++)
-            {
-                if (playingFieldMatrix[y, x] > 0)
-                    playingFieldMatrix[y, x] = (int)FieldState.Fallen;
+            {                
+                if (fieldMatrix[y, x] != FieldState.Empty)
+                    fieldMatrix[y, x] = FieldState.Fallen;
             }
         }
-        spawnManager.SpawnRandomElement(playingFieldMatrix);
+        spawnManager.SpawnRandomElement(fieldMatrix);
     }
 
     public void FullRowCheck()
@@ -121,7 +110,7 @@ public class PlayingFieldManager : MonoBehaviour
             bool isFullRow = true;
             for (int x = Width - 1; x >= 0; x--)
             {
-                isFullRow &= playingFieldMatrix[y, x] == (int)FieldState.Fallen;
+                isFullRow &= fieldMatrix[y, x] == FieldState.Fallen;
             }
             if (isFullRow)
             {
@@ -146,7 +135,7 @@ public class PlayingFieldManager : MonoBehaviour
     {
         for (int x = Width - 1; x >= 0; x--)
         {
-            playingFieldMatrix[rowNumber, x] = (int)FieldState.Empty;
+            fieldMatrix[rowNumber, x] = FieldState.Empty;
         }
 
         FullRowCheck(); // повторная проверка на случай, если заполненых рядов несколько
@@ -163,23 +152,23 @@ public class PlayingFieldManager : MonoBehaviour
             for (int x = Width - 1; x >= 0; x--)
             {
                 // Проверка, чтобы опускать падающий элемент
-                if (playingFieldMatrix[y, x] == (int)FieldState.Falling)
+                if (fieldMatrix[y, x] == FieldState.Falling)
                     return;
-                playingFieldMatrix[y + 1, x] = playingFieldMatrix[y, x];
+                fieldMatrix[y + 1, x] = fieldMatrix[y, x];
             }
         }
     }
 
     // Если перед смещением в оригинальной матрице уже были упавшие элементы - запишем их во временную матрицу
-    public void FallenToTemp(int[,] tempMatrix)
+    public void FallenToTemp(FieldState[,] tempMatrix)
     {
         for (int y = Height - 1; y > 0; y--)
         {
             for (int x = Width - 1; x >= 0; x--)
             {
-                if (playingFieldMatrix[y, x] == (int)FieldState.Fallen)
+                if (fieldMatrix[y, x] == FieldState.Fallen)
                 {
-                    tempMatrix[y, x] = (int)FieldState.Fallen;
+                    tempMatrix[y, x] = FieldState.Fallen;
                 }
             }
         }
