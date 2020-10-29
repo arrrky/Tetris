@@ -1,13 +1,14 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using UnityEngine.UI;
 
 public class ScoreController : MonoBehaviour
 {
     [SerializeField]
-    private ShowScore showScore;
+    private Text lblScore;
     [SerializeField]
-    private ShowGoal showGoal;
+    private Text lblGoal;
     [SerializeField]
     private GameObject youWin;
     [SerializeField]
@@ -25,8 +26,7 @@ public class ScoreController : MonoBehaviour
 
         private set
         {
-            score = value;
-            showScore.UpdateScore();
+            score = value;            
         }
     }
 
@@ -44,11 +44,23 @@ public class ScoreController : MonoBehaviour
         {
             goal = value;
         }
-    } 
+    }
+
+    private void Start()
+    {
+        lblScore.text = $"Score: {Score.ToString()}";
+        lblGoal.text = $"Goal: {Goal.ToString()}";
+    }
+
+    private void UpdateScore()
+    {
+        lblScore.text = Score.ToString();
+    }
 
     public void IncreaseScore(int fullRowsCount)
     {
         Score += (int)Mathf.Pow(scoreForOneRow, fullRowsCount); // формула для теста!!! подумать над более интересным вариантом   
+        UpdateScore();
         if (Score >= Goal)
         {
             StartCoroutine(GameOver());            
