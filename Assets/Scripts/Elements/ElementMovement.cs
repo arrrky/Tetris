@@ -10,19 +10,7 @@ public class ElementMovement : MonoBehaviour
     void Start()
     {
         InvokeRepeating("FallingDown", 1f, 1f);
-    }
-
-    //private IEnumerator FallingDownManual()
-    //{
-    //    while (true)
-    //    {
-    //        yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space));
-    //        FallingDown();
-    //        yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space));
-    //       // yield return new WaitForSeconds(0.05f); // скорость падения при зажатой клавише (меньше - быстрее)   
-
-    //    }
-    //}
+    }    
 
     public void StopFallingDown()
     {
@@ -69,92 +57,25 @@ public class ElementMovement : MonoBehaviour
         playingFieldManager.topLeftPositionOfCurrentElement += new Vector2(0, 1);
         WriteAndUpdate(tempMatrix);
     }
-
-    // Если текущий элемент - упавший, а над ним - падающий
+   
     private bool IsFallingElementAbove(int x, int y)
     {
         return (playingFieldManager.fieldMatrix[y, x] == FieldState.Fallen &&
                 playingFieldManager.fieldMatrix[y - 1, x] == FieldState.Falling);
     }
-
-    // Если последний ряд
+   
     private bool IsLastRow(int x, int y)
     {
         return (y == playingFieldManager.Height - 1 &&
                 playingFieldManager.fieldMatrix[y, x] == FieldState.Falling);
     }
-
-    // Записываем новую (временную) матрицу в оригинальную и обновляем поле
+    
     protected void WriteAndUpdate(FieldState[,] tempMatrix)
     {
         playingFieldManager.fieldMatrix = tempMatrix;
         playingFieldManager.FullRowCheck();
         playingFieldManager.UpdateThePlayingField();
     }
-
-    // Методы вроде рабочие, если вскроются проблемы с объединенным методом - можно использовать их
-
-    //private IEnumerator MoveToTheRightManual()
-    //{
-    //    while (true)
-    //    {
-    //        yield return new WaitUntil(() => Input.GetButtonDown("MoveToTheRight"));
-    //        MoveToTheRight(PlayingFieldManager.playingFieldMatrix);
-    //        yield return new WaitUntil(() => Input.GetButtonDown("MoveToTheRight"));
-    //    }
-    //}
-
-    //private IEnumerator MoveToTheLeftManual()
-    //{
-    //    while (true)
-    //    {
-    //        yield return new WaitUntil(() => Input.GetButtonDown("MoveToTheLeft"));
-    //        MoveToTheLeft(PlayingFieldManager.playingFieldMatrix);
-    //        yield return new WaitUntil(() => Input.GetButtonDown("MoveToTheLeft"));
-    //    }
-    //}
-
-    //private void MoveToTheRight(int[,] playingFieldMatrix)
-    //{
-    //    int[,] tempMatrix = new int[PlayingFieldManager.Height, PlayingFieldManager.Width];
-    //    int direction = 1;
-    //    for (int y = PlayingFieldManager.Height - 1; y > 0; y--)
-    //    {
-    //        for (int x = PlayingFieldManager.Width - 1; x >= 0; x--)
-    //        {
-    //            if (playingFieldMatrix[y, x] == (int)PlayingFieldManager.FieldState.Falling)
-    //            {
-    //                if (IsRightBorderNear(x))
-    //                    return;
-    //                tempMatrix[y, x + direction] = (int)PlayingFieldManager.FieldState.Falling;
-    //            }
-    //            FallenToTemp(tempMatrix);
-    //        }
-    //    }
-    //    WriteAndUpdate(tempMatrix);
-    //}
-
-    //private void MoveToTheLeft(int[,] playingFieldMatrix)
-    //{
-    //    int[,] tempMatrix = new int[PlayingFieldManager.Height, PlayingFieldManager.Width];
-    //    int direction = -1;
-    //    for (int y = PlayingFieldManager.Height - 1; y > 0; y--)
-    //    {
-    //        for (int x = PlayingFieldManager.Width - 1; x >= 0; x--)
-    //        {
-    //            if (playingFieldMatrix[y, x] == (int)PlayingFieldManager.FieldState.Falling)
-    //            {
-    //                if (IsLeftBorderNear(x))
-    //                    return;
-    //                tempMatrix[y, x + direction] = (int)PlayingFieldManager.FieldState.Falling;
-    //            }
-    //            FallenToTemp(tempMatrix);
-    //        }
-    //    }
-    //    WriteAndUpdate(tempMatrix);
-    //}
-
-    // Пока не удаляю, потому что могут пригодиться в проверках вращения
 
     private bool IsLeftBorderNear(int x)
     {
@@ -207,15 +128,4 @@ public class ElementMovement : MonoBehaviour
         WriteAndUpdate(tempMatrix);
         playingFieldManager.topLeftPositionOfCurrentElement += new Vector2(direction, 0);
     }
-
-    //private IEnumerator HorizontalMovementManual()
-    //{
-    //    while (true)
-    //    {
-    //        yield return new WaitUntil(() => Input.GetButtonDown("Horizontal"));
-    //        HorizontalMovement(PlayingFieldManager.playingFieldMatrix);         
-    //        //yield return new WaitUntil(() => Input.GetButtonDown("Horizontal"));
-    //    }
-    //}
-
 }

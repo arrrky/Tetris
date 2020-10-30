@@ -78,7 +78,9 @@ public class PlayingFieldManager : MonoBehaviour
     //    }
     //}
 
-    // Обновление состояния поля
+    /// <summary>
+    /// Обновление состояния игрового поля
+    /// </summary>
     public void UpdateThePlayingField()
     {
         for (int y = 0; y < Height; y++)
@@ -116,18 +118,7 @@ public class PlayingFieldManager : MonoBehaviour
             {
                 fullRowsCount++;
                 DeleteFullRow(y);
-            }
-
-            //int rowSum = 0;
-            //for (int x = Width - 1; x >= 0; x--)
-            //{
-            //    rowSum += playingFieldMatrix[y, x];
-            //}
-            //if (rowSum == Width * 2) // в ряду должно быть 10 (Width) элементов со значением 2 (Fallen)
-            //{
-            //    fullRowsCount++;
-            //    DeleteFullRow(y);
-            //}
+            }            
         }
     }
 
@@ -137,8 +128,8 @@ public class PlayingFieldManager : MonoBehaviour
         {
             fieldMatrix[rowNumber, x] = FieldState.Empty;
         }
-
-        FullRowCheck(); // повторная проверка на случай, если заполненых рядов несколько
+        // Повторная проверка на случай, если заполненых рядов несколько
+        FullRowCheck(); 
         if (fullRowsCount != 0)
         {
             scoreController.IncreaseScore(fullRowsCount);
@@ -146,12 +137,12 @@ public class PlayingFieldManager : MonoBehaviour
         Debug.Log($"Your score: {scoreController.Score}");
         fullRowsCount = 0;
 
-        // Смещаем вниз на все элементы над уничтоженным рядом
+        // Смещаем вниз все элементы над уничтоженным рядом
         for (int y = rowNumber - 1; y >= 0; y--)
         {
             for (int x = Width - 1; x >= 0; x--)
             {
-                // Проверка, чтобы опускать падающий элемент
+                // Проверка, чтобы НЕ опускать падающий элемент
                 if (fieldMatrix[y, x] == FieldState.Falling)
                     return;
                 fieldMatrix[y + 1, x] = fieldMatrix[y, x];
@@ -159,7 +150,9 @@ public class PlayingFieldManager : MonoBehaviour
         }
     }
 
-    // Если перед смещением в оригинальной матрице уже были упавшие элементы - запишем их во временную матрицу
+    /// <summary>
+    /// Запись упавших элементов из оригинальной матрицы во временную
+    /// </summary>
     public void FallenToTemp(FieldState[,] tempMatrix)
     {
         for (int y = Height - 1; y > 0; y--)
