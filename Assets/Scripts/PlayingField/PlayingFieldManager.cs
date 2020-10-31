@@ -42,7 +42,7 @@ public class PlayingFieldManager : MonoBehaviour
 
     void Start()
     {
-        LevelController.instance.InitializeLevel();
+        LevelController.Instance.InitializeLevel();
         fieldMatrix = new FieldState[Height, Width];
         playingField = new GameObject[Height, Width];
         FillThePlayingField();

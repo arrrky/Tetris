@@ -5,16 +5,26 @@ using UnityEngine.UI;
 
 public class LevelController : MonoBehaviour
 {
-    public static LevelController instance;    
-
     [SerializeField]
     private Text lblLevel;
     [SerializeField]
     private Text lblGoal;
+
+    private static LevelController instance;    
+
+    public static LevelController Instance
+    {
+        get
+        {
+            return instance;
+        }
+        set
+        {
+            instance = value;
+        }
+    }    
     
-    private int goal = 10;
-    private bool isEvenIteration = true;
-    private readonly int[] goalMultipliers = new int[2] { 5, 2 };
+    private int goal = 10;   
 
     public int Goal
     {
@@ -61,17 +71,20 @@ public class LevelController : MonoBehaviour
         lblLevel.text = $"Level {numberOfLevel}";
     }
 
+    private bool isEvenIteration = true;
+    private readonly int[] goalMultipliers = new int[2] { 5, 2 };
+
     public void ChangeLevel()
     {
         NumberOfLevel++;
 
         if (isEvenIteration)
         {
-            Goal = Goal * goalMultipliers[0];            
+            Goal *= goalMultipliers[0];            
         }
         else
         {
-            Goal = Goal * goalMultipliers[1];          
+            Goal *= goalMultipliers[1];          
         }
         isEvenIteration = !isEvenIteration;
     }

@@ -47,7 +47,7 @@ public class ScoreController : MonoBehaviour
         Score += (int)Mathf.Pow(scoreForOneRow, fullRowsCount); // формула для теста!!! подумать над более интересным вариантом   
         UpdateScore();
 
-        if (Score >= LevelController.instance.Goal)
+        if (Score >= LevelController.Instance.Goal)
         {
             StartCoroutine(GameOver());            
         }
@@ -58,7 +58,7 @@ public class ScoreController : MonoBehaviour
         youWin.SetActive(true);
         elementMovement.StopFallingDown();
         playerInput.SetActive(false);
-        LevelController.instance.ChangeLevel();
+        LevelController.Instance.ChangeLevel();
 
         yield return new WaitForSeconds(3f);        
         Scene scene = SceneManager.GetActiveScene();
