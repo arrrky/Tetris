@@ -8,7 +8,7 @@ public class ScoreController : MonoBehaviour
     [SerializeField]
     private Text lblScore;
     [SerializeField]
-    private Text lblGoal;
+    private LevelController levelController;
     [SerializeField]
     private GameObject youWin;
     [SerializeField]
@@ -30,26 +30,11 @@ public class ScoreController : MonoBehaviour
         }
     }
 
-    private int scoreForOneRow = 10;
-
-    private int goal = 100;
-
-    public int Goal
-    {
-        get
-        {
-            return goal;
-        }
-        set
-        {
-            goal = value;            
-        }
-    }
+    private int scoreForOneRow = 10;    
 
     private void Start()
     {
-        lblScore.text = $"Score: {Score.ToString()}";
-        lblGoal.text = $"Goal: {Goal.ToString()}";
+        lblScore.text = $"Score: {Score.ToString()}";        
     }
 
     private void UpdateScore()
@@ -62,7 +47,7 @@ public class ScoreController : MonoBehaviour
         Score += (int)Mathf.Pow(scoreForOneRow, fullRowsCount); // формула для теста!!! подумать над более интересным вариантом   
         UpdateScore();
 
-        if (Score >= Goal)
+        if (Score >= LevelController.instance.Goal)
         {
             StartCoroutine(GameOver());            
         }
@@ -73,6 +58,8 @@ public class ScoreController : MonoBehaviour
         youWin.SetActive(true);
         elementMovement.StopFallingDown();
         playerInput.SetActive(false);
+        LevelController.instance.ChangeLevel();
+
         yield return new WaitForSeconds(3f);        
         Scene scene = SceneManager.GetActiveScene();
         SceneManager.LoadScene(scene.name);

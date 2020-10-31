@@ -5,6 +5,7 @@ using MiscTools;
 public class Elements : MonoBehaviour
 {
     public List<Element> listOfElements;
+    private const int sumOfChances = 100;
     
     void Start()
     {
@@ -22,7 +23,7 @@ public class Elements : MonoBehaviour
                  {1,1},
                  {1,1}
             }),
-            SpawnChance = 25
+            SpawnChance = 15
         });
         listOfElements.Add(new Element
         {
@@ -33,7 +34,7 @@ public class Elements : MonoBehaviour
                 {0,1,0},
                 {0,0,0}
             }),
-            SpawnChance = 25
+            SpawnChance = 10
         });
         listOfElements.Add(new Element
         {
@@ -45,7 +46,7 @@ public class Elements : MonoBehaviour
                 {0,0,0,0},
                 {0,0,0,0}
             }),
-            SpawnChance = 25
+            SpawnChance = 5
         });
         listOfElements.Add(new Element
         {
@@ -56,7 +57,7 @@ public class Elements : MonoBehaviour
                 {1,0,0},
                 {0,0,0}
             }),
-            SpawnChance = 25
+            SpawnChance = 20
         });
         listOfElements.Add(new Element
         {
@@ -67,7 +68,7 @@ public class Elements : MonoBehaviour
                 {0,0,1},
                 {0,0,0}
             }),
-            SpawnChance = 25
+            SpawnChance = 15
         });
         listOfElements.Add(new Element
         {
@@ -78,7 +79,7 @@ public class Elements : MonoBehaviour
                 {0,1,1},
                 {0,0,0}
             }),
-            SpawnChance = 25
+            SpawnChance = 20
         });
         listOfElements.Add(new Element
         {
@@ -89,7 +90,36 @@ public class Elements : MonoBehaviour
                 {1,1,0},
                 {0,0,0}
             }),
-            SpawnChance = 25
+            SpawnChance = 15
         });
+    }
+
+    private bool CorrectChancesCheck()
+    {
+        int sum = 0;
+        foreach(var el in listOfElements)
+        {
+            sum += el.SpawnChance;
+        }
+        return sum == sumOfChances;
+    }
+
+    // Используется метод из этой статьи: https://jonlabelle.com/snippets/view/csharp/pick-random-elements-based-on-probability
+    // Важно задать шансы так, чтобы суммарно они были равны 100
+    // Подумать, как ввести предупреждение об этом на этапе компиляции
+    public Element GetRandomElement()
+    {
+        int roll = Random.Range(1, 100);
+
+        int cumulativeChance = 0;
+
+        for (int i = 0; i < listOfElements.Count; i++)
+        {
+            cumulativeChance += listOfElements[i].SpawnChance;
+
+            if (roll < cumulativeChance)
+                return listOfElements[i];
+        }
+        return null;
     }
 }

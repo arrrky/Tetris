@@ -41,7 +41,8 @@ public class PlayingFieldManager : MonoBehaviour
     public Vector2 topLeftPositionOfCurrentElement;
 
     void Start()
-    {        
+    {
+        LevelController.instance.InitializeLevel();
         fieldMatrix = new FieldState[Height, Width];
         playingField = new GameObject[Height, Width];
         FillThePlayingField();

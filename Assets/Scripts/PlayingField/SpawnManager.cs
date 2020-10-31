@@ -20,29 +20,11 @@ public class SpawnManager : MonoBehaviour
                 playingFieldMatrix[y, x + spawnPoint] = element[y, x];
             }
         }
-    }
-
-    //public static IEnumerator SpawnRandomElement(int[,] playingFieldMatrix)
-    //{
-    //    while (true)
-    //    {
-    //        int[,] element = ElementsArrays.elementsList[Random.Range(0, ElementsArrays.elementsList.Count)];
-    //        for (int y = 0; y < element.GetLength(0); y++)
-    //        {
-    //            for (int x = 0; x < element.GetLength(1); x++)
-    //            {
-    //                playingFieldMatrix[y, x + spawnPoint] = element[y, x];
-    //            }
-    //        }
-    //        PlayingFieldManager.DrawThePlayingField();
-    //        yield return new WaitForSeconds(1f);
-    //    }
-    //}
+    }  
 
     public void SpawnRandomElement(FieldState[,] playingFieldMatrix)
-    {             
-        // Временно, все равно надо писать свой рандомайзер с разными шансами выпадения
-        Element element = GetRandomElement();
+    {    
+        Element element = elements.GetRandomElement();
         playingFieldManager.currentElementArray = element.Matrix;
         playingFieldManager.currentElementSize = element.Matrix.GetLength(0);
 
@@ -58,8 +40,8 @@ public class SpawnManager : MonoBehaviour
         playingFieldManager.UpdateThePlayingField();
     }   
 
-    private Element GetRandomElement()
-    {
-        return elements.listOfElements[Random.Range(0, elements.listOfElements.Count)];
-    }
+    //private Element GetRandomElement()
+    //{
+    //    return elements.listOfElements[Random.Range(0, elements.listOfElements.Count)];
+    //}
 }
