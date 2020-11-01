@@ -7,7 +7,7 @@ public class ElementMovement : MonoBehaviour
     [SerializeField]
     private PlayingFieldManager playingFieldManager;
 
-    void Start()
+    private void Start()
     {
         InvokeRepeating("FallingDown", 1f, LevelController.Instance.FallingDownAutoSpeed);
     }    

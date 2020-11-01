@@ -129,13 +129,14 @@ public class PlayingFieldManager : MonoBehaviour
         {
             fieldMatrix[rowNumber, x] = FieldState.Empty;
         }
+
         // Повторная проверка на случай, если заполненых рядов несколько
         FullRowCheck(); 
         if (fullRowsCount != 0)
         {
             scoreController.IncreaseScore(fullRowsCount);
         }
-        Debug.Log($"Your score: {scoreController.Score}");
+        
         fullRowsCount = 0;
 
         // Смещаем вниз все элементы над уничтоженным рядом
