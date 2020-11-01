@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using System.Collections;
 using MiscTools;
 
 public class SpawnManager : MonoBehaviour
@@ -7,7 +7,16 @@ public class SpawnManager : MonoBehaviour
     [SerializeField]
     private PlayingFieldManager playingFieldManager;
     [SerializeField]
-    private Elements elements; 
+    private Elements elements;
+    [SerializeField]
+    private GameObject gameOverText;
+    [SerializeField]
+    private ElementMovement elementMovement;
+    [SerializeField]
+    private GameObject playerInput;
+    [SerializeField]
+    private GameObject levelController;
+
 
     public const int spawnPoint = 4;    
 
@@ -34,6 +43,10 @@ public class SpawnManager : MonoBehaviour
         {
             for (int x = 0; x < element.Matrix.GetLength(1); x++)
             {
+                if (playingFieldMatrix[y, x + spawnPoint] == FieldState.Fallen)
+                {
+                    StartCoroutine(GameOver());
+                }                    
                 playingFieldMatrix[y, x + spawnPoint] = element.Matrix[y, x];
             }
         }
@@ -44,4 +57,16 @@ public class SpawnManager : MonoBehaviour
     //{
     //    return elements.listOfElements[Random.Range(0, elements.listOfElements.Count)];
     //}
+
+    private IEnumerator GameOver()
+    {
+        gameOverText.SetActive(true);
+        elementMovement.StopFallingDown();
+        playerInput.SetActive(false);
+        LevelController.Instance.Reset();
+
+        yield return new WaitForSeconds(3f);
+
+        Tools.CurrentSceneReload();
+    }
 }

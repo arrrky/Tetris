@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
-using UnityEngine.SceneManagement;
 using System.Collections;
 using UnityEngine.UI;
+using MiscTools;
 
 public class ScoreController : MonoBehaviour
 {
@@ -10,7 +10,7 @@ public class ScoreController : MonoBehaviour
     [SerializeField]
     private LevelController levelController;
     [SerializeField]
-    private GameObject youWin;
+    private GameObject youWinText;   
     [SerializeField]
     private ElementMovement elementMovement;
     [SerializeField]
@@ -44,24 +44,23 @@ public class ScoreController : MonoBehaviour
 
     public void IncreaseScore(int fullRowsCount)
     {
-        Score += (int)Mathf.Pow(scoreForOneRow, fullRowsCount); // формула для теста!!! подумать над более интересным вариантом   
+        Score += (int)Mathf.Pow(scoreForOneRow, fullRowsCount);
         UpdateScore();
 
         if (Score >= LevelController.Instance.Goal)
         {
-            StartCoroutine(GameOver());            
+            StartCoroutine(NextLevel());            
         }
     }   
     
-    private IEnumerator GameOver()
+    private IEnumerator NextLevel()
     {
-        youWin.SetActive(true);
+        youWinText.SetActive(true);
         elementMovement.StopFallingDown();
         playerInput.SetActive(false);
         LevelController.Instance.ChangeLevel();
 
-        yield return new WaitForSeconds(3f);        
-        Scene scene = SceneManager.GetActiveScene();
-        SceneManager.LoadScene(scene.name);
+        yield return new WaitForSeconds(3f);
+        Tools.CurrentSceneReload();
     }
 }

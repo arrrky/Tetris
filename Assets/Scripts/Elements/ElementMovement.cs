@@ -9,7 +9,7 @@ public class ElementMovement : MonoBehaviour
 
     void Start()
     {
-        InvokeRepeating("FallingDown", 1f, 1f);
+        InvokeRepeating("FallingDown", 1f, LevelController.Instance.FallingDownAutoSpeed);
     }    
 
     public void StopFallingDown()

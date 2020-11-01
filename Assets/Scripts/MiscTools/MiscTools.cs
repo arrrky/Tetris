@@ -1,3 +1,5 @@
+using UnityEngine.SceneManagement;
+
 namespace MiscTools
 {
     public enum FieldState
@@ -17,6 +19,12 @@ namespace MiscTools
                 for (int x = 0; x < element.GetLength(1); x++)
                     temp[y, x] = (FieldState)element[y, x];
             return temp;
+        }
+
+        public static void CurrentSceneReload()
+        {
+            Scene scene = SceneManager.GetActiveScene();
+            SceneManager.LoadScene(scene.name);
         }
     }
 }

@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class LevelController : MonoBehaviour
@@ -22,9 +20,13 @@ public class LevelController : MonoBehaviour
         {
             instance = value;
         }
-    }    
-    
-    private int goal = 10;   
+    }
+
+    private const int goalAtStart = 10;
+    private const int levlelAtStart = 1;
+    private const float fallingDownAutoSpeedAtStart = 1.5f;
+
+    private int goal = goalAtStart;   
 
     public int Goal
     {
@@ -38,7 +40,7 @@ public class LevelController : MonoBehaviour
         }
     }
    
-    private int numberOfLevel = 1;
+    private int numberOfLevel = levlelAtStart;
 
     public int NumberOfLevel
     {
@@ -49,6 +51,20 @@ public class LevelController : MonoBehaviour
         set
         {
             numberOfLevel = value;
+        }
+    }
+
+    private float fallingDownAutoSpeed = fallingDownAutoSpeedAtStart;
+
+    public float FallingDownAutoSpeed
+    {
+        get
+        {
+            return fallingDownAutoSpeed;
+        }
+        set
+        {
+            fallingDownAutoSpeed = value;
         }
     }
 
@@ -87,5 +103,15 @@ public class LevelController : MonoBehaviour
             Goal *= goalMultipliers[1];          
         }
         isEvenIteration = !isEvenIteration;
+
+        FallingDownAutoSpeed -= 0.1f;
+    }
+
+    public void Reset()
+    {
+        Goal = goalAtStart;
+        NumberOfLevel = levlelAtStart;
+        FallingDownAutoSpeed = fallingDownAutoSpeedAtStart;
+        isEvenIteration = true;
     }
 }
