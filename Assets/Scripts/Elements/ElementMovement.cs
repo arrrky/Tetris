@@ -47,7 +47,7 @@ public class ElementMovement : MonoBehaviour
                 // Смещение по вертикали, если ряд не последний
                 if (!IsLastRow(x, y))
                 {
-                    if (playingFieldManager.fieldMatrix[y, x] == FieldState.Falling)
+                    if (playingFieldManager.matrix[y, x] == FieldState.Falling)
                     {
                         tempMatrix[y + 1, x] = FieldState.Falling;
                     }
@@ -60,19 +60,19 @@ public class ElementMovement : MonoBehaviour
    
     private bool IsFallingElementAbove(int x, int y)
     {
-        return (playingFieldManager.fieldMatrix[y, x] == FieldState.Fallen &&
-                playingFieldManager.fieldMatrix[y - 1, x] == FieldState.Falling);
+        return (playingFieldManager.matrix[y, x] == FieldState.Fallen &&
+                playingFieldManager.matrix[y - 1, x] == FieldState.Falling);
     }
    
     private bool IsLastRow(int x, int y)
     {
         return (y == playingFieldManager.Height - 1 &&
-                playingFieldManager.fieldMatrix[y, x] == FieldState.Falling);
+                playingFieldManager.matrix[y, x] == FieldState.Falling);
     }
     
     protected void WriteAndUpdate(FieldState[,] tempMatrix)
     {
-        playingFieldManager.fieldMatrix = tempMatrix;
+        playingFieldManager.matrix = tempMatrix;
         playingFieldManager.FullRowCheck();
         playingFieldManager.UpdateThePlayingField();
     }
@@ -89,7 +89,7 @@ public class ElementMovement : MonoBehaviour
 
     private bool IsOtherBlockNear(int x, int y, int direction)
     {
-        return (playingFieldManager.fieldMatrix[y, x + direction] == FieldState.Fallen);
+        return (playingFieldManager.matrix[y, x + direction] == FieldState.Fallen);
     }
 
     private Func<int, bool> borderCheck;    
@@ -115,7 +115,7 @@ public class ElementMovement : MonoBehaviour
         {
             for (int x = playingFieldManager.Width - 1; x >= 0; x--)
             {
-                if (playingFieldManager.fieldMatrix[y, x] == FieldState.Falling)
+                if (playingFieldManager.matrix[y, x] == FieldState.Falling)
                 {
                     if (borderCheck(x))
                         return;

@@ -21,6 +21,10 @@ public class PlayingFieldManager : MonoBehaviour
         {
             return width;
         }
+        set
+        {
+            width = value;
+        }
     }
 
     public int Height
@@ -29,12 +33,16 @@ public class PlayingFieldManager : MonoBehaviour
         {
             return height;
         }
+        set
+        {
+            height = value;
+        }
     }
 
-    private GameObject[,] playingField;
+    public GameObject[,] field;
     private int fullRowsCount = 0;
     
-    public FieldState[,] fieldMatrix;
+    public FieldState[,] matrix;
     public FieldState[,] currentElementArray;
     public int currentElementSize;
     public Vector2 topLeftPositionDefault;
@@ -43,17 +51,17 @@ public class PlayingFieldManager : MonoBehaviour
     void Start()
     {
         LevelController.Instance.InitializeLevel();
-        fieldMatrix = new FieldState[Height, Width];
-        playingField = new GameObject[Height, Width];
+        matrix = new FieldState[Height, Width];
+        field = new GameObject[Height, Width];
         FillThePlayingField();
 
         topLeftPositionDefault = new Vector2(SpawnManager.spawnPoint, 0);
         topLeftPositionOfCurrentElement = topLeftPositionDefault;
 
-        spawnManager.SpawnRandomElement(fieldMatrix);
+        spawnManager.SpawnRandomElement(matrix);           
     }
 
-    private void FillThePlayingField()
+    public void FillThePlayingField()
     {
         // Из-за разницы в нумерации элементов матрицы-поля и отсчета координат в Unity удобнее инициализировать объекты именно таким образом.
         // Поэтому 'y' кооордината инстанирования имеет вид height - y - 1, чтобы блоки заполнялись сверху вниз (как в матрице-поле).
@@ -62,7 +70,7 @@ public class PlayingFieldManager : MonoBehaviour
         {
             for (int x = 0; x < width; x++)
             {
-                playingField[y, x] = Instantiate(blockPrefab, new Vector3(x, height - y - 1, 0), Quaternion.identity, parentOfBlocks.transform);
+                field[y, x] = Instantiate(blockPrefab, new Vector3(x, height - y - 1, 0), Quaternion.identity, parentOfBlocks.transform);
             }
         }
     }
@@ -88,7 +96,7 @@ public class PlayingFieldManager : MonoBehaviour
         {
             for (int x = 0; x < Width; x++)
             {                
-                playingField[y, x].SetActive(fieldMatrix[y, x] != FieldState.Empty); 
+                field[y, x].SetActive(matrix[y, x] != FieldState.Empty); 
             }
         }
     }
@@ -99,11 +107,11 @@ public class PlayingFieldManager : MonoBehaviour
         {
             for (int x = 0; x < Width; x++)
             {                
-                if (fieldMatrix[y, x] != FieldState.Empty)
-                    fieldMatrix[y, x] = FieldState.Fallen;
+                if (matrix[y, x] != FieldState.Empty)
+                    matrix[y, x] = FieldState.Fallen;
             }
         }
-        spawnManager.SpawnRandomElement(fieldMatrix);
+        spawnManager.SpawnRandomElement(matrix);
     }
 
     public void FullRowCheck()
@@ -113,7 +121,7 @@ public class PlayingFieldManager : MonoBehaviour
             bool isFullRow = true;
             for (int x = Width - 1; x >= 0; x--)
             {
-                isFullRow &= fieldMatrix[y, x] == FieldState.Fallen;
+                isFullRow &= matrix[y, x] == FieldState.Fallen;
             }
             if (isFullRow)
             {
@@ -127,7 +135,7 @@ public class PlayingFieldManager : MonoBehaviour
     {
         for (int x = Width - 1; x >= 0; x--)
         {
-            fieldMatrix[rowNumber, x] = FieldState.Empty;
+            matrix[rowNumber, x] = FieldState.Empty;
         }
 
         // Повторная проверка на случай, если заполненых рядов несколько
@@ -145,9 +153,9 @@ public class PlayingFieldManager : MonoBehaviour
             for (int x = Width - 1; x >= 0; x--)
             {
                 // Проверка, чтобы НЕ опускать падающий элемент
-                if (fieldMatrix[y, x] == FieldState.Falling)
+                if (matrix[y, x] == FieldState.Falling)
                     return;
-                fieldMatrix[y + 1, x] = fieldMatrix[y, x];
+                matrix[y + 1, x] = matrix[y, x];
             }
         }
     }
@@ -161,7 +169,7 @@ public class PlayingFieldManager : MonoBehaviour
         {
             for (int x = Width - 1; x >= 0; x--)
             {
-                if (fieldMatrix[y, x] == FieldState.Fallen)
+                if (matrix[y, x] == FieldState.Fallen)
                 {
                     tempMatrix[y, x] = FieldState.Fallen;
                 }
