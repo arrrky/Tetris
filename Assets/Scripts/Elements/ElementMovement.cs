@@ -4,11 +4,20 @@ using MiscTools;
 
 public class ElementMovement : MonoBehaviour
 {
+    //[SerializeField]
+    //private PlayingFieldManager playingFieldManager;
     [SerializeField]
-    private PlayingFieldManager playingFieldManager;
+    private GameController gameController;
+    [SerializeField]
+    private SpawnManager spawnManager;
+    [SerializeField]
+    private ScoreController scoreController;
+
+    private PlayingField playingFieldManager;
 
     private void Start()
     {
+        playingFieldManager = gameController.playingField;
         InvokeRepeating("FallingDown", 1f, LevelController.Instance.FallingDownAutoSpeed);
     }    
 
@@ -34,6 +43,7 @@ public class ElementMovement : MonoBehaviour
                     if (IsFallingElementAbove(x, y))
                     {
                         playingFieldManager.FallingToFallen();
+                        spawnManager.SpawnRandomElement(gameController.playingField);
                         return;
                     }
                 }
@@ -41,6 +51,7 @@ public class ElementMovement : MonoBehaviour
                 if (IsLastRow(x, y))
                 {
                     playingFieldManager.FallingToFallen();
+                    spawnManager.SpawnRandomElement(gameController.playingField);
                     return;
                 }
 
@@ -54,7 +65,7 @@ public class ElementMovement : MonoBehaviour
                 }
             }
         }
-        playingFieldManager.topLeftPositionOfCurrentElement += new Vector2(0, 1);
+        gameController.topLeftPositionOfCurrentElement += new Vector2(0, 1);
         WriteAndUpdate(tempMatrix);
     }
    
@@ -73,7 +84,7 @@ public class ElementMovement : MonoBehaviour
     protected void WriteAndUpdate(FieldState[,] tempMatrix)
     {
         playingFieldManager.matrix = tempMatrix;
-        playingFieldManager.FullRowCheck();
+        playingFieldManager.FullRowCheck(scoreController.IncreaseScore);
         playingFieldManager.UpdateThePlayingField();
     }
 
@@ -126,6 +137,6 @@ public class ElementMovement : MonoBehaviour
             }
         }
         WriteAndUpdate(tempMatrix);
-        playingFieldManager.topLeftPositionOfCurrentElement += new Vector2(direction, 0);
+        gameController.topLeftPositionOfCurrentElement += new Vector2(direction, 0);
     }
 }

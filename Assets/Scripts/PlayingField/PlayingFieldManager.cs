@@ -58,7 +58,7 @@ public class PlayingFieldManager : MonoBehaviour
         topLeftPositionDefault = new Vector2(SpawnManager.spawnPoint, 0);
         topLeftPositionOfCurrentElement = topLeftPositionDefault;
 
-        spawnManager.SpawnRandomElement(matrix);           
+        //spawnManager.SpawnRandomElement(matrix);           
     }
 
     public void FillThePlayingField()
@@ -111,7 +111,7 @@ public class PlayingFieldManager : MonoBehaviour
                     matrix[y, x] = FieldState.Fallen;
             }
         }
-        spawnManager.SpawnRandomElement(matrix);
+        //spawnManager.SpawnRandomElement(matrix);
     }
 
     public void FullRowCheck()

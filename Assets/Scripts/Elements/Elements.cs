@@ -7,17 +7,23 @@ public class Elements : MonoBehaviour
 {    
     private List<Element> listOfElements;
     private const int sumOfChances = 100;
-    
-    void Start()
+
+
+    private void Awake()
     {
         listOfElements = new List<Element>();
-        ElementsInitialization();
+        ElementsInit();
+
+
+    }
+    void Start()
+    {
         //ElementsSortByChance();
         CorrectChancesCheck();
     }
 
     #region Инициализация элементов
-    private void ElementsInitialization()
+    private void ElementsInit()
     {
         listOfElements.Add(new Element
         {
@@ -112,7 +118,7 @@ public class Elements : MonoBehaviour
 
     // Используется метод из этой статьи: https://jonlabelle.com/snippets/view/csharp/pick-random-elements-based-on-probability
     // Важно задать шансы так, чтобы суммарно они были равны 100 (для корректной работы метода)
-    // Подумать, как ввести предупреждение об этом на этапе компиляции
+    // Метод будет работать в любом случае, просто шанс выпадения элемента не будет статистически верен
     public Element GetRandomElement()
     {
         int roll = Random.Range(1, 100);

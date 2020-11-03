@@ -1,12 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using MiscTools;
 
 public class Field : MonoBehaviour
-{
-    
-
+{ 
     private int width;
     private int height;
 
@@ -35,20 +31,19 @@ public class Field : MonoBehaviour
     }
 
     public GameObject[,] field; 
-
     public FieldState[,] matrix;
-    public FieldState[,] currentElementArray;    
 
-    public void FillThePlayingField(GameObject blockPrefab, GameObject parentOfBlocks)
+    public void FillThePlayingField(GameObject blockPrefab, GameObject parentOfBlocks, int xShift, int yShift)
     {
         // Из-за разницы в нумерации элементов матрицы-поля и отсчета координат в Unity удобнее инициализировать объекты именно таким образом.
-        // Поэтому 'y' кооордината инстанирования имеет вид height - y - 1, чтобы блоки заполнялись сверху вниз (как в матрице-поле).
+        // Поэтому 'y' кооордината инстанирования имеет вид height - y - yShift (где Shift - смещение по осям),
+        // чтобы блоки заполнялись сверху вниз (как в матрице-поле).
 
-        for (int y = 0; y < height; y++)
+        for (int y = 0; y < Height; y++)
         {
-            for (int x = 0; x < width; x++)
+            for (int x = 0; x < Width; x++)
             {
-                field[y, x] = Instantiate(blockPrefab, new Vector3(x + 15, height - y + 3, 0), Quaternion.identity, parentOfBlocks.transform);
+                field[y, x] = Instantiate(blockPrefab, new Vector3(x + xShift, Height - y + yShift, 0), Quaternion.identity, parentOfBlocks.transform);
             }
         }
     }   
@@ -62,7 +57,7 @@ public class Field : MonoBehaviour
         {
             for (int x = 0; x < Width; x++)
             {
-                field[y, x].SetActive(true);
+                field[y, x].SetActive(matrix[y, x] != FieldState.Empty);
             }
         }
     } 
