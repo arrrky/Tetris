@@ -8,16 +8,15 @@ public class Elements : MonoBehaviour
     private List<Element> listOfElements;
     private const int sumOfChances = 100;
 
-
+    // Нужно инициализировать список элементов ДО спауна первого элемента
     private void Awake()
     {
         listOfElements = new List<Element>();
         ElementsInit();
-
-
     }
-    void Start()
-    {
+
+    private void Start()
+    {      
         //ElementsSortByChance();
         CorrectChancesCheck();
     }
@@ -134,7 +133,6 @@ public class Elements : MonoBehaviour
         }
         return null;
     }
-
     
     private void ElementsSortByChance()
     {        

@@ -58,6 +58,7 @@ public class ScoreController : MonoBehaviour
         youWinText.SetActive(true);
         elementMovement.StopFallingDown();
         playerInput.SetActive(false);
+
         LevelController.Instance.ChangeLevel();
 
         yield return new WaitForSeconds(3f);

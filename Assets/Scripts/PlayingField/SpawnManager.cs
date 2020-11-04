@@ -3,15 +3,9 @@ using System.Collections;
 using MiscTools;
 
 public class SpawnManager : MonoBehaviour
-{
-    //[SerializeField]
-    //private PlayingFieldManager playingFieldManager;
-
+{   
     [SerializeField]
     private GameController gameController;
-
-    private PlayingField playingFieldManager;
-
     [SerializeField]
     private Elements elements;
     [SerializeField]
@@ -23,33 +17,29 @@ public class SpawnManager : MonoBehaviour
     [SerializeField]
     private GameObject levelController;
 
-   
-
-
+    private Field playingField;
 
     public const int spawnPoint = 4;
 
     private void Start()
     {
-        playingFieldManager = gameController.playingField;
+        playingField = gameController.playingField;
     }
 
-    public void SpawnElement(FieldState[,] element, FieldState[,] playingFieldMatrix)
+    public void SpawnElement(FieldState[,] element, Field playingField)
     {        
         for (int y = 0; y < element.GetLength(0); y++)
         {
             for (int x = 0; x < element.GetLength(1); x++)
             {
-                playingFieldMatrix[y, x + spawnPoint] = element[y, x];
+                playingField.Matrix[y, x + spawnPoint] = element[y, x];
             }
         }
     }  
 
-    public void SpawnRandomElement(PlayingField playingField)
+    public void SpawnRandomElement(Field playingField)
     {    
-        Element element = elements.GetRandomElement();
-        //playingFieldManager.currentElementArray = element.Matrix;
-        //playingFieldManager.currentElementSize = element.Matrix.GetLength(0);
+        Element element = elements.GetRandomElement();        
         gameController.currentElementArray = element.Matrix;
         gameController.currentElementSize = element.Matrix.GetLength(0);
 
@@ -59,14 +49,14 @@ public class SpawnManager : MonoBehaviour
         {
             for (int x = 0; x < element.Matrix.GetLength(1); x++)
             {
-                if (playingField.matrix[y, x + spawnPoint] == FieldState.Fallen)
+                if (playingField.Matrix[y, x + spawnPoint] == FieldState.Fallen)
                 {
                     StartCoroutine(GameOver());
                 }
-                playingField.matrix[y, x + spawnPoint] = element.Matrix[y, x];
+                playingField.Matrix[y, x + spawnPoint] = element.Matrix[y, x];
             }
         }
-        playingField.UpdateThePlayingField();
+        gameController.UpdateThePlayingField(playingField);
     }   
 
     //private Element GetRandomElement()
@@ -79,10 +69,10 @@ public class SpawnManager : MonoBehaviour
         gameOverText.SetActive(true);
         elementMovement.StopFallingDown();
         playerInput.SetActive(false);
+
         LevelController.Instance.Reset();
 
         yield return new WaitForSeconds(3f);
-
         Tools.CurrentSceneReload();
     }
 }
