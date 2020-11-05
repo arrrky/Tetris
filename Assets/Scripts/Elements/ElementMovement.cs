@@ -3,7 +3,7 @@ using UnityEngine;
 using MiscTools;
 
 public class ElementMovement : MonoBehaviour
-{    
+{
     [SerializeField]
     private GameController gameController;
     [SerializeField]
@@ -17,7 +17,7 @@ public class ElementMovement : MonoBehaviour
     {
         playingField = gameController.playingField;
         InvokeRepeating("FallingDown", 1f, LevelController.Instance.FallingDownAutoSpeed);
-    }    
+    }
 
     public void StopFallingDown()
     {
@@ -53,31 +53,33 @@ public class ElementMovement : MonoBehaviour
                     return;
                 }
 
-                // Смещение по вертикали, если ряд не последний
-                if (!IsLastRow(x, y))
+                // Проверка, чтобы не опускать элемент, если ряд последний - забыл, зачем ее добавил
+                // Сверху уже есть проверка, и эта кажется избыточной
+                // Посмотреть еще раз, как будет работать без нее 
+                //if (!IsLastRow(x, y))
+                //{
+                if (playingField.Matrix[y, x] == FieldState.Falling)
                 {
-                    if (playingField.Matrix[y, x] == FieldState.Falling)
-                    {
-                        tempMatrix[y + 1, x] = FieldState.Falling;
-                    }
+                    tempMatrix[y + 1, x] = FieldState.Falling;
                 }
+                //}
             }
         }
         gameController.topLeftPositionOfCurrentElement += new Vector2(0, 1);
         gameController.WriteAndUpdate(tempMatrix);
     }
-   
+
     private bool IsFallingElementAbove(int x, int y)
     {
         return (playingField.Matrix[y, x] == FieldState.Fallen &&
                 playingField.Matrix[y - 1, x] == FieldState.Falling);
     }
-   
+
     private bool IsLastRow(int x, int y)
     {
         return (y == playingField.Height - 1 &&
                 playingField.Matrix[y, x] == FieldState.Falling);
-    }     
+    }
 
     private bool IsLeftBorderNear(int x)
     {
@@ -94,13 +96,13 @@ public class ElementMovement : MonoBehaviour
         return (playingField.Matrix[y, x + direction] == FieldState.Fallen);
     }
 
-    private Func<int, bool> borderCheck;    
+    private Func<int, bool> borderCheck;
 
     public void HorizontalMovement()
-    {      
+    {
         FieldState[,] tempMatrix = new FieldState[playingField.Height, playingField.Width];
         gameController.FallenToTemp(tempMatrix);
-        int direction = 0;       
+        int direction = 0;
 
         if (Input.GetButtonDown("MoveToTheRight"))
         {

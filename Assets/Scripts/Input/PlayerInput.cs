@@ -6,25 +6,12 @@ public class PlayerInput : MonoBehaviour
     [SerializeField]
     private ElementMovement elementMovement;
     [SerializeField]
-    private ElementRotation elementRotate;
-
-    private float manualFallingSpeed; // скорость падения при зажатой клавише (меньше - быстрее)  
-
-    public float ManualFallingSpeed
-    {
-        get
-        {
-            return manualFallingSpeed;
-        }
-        set
-        {
-            manualFallingSpeed = value;
-        }
-    }
+    private ElementRotation elementRotation;
+    [SerializeField]
+    private float manualFallingSpeed = 0.03f; // скорость падения при зажатой клавише (меньше - быстрее)     
 
     private void Start()
-    {
-        manualFallingSpeed = 0.03f;
+    {        
         StartCoroutine(FallingDownManual());
     }
 
@@ -41,7 +28,11 @@ public class PlayerInput : MonoBehaviour
         }
         if (Input.GetButtonDown("Rotate"))
         {
-            elementRotate.Rotate();
+            elementRotation.Rotate();
+        }
+        if(Input.GetButtonDown("MoveDown"))
+        {
+            elementMovement.FallingDown();
         }
     }
 
@@ -53,5 +44,5 @@ public class PlayerInput : MonoBehaviour
             elementMovement.FallingDown();
             yield return new WaitForSeconds(manualFallingSpeed);
         }
-    }   
+    }
 }

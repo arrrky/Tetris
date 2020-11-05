@@ -107,12 +107,14 @@ public class Elements : MonoBehaviour
     private void CorrectChancesCheck()
     {
         int sum = 0;
-        foreach(var el in listOfElements)
+        foreach(var element in listOfElements)
         {
-            sum += el.SpawnChance;
+            sum += element.SpawnChance;
         }
         if (sum != 100)
-            Debug.LogError("Chances are incorrect!");    
+        {
+            Debug.LogError("Chances are incorrect!");
+        } 
     }
 
     // Используется метод из этой статьи: https://jonlabelle.com/snippets/view/csharp/pick-random-elements-based-on-probability
@@ -136,11 +138,11 @@ public class Elements : MonoBehaviour
     
     private void ElementsSortByChance()
     {        
-        var elementsQuery =
+        var sortedElements =
             from element in listOfElements
             orderby element.SpawnChance
             select element;      
 
-        listOfElements = elementsQuery.ToList();
+        listOfElements = sortedElements.ToList();
     }
 }

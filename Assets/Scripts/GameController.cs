@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
+using System.Collections;
 using MiscTools;
 
 public class GameController : MonoBehaviour
@@ -11,6 +13,19 @@ public class GameController : MonoBehaviour
     private ScoreController scoreController;
     [SerializeField]
     private SpawnManager spawnManager;
+    [SerializeField]
+    private ElementMovement elementMovement;
+    [SerializeField]
+    private GameObject playerInput;
+    [SerializeField]
+    private GameObject gameOverText;
+    [SerializeField]
+    private GameObject youWinText;
+    [SerializeField]
+    private Text lblLevel;
+    [SerializeField]
+    private Text lblGoal;
+
 
     public Field playingField;
     public int currentElementSize;
@@ -28,10 +43,13 @@ public class GameController : MonoBehaviour
 
     private void Start()
     {
-        PlayingFieldInit();
+        PlayingFieldInit();     
         topLeftPositionDefault = new Vector2(SpawnManager.spawnPoint, 0);
         topLeftPositionOfCurrentElement = topLeftPositionDefault;
-        LevelController.Instance.InitializeLevel();
+
+        lblGoal.text = $"Goal: {LevelController.Instance.Goal}";
+        lblLevel.text = $"Level: {LevelController.Instance.Level}";
+
         spawnManager.SpawnRandomElement(playingField);
     }
 
@@ -156,8 +174,32 @@ public class GameController : MonoBehaviour
 
     public void WriteAndUpdate(FieldState[,] tempMatrix)
     {
-        playingField.Matrix = tempMatrix;
+        playingField.Matrix = tempMatrix;     
         FullRowCheck();
         UpdateThePlayingField(playingField);
+    }
+
+    public IEnumerator GameOver()
+    {
+        gameOverText.SetActive(true);
+        elementMovement.StopFallingDown();
+        playerInput.SetActive(false);
+
+        LevelController.Instance.Reset();
+
+        yield return new WaitForSeconds(3f);
+        Tools.CurrentSceneReload();
+    }
+
+    public IEnumerator NextLevel()
+    {
+        youWinText.SetActive(true);
+        elementMovement.StopFallingDown();
+        playerInput.SetActive(false);
+
+        LevelController.Instance.ChangeLevel();
+
+        yield return new WaitForSeconds(3f);
+        Tools.CurrentSceneReload();
     }
 }

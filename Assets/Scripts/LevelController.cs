@@ -1,29 +1,11 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 
 public class LevelController : MonoBehaviour
-{
-    [SerializeField]
-    private Text lblLevel;
-    [SerializeField]
-    private Text lblGoal;
-
-    private static LevelController instance;    
-
-    public static LevelController Instance
-    {
-        get
-        {
-            return instance;
-        }
-        set
-        {
-            instance = value;
-        }
-    }
+{   
+    public static LevelController Instance { get; set; }
 
     private const int goalAtStart = 10;
-    private const int levlelAtStart = 1;
+    private const int levelAtStart = 1;
     private const float fallingDownAutoSpeedAtStart = 1.5f;
 
     private int goal = goalAtStart;   
@@ -40,17 +22,17 @@ public class LevelController : MonoBehaviour
         }
     }
    
-    private int numberOfLevel = levlelAtStart;
+    private int level = levelAtStart;
 
-    public int NumberOfLevel
+    public int Level
     {
         get
         {
-            return numberOfLevel;
+            return level;
         }
         set
         {
-            numberOfLevel = value;
+            level = value;
         }
     }
 
@@ -70,29 +52,23 @@ public class LevelController : MonoBehaviour
 
     private void Awake()
     {
-        if (instance == null)
+        if (Instance == null)
         {
-            instance = this;
+            Instance = this;
             DontDestroyOnLoad(gameObject);
         }
-        else if (instance != this)
+        else if (Instance != this)
         {            
             Destroy(gameObject);
         }
     }    
-
-    public void InitializeLevel()
-    {        
-        lblGoal.text = $"Goal: {Goal}";
-        lblLevel.text = $"Level {numberOfLevel}";
-    }
 
     private bool isEvenIteration = true;
     private readonly int[] goalMultipliers = new int[2] { 5, 2 };
 
     public void ChangeLevel()
     {
-        NumberOfLevel++;
+        Level++;
 
         if (isEvenIteration)
         {
@@ -110,7 +86,7 @@ public class LevelController : MonoBehaviour
     public void Reset()
     {
         Goal = goalAtStart;
-        NumberOfLevel = levlelAtStart;
+        Level = levelAtStart;
         FallingDownAutoSpeed = fallingDownAutoSpeedAtStart;
         isEvenIteration = true;
     }

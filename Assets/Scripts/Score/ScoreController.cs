@@ -1,36 +1,16 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.UI;
-using MiscTools;
 
 public class ScoreController : MonoBehaviour
 {
     [SerializeField]
-    private Text lblScore;
+    private GameController gameController;
     [SerializeField]
-    private LevelController levelController;
+    private Text lblScore;    
     [SerializeField]
-    private GameObject youWinText;   
-    [SerializeField]
-    private ElementMovement elementMovement;
-    [SerializeField]
-    private GameObject playerInput;
+    private int scoreForOneRow = 10;
 
-    private int score = 0;
-    public int Score
-    {
-        get
-        {
-            return score;
-        }
-
-        private set
-        {
-            score = value;
-        }
-    }
-
-    private int scoreForOneRow = 10;    
+    public int Score { get; set; }
 
     private void Start()
     {
@@ -49,19 +29,7 @@ public class ScoreController : MonoBehaviour
 
         if (Score >= LevelController.Instance.Goal)
         {
-            StartCoroutine(NextLevel());            
+            StartCoroutine(gameController.NextLevel());            
         }
-    }   
-    
-    private IEnumerator NextLevel()
-    {
-        youWinText.SetActive(true);
-        elementMovement.StopFallingDown();
-        playerInput.SetActive(false);
-
-        LevelController.Instance.ChangeLevel();
-
-        yield return new WaitForSeconds(3f);
-        Tools.CurrentSceneReload();
-    }
+    }      
 }
