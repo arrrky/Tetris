@@ -3,9 +3,9 @@ using UnityEngine;
 using MiscTools;
 
 public class ElementMovement : MonoBehaviour
-{
+{   
     [SerializeField]
-    private GameController gameController;
+    private PlayingFieldController playingFieldController;
     [SerializeField]
     private SpawnManager spawnManager;
     [SerializeField]
@@ -15,7 +15,7 @@ public class ElementMovement : MonoBehaviour
 
     private void Start()
     {
-        playingField = gameController.playingField;
+        playingField = playingFieldController.playingField;
         InvokeRepeating("FallingDown", 1f, LevelController.Instance.FallingDownAutoSpeed);
     }
 
@@ -28,7 +28,7 @@ public class ElementMovement : MonoBehaviour
     {
         // Во временную матрицу будем записывать поле с уже смещенным элементом
         FieldState[,] tempMatrix = new FieldState[playingField.Height, playingField.Width];
-        gameController.FallenToTemp(tempMatrix);
+        playingFieldController.FallenToTemp(tempMatrix);
 
         // Меняем состояние в матрице-поле снизу вверх, иначе (при проходе сверху вниз) мы будем проходить по уже измененным элементам
         // и элемент "упадет" за один проход циклов
@@ -40,16 +40,16 @@ public class ElementMovement : MonoBehaviour
                 {
                     if (IsFallingElementAbove(x, y))
                     {
-                        gameController.FallingToFallen();
-                        spawnManager.SpawnRandomElement(gameController.playingField);
+                        playingFieldController.FallingToFallen();
+                        spawnManager.SpawnRandomElement(playingFieldController.playingField);
                         return;
                     }
                 }
 
                 if (IsLastRow(x, y))
                 {
-                    gameController.FallingToFallen();
-                    spawnManager.SpawnRandomElement(gameController.playingField);
+                    playingFieldController.FallingToFallen();
+                    spawnManager.SpawnRandomElement(playingFieldController.playingField);
                     return;
                 }
 
@@ -65,8 +65,8 @@ public class ElementMovement : MonoBehaviour
                 //}
             }
         }
-        gameController.topLeftPositionOfCurrentElement += new Vector2(0, 1);
-        gameController.WriteAndUpdate(tempMatrix);
+        playingFieldController.topLeftPositionOfCurrentElement += new Vector2(0, 1);
+        playingFieldController.WriteAndUpdate(tempMatrix);
     }
 
     private bool IsFallingElementAbove(int x, int y)
@@ -101,7 +101,7 @@ public class ElementMovement : MonoBehaviour
     public void HorizontalMovement()
     {
         FieldState[,] tempMatrix = new FieldState[playingField.Height, playingField.Width];
-        gameController.FallenToTemp(tempMatrix);
+        playingFieldController.FallenToTemp(tempMatrix);
         int direction = 0;
 
         if (Input.GetButtonDown("MoveToTheRight"))
@@ -129,7 +129,7 @@ public class ElementMovement : MonoBehaviour
                 }
             }
         }
-        gameController.WriteAndUpdate(tempMatrix);
-        gameController.topLeftPositionOfCurrentElement += new Vector2(direction, 0);
+        playingFieldController.WriteAndUpdate(tempMatrix);
+        playingFieldController.topLeftPositionOfCurrentElement += new Vector2(direction, 0);
     }
 }

@@ -2,9 +2,9 @@
 using MiscTools;
 
 public class ElementRotation : MonoBehaviour
-{
+{    
     [SerializeField]
-    private GameController gameController;
+    private PlayingFieldController playingFieldController;
 
     private Field playingField;
     private FieldState[,] currentElementMatrix; 
@@ -13,21 +13,21 @@ public class ElementRotation : MonoBehaviour
 
     private void Start()
     {
-        playingField = gameController.playingField;
+        playingField = playingFieldController.playingField;
     }
 
     private bool IsRotateValid()
     {  
         // Все матрицы элементов квадратные по дефолту
-        currentElementMatrix = new FieldState[gameController.currentElementSize, gameController.currentElementSize]; 
+        currentElementMatrix = new FieldState[playingFieldController.currentElementSize, playingFieldController.currentElementSize]; 
 
-        xShift = (int)gameController.topLeftPositionOfCurrentElement.x;
-        yShift = (int)gameController.topLeftPositionOfCurrentElement.y;
+        xShift = (int)playingFieldController.topLeftPositionOfCurrentElement.x;
+        yShift = (int)playingFieldController.topLeftPositionOfCurrentElement.y;
 
         // Записываем часть поля с элементом в отдельный массив
-        for (int y = 0; y < gameController.currentElementSize; y++)
+        for (int y = 0; y < playingFieldController.currentElementSize; y++)
         {
-            for (int x = 0; x < gameController.currentElementSize; x++)
+            for (int x = 0; x < playingFieldController.currentElementSize; x++)
             {
                 if (playingField.Matrix[y + yShift, x + xShift] == FieldState.Fallen)
                     return false;
@@ -43,19 +43,19 @@ public class ElementRotation : MonoBehaviour
     {
         if (IsRotateValid())
         {
-            FieldState[,] temp = new FieldState[gameController.currentElementSize, gameController.currentElementSize];
+            FieldState[,] temp = new FieldState[playingFieldController.currentElementSize, playingFieldController.currentElementSize];
 
             // Меняем столбцы и строки местами, заполняя temp матрицу уже перевернутым элементом
-            for (int y = 0; y < gameController.currentElementSize; y++)
-                for (int x = 0; x < gameController.currentElementSize; x++)
-                    temp[y, x] = currentElementMatrix[gameController.currentElementSize - 1 - x, y];
+            for (int y = 0; y < playingFieldController.currentElementSize; y++)
+                for (int x = 0; x < playingFieldController.currentElementSize; x++)
+                    temp[y, x] = currentElementMatrix[playingFieldController.currentElementSize - 1 - x, y];
 
             // Записываем в базовую матрицу-поле перевернутый элемент
-            for (int y = 0; y < gameController.currentElementSize; y++)
-                for (int x = 0; x < gameController.currentElementSize; x++)
+            for (int y = 0; y < playingFieldController.currentElementSize; y++)
+                for (int x = 0; x < playingFieldController.currentElementSize; x++)
                     playingField.Matrix[y + yShift, x + xShift] = temp[y, x];
 
-            gameController.UpdateThePlayingField(playingField);
+            playingFieldController.UpdateThePlayingField(playingField);
         }
     }
 }

@@ -2,28 +2,34 @@
 using MiscTools;
 
 public class SpawnManager : MonoBehaviour
-{   
+{
     [SerializeField]
     private GameController gameController;
     [SerializeField]
-    private Elements elements;   
+    private Elements elements;
+    [SerializeField]
+    private PlayingFieldController playingFieldController;
+    [SerializeField]
+    private NextElementFieldController nextElementFieldController;    
 
-    private Field playingField;
+    public const int spawnPoint = 4;   
 
-    public const int spawnPoint = 4;
-
-    private void Start()
+    private void Update()
     {
-        playingField = gameController.playingField;
+        if (Input.GetKeyDown(KeyCode.N))
+        {
+            SpawnElement(elements.GetRandomElement().Matrix, nextElementFieldController.nextElementField);
+            nextElementFieldController.UpdateThePlayingField(nextElementFieldController.nextElementField);
+        }
     }
 
-    public void SpawnElement(FieldState[,] element, Field playingField)
+    public void SpawnElement(FieldState[,] element, Field field)
     {        
         for (int y = 0; y < element.GetLength(0); y++)
         {
             for (int x = 0; x < element.GetLength(1); x++)
             {
-                playingField.Matrix[y, x + spawnPoint] = element[y, x];
+                field.Matrix[y, x] = element[y, x];
             }
         }
     }  
@@ -31,10 +37,10 @@ public class SpawnManager : MonoBehaviour
     public void SpawnRandomElement(Field playingField)
     {    
         Element element = elements.GetRandomElement();        
-        gameController.currentElementArray = element.Matrix;
-        gameController.currentElementSize = element.Matrix.GetLength(0);
+        playingFieldController.currentElementArray = element.Matrix;
+        playingFieldController.currentElementSize = element.Matrix.GetLength(0);
 
-        gameController.topLeftPositionOfCurrentElement = gameController.topLeftPositionDefault;      
+        playingFieldController.topLeftPositionOfCurrentElement = playingFieldController.topLeftPositionDefault;      
 
         for (int y = 0; y < element.Matrix.GetLength(0); y++)
         {
@@ -47,6 +53,6 @@ public class SpawnManager : MonoBehaviour
                 playingField.Matrix[y, x + spawnPoint] = element.Matrix[y, x];
             }
         }
-        gameController.UpdateThePlayingField(playingField);
-    }       
+        playingFieldController.UpdateThePlayingField(playingField);
+    }           
 }
