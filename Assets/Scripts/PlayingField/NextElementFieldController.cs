@@ -3,7 +3,13 @@ using MiscTools;
 
 public class NextElementFieldController : PlayingFieldController
 {
-    public Field nextElementField;    
+    [SerializeField]
+    private Elements elements;
+    [SerializeField]
+    private SpawnManager spawnManager;
+
+    public Field nextElementField;
+    public Element nextElement;
 
     private const int nextElementFieldHeight = 4;
     private const int nextElementFieldWidth = 4;
@@ -12,7 +18,10 @@ public class NextElementFieldController : PlayingFieldController
 
     private void Start()
     {
-        NextElementFieldInit();   
+        NextElementFieldInit();
+        nextElement = elements.GetRandomElement();
+        spawnManager.SpawnElement(nextElement.Matrix, nextElementField);
+        UpdateThePlayingField(nextElementField);
     }
 
     private void NextElementFieldInit()
@@ -25,4 +34,5 @@ public class NextElementFieldController : PlayingFieldController
         FillTheField(nextElementField, nextElementFieldXShift, nextElementFieldYShift);
         UpdateThePlayingField(nextElementField);
     }
+    
 }

@@ -6,9 +6,7 @@ public class PlayingFieldController : MonoBehaviour
     [SerializeField]
     private GameObject blockPrefab;
     [SerializeField]
-    private GameObject parentOfBlocks;
-    [SerializeField]
-    private SpawnManager spawnManager;
+    private GameObject parentOfBlocks;    
     [SerializeField]
     private ScoreController scoreController;
 
@@ -31,8 +29,7 @@ public class PlayingFieldController : MonoBehaviour
         PlayingFieldInit();
 
         topLeftPositionDefault = new Vector2(SpawnManager.spawnPoint, 0);
-        topLeftPositionOfCurrentElement = topLeftPositionDefault;
-        spawnManager.SpawnRandomElement(playingField);
+        topLeftPositionOfCurrentElement = topLeftPositionDefault;      
     }
 
     private void PlayingFieldInit()
@@ -153,6 +150,18 @@ public class PlayingFieldController : MonoBehaviour
             }
         }
     }
+
+    public void ClearField(Field field)
+    {
+        for(int y = 0; y < field.Height; y++)
+        {
+            for (int x = 0; x < field.Width; x++)
+            {
+                field.Matrix[y, x] = FieldState.Empty;                
+            }
+        }
+    }
+       
 
     public void WriteAndUpdate(FieldState[,] tempMatrix)
     {

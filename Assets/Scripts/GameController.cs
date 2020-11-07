@@ -8,7 +8,7 @@ public class GameController : MonoBehaviour
     [SerializeField]
     private ElementMovement elementMovement;
     [SerializeField]
-    private GameObject playerInput;
+    private GameObject playerInput;      
     [SerializeField]
     private GameObject gameOverText;
     [SerializeField]
@@ -16,7 +16,10 @@ public class GameController : MonoBehaviour
     [SerializeField]
     private Text lblLevel;
     [SerializeField]
-    private Text lblGoal;  
+    private Text lblGoal;
+
+    public const float gameStartTime = 2f;
+
 
     private void Start()
     {       
