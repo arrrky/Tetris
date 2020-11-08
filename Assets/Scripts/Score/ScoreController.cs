@@ -14,12 +14,12 @@ public class ScoreController : MonoBehaviour
 
     private void Start()
     {
-        lblScore.text = $"Score: {Score.ToString()}";        
+        lblScore.text = $"Score: {Score}";        
     }
 
     private void UpdateScore()
     {
-        lblScore.text = $"Score: {Score.ToString()}";
+        lblScore.text = $"Score: {Score}";
     }
 
     public void IncreaseScore(int fullRowsCount)

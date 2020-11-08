@@ -7,6 +7,7 @@ public class LevelController : MonoBehaviour
     private const int goalAtStart = 10;
     private const int levelAtStart = 1;
     private const float fallingDownAutoSpeedAtStart = 1.5f;
+    private const float fallingDownAutoSpeedIncrease = 0.15f;
 
     private int goal = goalAtStart;   
 
@@ -62,32 +63,20 @@ public class LevelController : MonoBehaviour
             Destroy(gameObject);
         }
     }    
-
-    private bool isEvenIteration = true;
+   
     private readonly int[] goalMultipliers = new int[2] { 5, 2 };
 
     public void ChangeLevel()
     {
         Level++;
-
-        if (isEvenIteration)
-        {
-            Goal *= goalMultipliers[0];            
-        }
-        else
-        {
-            Goal *= goalMultipliers[1];          
-        }
-        isEvenIteration = !isEvenIteration;
-
-        FallingDownAutoSpeed -= 0.1f;
+        Goal *= (Level % 2 == 0) ? goalMultipliers[0] : goalMultipliers[1];
+        FallingDownAutoSpeed -= fallingDownAutoSpeedIncrease;
     }
 
     public void Reset()
     {
         Goal = goalAtStart;
         Level = levelAtStart;
-        FallingDownAutoSpeed = fallingDownAutoSpeedAtStart;
-        isEvenIteration = true;
+        FallingDownAutoSpeed = fallingDownAutoSpeedAtStart;       
     }
 }

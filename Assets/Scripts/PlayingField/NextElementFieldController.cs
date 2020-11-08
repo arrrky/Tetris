@@ -33,6 +33,5 @@ public class NextElementFieldController : PlayingFieldController
         nextElementField.Objects = new GameObject[nextElementFieldHeight, nextElementFieldWidth];
         FillTheField(nextElementField, nextElementFieldXShift, nextElementFieldYShift);
         UpdateThePlayingField(nextElementField);
-    }
-    
+    }    
 }

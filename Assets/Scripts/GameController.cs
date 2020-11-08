@@ -20,7 +20,6 @@ public class GameController : MonoBehaviour
 
     public const float gameStartTime = 2f;
 
-
     private void Start()
     {       
         lblGoal.text = $"Goal: {LevelController.Instance.Goal}";
