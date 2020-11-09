@@ -4,6 +4,8 @@ using UnityEngine;
 public class PlayerInput : MonoBehaviour
 {
     [SerializeField]
+    private GameController gameController;
+    [SerializeField]
     private ElementMovement elementMovement;
     [SerializeField]
     private ElementRotation elementRotation;
@@ -33,6 +35,10 @@ public class PlayerInput : MonoBehaviour
         if(Input.GetButtonDown("MoveDown"))
         {
             elementMovement.FallingDown();
+        }
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            gameController.GamePause();
         }
     }
 

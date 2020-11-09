@@ -17,6 +17,8 @@ public class GameController : MonoBehaviour
     private Text lblLevel;
     [SerializeField]
     private Text lblGoal;
+    [SerializeField]
+    private GameObject pauseText;
 
     public const float gameStartTime = 2f;
 
@@ -48,5 +50,11 @@ public class GameController : MonoBehaviour
 
         yield return new WaitForSeconds(3f);
         Tools.CurrentSceneReload();
+    }
+
+    public void GamePause()
+    {
+        Time.timeScale = (Time.timeScale == 0) ? 1 : 0;
+        pauseText.SetActive(Time.timeScale == 0);
     }
 }
