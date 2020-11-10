@@ -5,39 +5,44 @@ public class CreateBorder : MonoBehaviour
     [SerializeField]
     private GameObject borderBlockPrefab;
     [SerializeField]
-    private GameObject parentOfBorderBlocks;
+    private GameObject parentOfBorderBlocks;   
 
-    [SerializeField]
-    private Vector3 topLeftPoint;
-    [SerializeField]
-    private Vector3 topRightPoint;
-    [SerializeField]
-    private Vector3 bottomLeftPoint;
-    [SerializeField]
-    private Vector3 bottomRightPoint;
+    private Vector3 screenBounds;
 
-
-    // Start is called before the first frame update
+    private SpriteRenderer spriteRenderer;
+    private float halfWidthOfSprite;
+    private float halfHeightOfSprite;
+    
     void Start()
     {
-        BordersInstantiate();
+        spriteRenderer = borderBlockPrefab.GetComponent<SpriteRenderer>();
+
+        halfHeightOfSprite = spriteRenderer.bounds.extents.y;
+        halfWidthOfSprite = spriteRenderer.bounds.extents.x;
+
+        screenBounds = GetScreenBounds();
+        ScreenBordersInstantiate();     
+    }   
+
+    private void ScreenBordersInstantiate()
+    {
+        for (int x = -(int)screenBounds.x; x <= (int)screenBounds.x; x++)
+        {
+            Instantiate(borderBlockPrefab, new Vector3(x - halfWidthOfSprite, (int)screenBounds.y - halfHeightOfSprite, 0), Quaternion.identity, parentOfBorderBlocks.transform);
+            Instantiate(borderBlockPrefab, new Vector3(x - halfWidthOfSprite, -(int)screenBounds.y + halfHeightOfSprite, 0), Quaternion.identity, parentOfBorderBlocks.transform);
+        }
+
+        for (int y = (int)screenBounds.y; y >= -(int)screenBounds.y; y--)
+        {
+            Instantiate(borderBlockPrefab, new Vector3(screenBounds.x - halfWidthOfSprite, y - halfHeightOfSprite, 0), Quaternion.identity, parentOfBorderBlocks.transform);
+            Instantiate(borderBlockPrefab, new Vector3(-screenBounds.x + halfWidthOfSprite, y - halfHeightOfSprite, 0), Quaternion.identity, parentOfBorderBlocks.transform);
+        }
     }
 
-    private void PointsInit()
+    private Vector3 GetScreenBounds()
     {
-        // Выставил в инспекторе
+        Camera mainCamera = Camera.main;
+        Vector3 screenVector = new Vector3(Screen.width, Screen.height, mainCamera.transform.position.z);
+        return mainCamera.ScreenToWorldPoint(screenVector);
     }
-
-    private void BordersInstantiate()
-    {
-        for (int x = (int)topLeftPoint.x; x <= (int)topRightPoint.x; x++)
-            Instantiate(borderBlockPrefab, new Vector3(x, (int)topLeftPoint.y, 0), Quaternion.identity, parentOfBorderBlocks.transform);
-        for (int x = (int)topLeftPoint.x; x <= (int)topRightPoint.x; x++)
-            Instantiate(borderBlockPrefab, new Vector3(x, (int)bottomLeftPoint.y, 0), Quaternion.identity, parentOfBorderBlocks.transform);
-
-        for (int y = (int)topLeftPoint.y; y >= (int)bottomLeftPoint.y; y--)
-            Instantiate(borderBlockPrefab, new Vector3(topLeftPoint.x, y, 0), Quaternion.identity, parentOfBorderBlocks.transform);
-        for (int y = (int)topLeftPoint.y; y >= (int)bottomLeftPoint.y; y--)
-            Instantiate(borderBlockPrefab, new Vector3(topRightPoint.x, y, 0), Quaternion.identity, parentOfBorderBlocks.transform);
-    }    
 }

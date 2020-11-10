@@ -13,8 +13,8 @@ public class NextElementFieldController : PlayingFieldController
 
     private const int nextElementFieldHeight = 4;
     private const int nextElementFieldWidth = 4;
-    private const int nextElementFieldXShift = 15;
-    private const int nextElementFieldYShift = 2;
+    private const int nextElementFieldXShift = 11;
+    private const int nextElementFieldYShift = -7;
 
     private void Start()
     {

@@ -15,12 +15,11 @@ public class PlayingFieldController : MonoBehaviour
     public FieldState[,] currentElementArray;
     public Vector2 topLeftPositionDefault;
     public Vector2 topLeftPositionOfCurrentElement;
-
-    // Нулевые координаты в Unity - левый нижний угол игрового поля
+    
     private const int playingFieldHeight = 20;
     private const int playingFieldWidth = 10;
-    private const int playingFieldXShift = 0;
-    private const int playingFieldYShift = -1;
+    private const float playingFieldXShift = -4.5f;
+    private const float playingFieldYShift = -10.5f;
 
     private int fullRowsCount;
 
@@ -43,7 +42,7 @@ public class PlayingFieldController : MonoBehaviour
         UpdateThePlayingField(playingField);
     }
 
-    public void FillTheField(Field field, int xShift, int yShift)
+    public void FillTheField(Field field, float xShift, float yShift)
     {
         // Из-за разницы в нумерации элементов матрицы-поля и отсчета координат в Unity удобнее инициализировать объекты именно таким образом.
         // Поэтому 'y' кооордината инстанирования имеет вид height - y - yShift (где Shift - смещение по осям),
