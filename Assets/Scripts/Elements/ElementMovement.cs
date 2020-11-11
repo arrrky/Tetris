@@ -16,12 +16,12 @@ public class ElementMovement : MonoBehaviour
     private void Start()
     {
         playingField = playingFieldController.playingField;
-        InvokeRepeating("FallingDown", 1f, LevelController.Instance.FallingDownAutoSpeed);
+        InvokeRepeating(nameof(FallingDown), 1f, LevelController.Instance.FallingDownAutoSpeed);
     }
 
     public void StopFallingDown()
     {
-        CancelInvoke("FallingDown");
+        CancelInvoke(nameof(FallingDown));
     }
 
     public void FallingDown()

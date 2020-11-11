@@ -16,8 +16,8 @@ public class PlayingFieldController : MonoBehaviour
     public Vector2 topLeftPositionDefault;
     public Vector2 topLeftPositionOfCurrentElement;
     
-    private const int playingFieldHeight = 20;
-    private const int playingFieldWidth = 10;
+    public const int playingFieldHeight = 20;
+    public const int playingFieldWidth = 10;
     private const float playingFieldXShift = -4.5f;
     private const float playingFieldYShift = -10.5f;
 
