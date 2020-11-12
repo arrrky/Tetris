@@ -7,14 +7,15 @@ public class NextElementFieldController : PlayingFieldController
     private Elements elements;
     [SerializeField]
     private SpawnManager spawnManager;
+    [SerializeField]
+    private CreateBorder createBorder;
 
     public Field nextElementField;
     public Element nextElement;
 
     private const int nextElementFieldHeight = 4;
     private const int nextElementFieldWidth = 4;
-    private const int nextElementFieldXShift = 11;
-    private const int nextElementFieldYShift = -7;
+    
 
     private void Start()
     {
@@ -25,7 +26,10 @@ public class NextElementFieldController : PlayingFieldController
     }
 
     private void NextElementFieldInit()
-    {        
+    {
+        int nextElementFieldXShift = (int)createBorder.topLeftPointOfFrame.x + 2;
+        int nextElementFieldYShift = (int)createBorder.topLeftPointOfFrame.y - 8;
+
         nextElementField = gameObject.AddComponent(typeof(Field)) as Field;
         nextElementField.Height = nextElementFieldHeight;
         nextElementField.Width = nextElementFieldWidth;

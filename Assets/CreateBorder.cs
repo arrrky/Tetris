@@ -7,36 +7,57 @@ public class CreateBorder : MonoBehaviour
     [SerializeField]
     private GameObject parentOfBorderBlocks;
     [SerializeField]
-    PlayingFieldController playingFieldController;
+    private  PlayingFieldController playingFieldController;
 
     private Vector3 screenBounds;
 
     private SpriteRenderer spriteRenderer;
     private Vector2 spriteShift;
-    
+
+    private const int nextElementBorderSize = 8;
+    private const float nextElementFrameXShift = 4;
+    public Vector2 topLeftPointOfFrame;
+
     void Start()
     {
         spriteRenderer = borderBlockPrefab.GetComponent<SpriteRenderer>();
-
         spriteShift = new Vector2(spriteRenderer.bounds.extents.x, spriteRenderer.bounds.extents.y);        
 
         screenBounds = GetScreenBounds();
+
+        topLeftPointOfFrame = new Vector2(PlayingFieldController.playingFieldWidth / 2 + nextElementFrameXShift, 0);
+
         ScreenBordersInstantiate();
         PlayingFieldBordersInstantiate();
+        NextElementBordersInstantiate();
     }   
 
     private void ScreenBordersInstantiate()
     {
         for (int x = -(int)screenBounds.x; x <= (int)screenBounds.x; x++)
         {
-            Instantiate(borderBlockPrefab, new Vector3(x - spriteShift.x, (int)screenBounds.y - spriteShift.y, 0), Quaternion.identity, parentOfBorderBlocks.transform);
-            Instantiate(borderBlockPrefab, new Vector3(x - spriteShift.x, -(int)screenBounds.y + spriteShift.y, 0), Quaternion.identity, parentOfBorderBlocks.transform);
+            Instantiate(
+                borderBlockPrefab,
+                new Vector3(x - spriteShift.x, (int)screenBounds.y - spriteShift.y, 0),
+                Quaternion.identity, parentOfBorderBlocks.transform);
+
+            Instantiate(
+                borderBlockPrefab,
+                new Vector3(x - spriteShift.x, -(int)screenBounds.y + spriteShift.y, 0),
+                Quaternion.identity, parentOfBorderBlocks.transform);
         }
 
         for (int y = (int)screenBounds.y; y > -(int)screenBounds.y; y--)
         {
-            Instantiate(borderBlockPrefab, new Vector3(screenBounds.x - spriteShift.x, y - spriteShift.y, 0), Quaternion.identity, parentOfBorderBlocks.transform);
-            Instantiate(borderBlockPrefab, new Vector3(-screenBounds.x + spriteShift.x, y - spriteShift.y, 0), Quaternion.identity, parentOfBorderBlocks.transform);
+            Instantiate(
+                borderBlockPrefab,
+                new Vector3(screenBounds.x - spriteShift.x, y - spriteShift.y, 0),
+                Quaternion.identity, parentOfBorderBlocks.transform);
+
+            Instantiate(
+                borderBlockPrefab,
+                new Vector3(-screenBounds.x + spriteShift.x, y - spriteShift.y, 0),
+                Quaternion.identity, parentOfBorderBlocks.transform);
         }
     }
 
@@ -44,8 +65,42 @@ public class CreateBorder : MonoBehaviour
     {
         for (int y = (int)screenBounds.y; y >= -(int)screenBounds.y; y--)
         {
-            Instantiate(borderBlockPrefab, new Vector3(PlayingFieldController.playingFieldWidth / 2 + spriteShift.x, y - spriteShift.y, 0), Quaternion.identity, parentOfBorderBlocks.transform);
-            Instantiate(borderBlockPrefab, new Vector3(-PlayingFieldController.playingFieldWidth / 2 - spriteShift.x, y - spriteShift.y, 0), Quaternion.identity, parentOfBorderBlocks.transform);
+            Instantiate(
+                borderBlockPrefab,
+                new Vector3(PlayingFieldController.playingFieldWidth / 2 + spriteShift.x, y - spriteShift.y, 0),
+                Quaternion.identity, parentOfBorderBlocks.transform);
+
+            Instantiate(borderBlockPrefab,
+                new Vector3(-PlayingFieldController.playingFieldWidth / 2 - spriteShift.x, y - spriteShift.y, 0),
+                Quaternion.identity, parentOfBorderBlocks.transform);
+        }
+    }
+
+    private void NextElementBordersInstantiate()
+    {
+        for (int x = (int)topLeftPointOfFrame.x; x < topLeftPointOfFrame.x + nextElementBorderSize; x++)
+        {
+            Instantiate(
+                borderBlockPrefab,
+                new Vector3(x + spriteShift.x, - spriteShift.y, 0),
+                Quaternion.identity, parentOfBorderBlocks.transform);
+
+            Instantiate(
+                borderBlockPrefab,
+                new Vector3(x + spriteShift.x, - nextElementBorderSize -spriteShift.y, 0),
+                Quaternion.identity, parentOfBorderBlocks.transform);
+        }
+
+        for (int y = (int)topLeftPointOfFrame.y; y >= -(int)topLeftPointOfFrame.y - nextElementBorderSize; y--)
+        {
+            Instantiate(
+                borderBlockPrefab,
+                new Vector3(topLeftPointOfFrame.x - spriteShift.x, y - spriteShift.y, 0),
+                Quaternion.identity, parentOfBorderBlocks.transform);
+            Instantiate(
+                borderBlockPrefab,
+                new Vector3(topLeftPointOfFrame.x  + nextElementBorderSize - spriteShift.x, y - spriteShift.y, 0),
+                Quaternion.identity, parentOfBorderBlocks.transform);
         }
     }
 
