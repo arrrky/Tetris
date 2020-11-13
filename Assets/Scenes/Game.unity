@@ -686,7 +686,7 @@ GameObject:
   m_Component:
   - component: {fileID: 521404625}
   m_Layer: 0
-  m_Name: BordersOfPlayFIeld
+  m_Name: PlayingFieldFrameBlocks
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -816,11 +816,10 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 768341143}
+  - {fileID: 2031891246}
   - {fileID: 521404625}
   - {fileID: 1235362897}
-  - {fileID: 2031891246}
-  - {fileID: 234416472}
+  - {fileID: 768341143}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -837,7 +836,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   borderBlockPrefab: {fileID: 4729985779891503233, guid: 5ec6db97c0f4ecf4dba23f35c3f151d4, type: 3}
-  parentOfBorderBlocks: {fileID: 1469591878}
+  parentOfMainFrame: {fileID: 2031891245}
+  parentOfPlayingFieldFrame: {fileID: 521404624}
+  parentOfNextElementFrame: {fileID: 1235362896}
   playingFieldController: {fileID: 978196883}
   topLeftPointOfFrame: {x: 8, y: 0}
 --- !u!1 &768341142
@@ -868,7 +869,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 683522896}
-  m_RootOrder: 0
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &855480022
 GameObject:
@@ -1087,7 +1088,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1235362897}
   m_Layer: 0
-  m_Name: NextElementBlocks
+  m_Name: NextElementFrameBlocks
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1103,7 +1104,8 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 234416472}
   m_Father: {fileID: 683522896}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1191,7 +1193,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 683522896}
+    m_TransformParent: {fileID: 1235362897}
     m_Modifications:
     - target: {fileID: 876873390673223183, guid: db52cf15b50a5a941a967f9057f92c69, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1255,7 +1257,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3792064897341334770, guid: db52cf15b50a5a941a967f9057f92c69, type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3792064897341334770, guid: db52cf15b50a5a941a967f9057f92c69, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1786,7 +1788,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2031891246}
   m_Layer: 0
-  m_Name: BorderCorners
+  m_Name: MainFrameBlocks
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1804,5 +1806,5 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 683522896}
-  m_RootOrder: 3
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

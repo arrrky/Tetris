@@ -27,8 +27,8 @@ public class NextElementFieldController : PlayingFieldController
 
     private void NextElementFieldInit()
     {
-        int nextElementFieldXShift = (int)createBorder.topLeftPointOfFrame.x + 2;
-        int nextElementFieldYShift = (int)createBorder.topLeftPointOfFrame.y - 8;
+        int nextElementFieldXShift = (int)createBorder.topLeftPointOfFrame.x + 3;
+        int nextElementFieldYShift = (int)createBorder.topLeftPointOfFrame.y - 7;
 
         nextElementField = gameObject.AddComponent(typeof(Field)) as Field;
         nextElementField.Height = nextElementFieldHeight;
