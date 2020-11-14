@@ -6,6 +6,8 @@ public class ScoreController : MonoBehaviour
     [SerializeField]
     private GameController gameController;
     [SerializeField]
+    private PlayingFieldController playingFieldController;
+    [SerializeField]
     private Text lblScore;    
     [SerializeField]
     private int scoreForOneRow = 10;
@@ -14,18 +16,14 @@ public class ScoreController : MonoBehaviour
 
     private void Start()
     {
-        lblScore.text = $"Score: {Score}";        
-    }
-
-    private void UpdateScore()
-    {
         lblScore.text = $"Score: {Score}";
+        playingFieldController.RowDeleted += IncreaseScore;
     }
-
-    public void IncreaseScore(int fullRowsCount)
+    
+    public void IncreaseScore()
     {
-        Score += (int)Mathf.Pow(scoreForOneRow, fullRowsCount);
-        UpdateScore();
+        Score += (int)Mathf.Pow(scoreForOneRow, playingFieldController.fullRowsCount);
+        lblScore.text = $"Score: {Score}";
 
         if (Score >= LevelController.Instance.Goal)
         {

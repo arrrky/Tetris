@@ -904,6 +904,7 @@ MonoBehaviour:
   elements: {fileID: 1941403082}
   playingFieldController: {fileID: 978196883}
   nextElementFieldController: {fileID: 1740267026}
+  elementMovement: {fileID: 1941403081}
 --- !u!4 &855480024
 Transform:
   m_ObjectHideFlags: 0
@@ -1029,10 +1030,12 @@ MonoBehaviour:
   blockPrefab: {fileID: 8520220381069669123, guid: 06dc67bbae15964409005b78bd1b0c16, type: 3}
   parentOfBlocks: {fileID: 768341142}
   scoreController: {fileID: 1410449721}
+  elementMovement: {fileID: 1941403081}
   playingField: {fileID: 0}
   currentElementSize: 0
   topLeftPositionDefault: {x: 0, y: 0}
   topLeftPositionOfCurrentElement: {x: 0, y: 0}
+  fullRowsCount: 0
 --- !u!4 &978196884
 Transform:
   m_ObjectHideFlags: 0
@@ -1390,6 +1393,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameController: {fileID: 81836447}
+  playingFieldController: {fileID: 978196883}
   lblScore: {fileID: 1711629814}
   scoreForOneRow: 10
 --- !u!4 &1410449722
@@ -1552,10 +1556,12 @@ MonoBehaviour:
   blockPrefab: {fileID: 8520220381069669123, guid: 06dc67bbae15964409005b78bd1b0c16, type: 3}
   parentOfBlocks: {fileID: 1235362896}
   scoreController: {fileID: 0}
+  elementMovement: {fileID: 0}
   playingField: {fileID: 0}
   currentElementSize: 0
   topLeftPositionDefault: {x: 0, y: 0}
   topLeftPositionOfCurrentElement: {x: 0, y: 0}
+  fullRowsCount: 0
   elements: {fileID: 1941403082}
   spawnManager: {fileID: 855480023}
   createBorder: {fileID: 683522897}

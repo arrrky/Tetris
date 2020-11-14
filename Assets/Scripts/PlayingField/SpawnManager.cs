@@ -12,6 +12,8 @@ public class SpawnManager : MonoBehaviour
     private PlayingFieldController playingFieldController;
     [SerializeField]
     private NextElementFieldController nextElementFieldController;
+    [SerializeField]
+    private ElementMovement elementMovement;
 
     private const float timeBeforeFirstSpawn = 2f;
 
@@ -19,13 +21,14 @@ public class SpawnManager : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(DelayedSpawn());      
-    }  
+        StartCoroutine(DelayedSpawn());
+        elementMovement.LastRowOrElementsCollide += SpawnRandomElement;
+    }      
 
     private IEnumerator DelayedSpawn()
     {
         yield return new WaitForSeconds(timeBeforeFirstSpawn);
-        SpawnRandomElement(playingFieldController.playingField);        
+        SpawnRandomElement();        
     }
 
     public void SpawnElement(FieldState[,] element, Field field)
@@ -39,7 +42,7 @@ public class SpawnManager : MonoBehaviour
         }
     }  
 
-    public void SpawnRandomElement(Field playingField)
+    public void SpawnRandomElement()
     {
         Element element = nextElementFieldController.nextElement;       
         playingFieldController.currentElementArray = element.Matrix;
@@ -51,15 +54,15 @@ public class SpawnManager : MonoBehaviour
         {
             for (int x = 0; x < element.Matrix.GetLength(1); x++)
             {
-                if (playingField.Matrix[y, x + spawnPoint] == FieldState.Fallen)
+                if (playingFieldController.playingField.Matrix[y, x + spawnPoint] == FieldState.Fallen)
                 {
                     StartCoroutine(gameController.GameOver());
                 }
-                playingField.Matrix[y, x + spawnPoint] = element.Matrix[y, x];
+                playingFieldController.playingField.Matrix[y, x + spawnPoint] = element.Matrix[y, x];
             }
         }
-        playingFieldController.UpdateThePlayingField(playingField);
-        SpawnNextElement();
+        playingFieldController.UpdateThePlayingField(playingFieldController.playingField);
+        SpawnNextElement();        
     }
 
     private void SpawnNextElement()

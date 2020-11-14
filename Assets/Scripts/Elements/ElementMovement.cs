@@ -3,7 +3,7 @@ using UnityEngine;
 using MiscTools;
 
 public class ElementMovement : MonoBehaviour
-{   
+{
     [SerializeField]
     private PlayingFieldController playingFieldController;
     [SerializeField]
@@ -12,6 +12,8 @@ public class ElementMovement : MonoBehaviour
     private ScoreController scoreController;
 
     private Field playingField;
+
+    public event Action LastRowOrElementsCollide;
 
     private void Start()
     {
@@ -38,38 +40,34 @@ public class ElementMovement : MonoBehaviour
             {
                 if (y > 0)
                 {
-                    if (IsFallingElementAbove(x, y))
+                    if (IsFallingElementAboveFallen(x, y) || IsLastRow(x, y))
                     {
                         playingFieldController.FallingToFallen();
-                        spawnManager.SpawnRandomElement(playingFieldController.playingField);
+                        spawnManager.SpawnRandomElement();
                         return;
                     }
                 }
 
-                if (IsLastRow(x, y))
-                {
-                    playingFieldController.FallingToFallen();
-                    spawnManager.SpawnRandomElement(playingFieldController.playingField);
-                    return;
-                }
-
-                // Проверка, чтобы не опускать элемент, если ряд последний - забыл, зачем ее добавил
-                // Сверху уже есть проверка, и эта кажется избыточной
-                // Посмотреть еще раз, как будет работать без нее 
-                //if (!IsLastRow(x, y))
+                //if (y > 0)
                 //{
+                //    if (IsFallingElementAboveFallen(x, y) || IsLastRow(x, y))
+                //    {
+                //        LastRowOrElementsCollide?.Invoke();
+                //        return;
+                //    }
+                //}
+
                 if (playingField.Matrix[y, x] == FieldState.Falling)
                 {
                     tempMatrix[y + 1, x] = FieldState.Falling;
                 }
-                //}
             }
         }
         playingFieldController.topLeftPositionOfCurrentElement += new Vector2(0, 1);
         playingFieldController.WriteAndUpdate(tempMatrix);
     }
 
-    private bool IsFallingElementAbove(int x, int y)
+    private bool IsFallingElementAboveFallen(int x, int y)
     {
         return (playingField.Matrix[y, x] == FieldState.Fallen &&
                 playingField.Matrix[y - 1, x] == FieldState.Falling);
@@ -81,15 +79,8 @@ public class ElementMovement : MonoBehaviour
                 playingField.Matrix[y, x] == FieldState.Falling);
     }
 
-    private bool IsLeftBorderNear(int x)
-    {
-        return x == 0;
-    }
-
-    private bool IsRightBorderNear(int x)
-    {
-        return x == playingField.Width - 1;
-    }
+    private bool IsLeftBorderNear(int x) => x == 0;
+    private bool IsRightBorderNear(int x) => x == playingField.Width - 1;
 
     private bool IsOtherBlockNear(int x, int y, int direction)
     {

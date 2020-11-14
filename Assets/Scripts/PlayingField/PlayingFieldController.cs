@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using MiscTools;
+using System;
 
 public class PlayingFieldController : MonoBehaviour
 {
@@ -9,26 +10,29 @@ public class PlayingFieldController : MonoBehaviour
     private GameObject parentOfBlocks;    
     [SerializeField]
     private ScoreController scoreController;
+    [SerializeField]
+    private ElementMovement elementMovement;
 
     public Field playingField;
     public int currentElementSize;
     public FieldState[,] currentElementArray;
     public Vector2 topLeftPositionDefault;
     public Vector2 topLeftPositionOfCurrentElement;
+    public event Action RowDeleted;
     
     public const int playingFieldHeight = 20;
     public const int playingFieldWidth = 10;
     private const float playingFieldXShift = -4.5f;
     private const float playingFieldYShift = -10.5f;
 
-    private int fullRowsCount;
-
     private void Start()
     {
         PlayingFieldInit();
 
         topLeftPositionDefault = new Vector2(SpawnManager.spawnPoint, 0);
-        topLeftPositionOfCurrentElement = topLeftPositionDefault;      
+        topLeftPositionOfCurrentElement = topLeftPositionDefault;
+
+        elementMovement.LastRowOrElementsCollide += FallingToFallen;
     }
 
     private void PlayingFieldInit()
@@ -80,8 +84,10 @@ public class PlayingFieldController : MonoBehaviour
                 if (playingField.Matrix[y, x] != FieldState.Empty)
                     playingField.Matrix[y, x] = FieldState.Fallen;
             }
-        }
+        }       
     }
+
+    public int fullRowsCount;
 
     public void FullRowCheck()
     {
@@ -112,7 +118,7 @@ public class PlayingFieldController : MonoBehaviour
 
         if (fullRowsCount != 0)
         {
-            scoreController.IncreaseScore(fullRowsCount);
+            RowDeleted?.Invoke();
         }
 
         fullRowsCount = 0;
@@ -159,8 +165,7 @@ public class PlayingFieldController : MonoBehaviour
                 field.Matrix[y, x] = FieldState.Empty;                
             }
         }
-    }
-       
+    }       
 
     public void WriteAndUpdate(FieldState[,] tempMatrix)
     {
