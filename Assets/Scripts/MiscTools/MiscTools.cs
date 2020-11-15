@@ -1,4 +1,5 @@
 using UnityEngine.SceneManagement;
+using UnityEngine;
 
 namespace MiscTools
 {
@@ -25,6 +26,23 @@ namespace MiscTools
         {
             Scene scene = SceneManager.GetActiveScene();
             SceneManager.LoadScene(scene.name);
+        }
+
+        public static Vector3 GetScreenBounds()
+        {
+            Camera mainCamera = Camera.main;
+            Vector3 screenVector = new Vector3(Screen.width, Screen.height, mainCamera.transform.position.z);
+            return mainCamera.ScreenToWorldPoint(screenVector);
+        }
+
+        /// <summary>
+        /// Получение смещения для инстанирования объекта в зависимости от размеров спрайта
+        /// </summary>
+        /// <param name="borderBlockPrefab"></param>
+        public static Vector2 GetSpriteShift(GameObject borderBlockPrefab)
+        {
+            SpriteRenderer spriteRenderer = borderBlockPrefab.GetComponent<SpriteRenderer>();
+            return new Vector2(spriteRenderer.bounds.extents.x, spriteRenderer.bounds.extents.y);
         }
     }
 }

@@ -7,11 +7,17 @@ public class PlayingFieldController : MonoBehaviour
     [SerializeField]
     private GameObject blockPrefab;
     [SerializeField]
-    private GameObject parentOfBlocks;    
+    private GameObject parentOfBlocks;
+    [SerializeField]
+    private GameObject playingFieldBorderBlockPrefab;
+    [SerializeField]
+    private GameObject playingFiedBorderBlocksParent;
     [SerializeField]
     private ScoreController scoreController;
     [SerializeField]
     private ElementMovement elementMovement;
+
+    private Border playingFieldBorder;    
 
     public Field playingField;
     public int currentElementSize;
@@ -28,11 +34,20 @@ public class PlayingFieldController : MonoBehaviour
     private void Start()
     {
         PlayingFieldInit();
+        PlayingFieldBorderInit();
 
         topLeftPositionDefault = new Vector2(SpawnManager.spawnPoint, 0);
-        topLeftPositionOfCurrentElement = topLeftPositionDefault;
+        topLeftPositionOfCurrentElement = topLeftPositionDefault;       
 
         elementMovement.LastRowOrElementsCollide += FallingToFallen;
+    }
+
+    private void PlayingFieldBorderInit()
+    {
+        playingFieldBorder = gameObject.AddComponent(typeof(Border)) as Border;
+        playingFieldBorder.SpriteShift = Tools.GetSpriteShift(playingFieldBorderBlockPrefab);
+        playingFieldBorder.TopLeftPoint = new Vector2(-playingFieldWidth / 2 - 1, GameController.screenBounds.y - 1);
+        playingFieldBorder.CreateBorder(playingFieldWidth + 1, playingFieldHeight + 1, playingFieldBorderBlockPrefab, playingFiedBorderBlocksParent);
     }
 
     private void PlayingFieldInit()

@@ -8,9 +8,9 @@ public class PlayerInput : MonoBehaviour
     [SerializeField]
     private ElementMovement elementMovement;
     [SerializeField]
-    private ElementRotation elementRotation;
-    [SerializeField]
-    private float manualFallingSpeed = 0.03f; // скорость падения при зажатой клавише (меньше - быстрее)     
+    private ElementRotation elementRotation;      
+    [SerializeField] [Range(10f, 100f)]
+    private float manualFallingSpeed = 50f; // скорость падения при зажатой клавише (меньше - быстрее)     
 
     private void Start()
     {        
@@ -48,7 +48,7 @@ public class PlayerInput : MonoBehaviour
         {
             yield return new WaitUntil(() => Input.GetButton("FallingDown"));
             elementMovement.FallingDown();
-            yield return new WaitForSeconds(manualFallingSpeed);
+            yield return new WaitForSeconds(1 / manualFallingSpeed);
         }
     }
 }

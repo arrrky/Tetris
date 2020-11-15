@@ -19,13 +19,30 @@ public class GameController : MonoBehaviour
     private Text lblGoal;
     [SerializeField]
     private GameObject pauseText;
+    [SerializeField]
+    private GameObject mainBorderBlockPrefab;
+    [SerializeField]
+    private GameObject mainBorderBlocksParent;
 
     public const float gameStartTime = 2f;
+    public static Vector3 screenBounds;
+
+    private Border mainBorder;   
 
     private void Start()
-    {       
+    {
+        screenBounds = Tools.GetScreenBounds();
+        MainBorderInit();
         lblGoal.text = $"Goal: {LevelController.Instance.Goal}";
         lblLevel.text = $"Level: {LevelController.Instance.Level}";
+    }    
+
+    private void MainBorderInit()
+    {
+        mainBorder = gameObject.AddComponent(typeof(Border)) as Border;
+        mainBorder.SpriteShift = Tools.GetSpriteShift(mainBorderBlockPrefab);
+        mainBorder.TopLeftPoint = new Vector2(-screenBounds.x, screenBounds.y - 1);
+        mainBorder.CreateBorder(screenBounds.x * 2 - 1, screenBounds.y * 2 - 1, mainBorderBlockPrefab, mainBorderBlocksParent);
     }
 
     public IEnumerator GameOver()
