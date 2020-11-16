@@ -13,23 +13,14 @@ public class SpawnManager : MonoBehaviour
     [SerializeField]
     private NextElementFieldController nextElementFieldController;
     [SerializeField]
-    private ElementMovement elementMovement;
-
-    private const float timeBeforeFirstSpawn = 2f;
+    private ElementMovement elementMovement; 
 
     public const int spawnPoint = 4;
 
     private void Start()
-    {
-        StartCoroutine(DelayedSpawn());
+    {       
         elementMovement.LastRowOrElementsCollide += SpawnRandomElement;
-    }      
-
-    private IEnumerator DelayedSpawn()
-    {
-        yield return new WaitForSeconds(timeBeforeFirstSpawn);
-        SpawnRandomElement();        
-    }
+    }          
 
     public void SpawnElement(FieldState[,] element, Field field)
     {        

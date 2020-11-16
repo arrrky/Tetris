@@ -44,5 +44,10 @@ namespace MiscTools
             SpriteRenderer spriteRenderer = borderBlockPrefab.GetComponent<SpriteRenderer>();
             return new Vector2(spriteRenderer.bounds.extents.x, spriteRenderer.bounds.extents.y);
         }
+
+        public static void LoadMainMenu()
+        {
+            SceneManager.LoadScene(0);
+        }
     }
 }

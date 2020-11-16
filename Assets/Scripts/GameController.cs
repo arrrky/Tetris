@@ -8,17 +8,24 @@ public class GameController : MonoBehaviour
     [SerializeField]
     private ElementMovement elementMovement;
     [SerializeField]
+    private SpawnManager spawnManager;
+    [SerializeField]
     private GameObject playerInput;      
     [SerializeField]
     private GameObject gameOverText;
     [SerializeField]
     private GameObject youWinText;
     [SerializeField]
+    private GameObject pauseText;
+    [SerializeField]
+    private GameObject pressToStartText;
+    [SerializeField]
+    private GameObject controlsText;
+    [SerializeField]
     private Text lblLevel;
     [SerializeField]
     private Text lblGoal;
-    [SerializeField]
-    private GameObject pauseText;
+   
     [SerializeField]
     private GameObject mainBorderBlockPrefab;
     [SerializeField]
@@ -35,6 +42,7 @@ public class GameController : MonoBehaviour
         MainBorderInit();
         lblGoal.text = $"Goal: {LevelController.Instance.Goal}";
         lblLevel.text = $"Level: {LevelController.Instance.Level}";
+        StartCoroutine(StartTheGame());
     }    
 
     private void MainBorderInit()
@@ -54,7 +62,7 @@ public class GameController : MonoBehaviour
         LevelController.Instance.Reset();
 
         yield return new WaitForSeconds(3f);
-        Tools.CurrentSceneReload();
+        Tools.LoadMainMenu();
     }
 
     public IEnumerator NextLevel()
@@ -73,5 +81,14 @@ public class GameController : MonoBehaviour
     {
         Time.timeScale = (Time.timeScale == 0) ? 1 : 0;
         pauseText.SetActive(Time.timeScale == 0);
+        controlsText.SetActive(Time.timeScale == 0);
     }
+
+    private IEnumerator StartTheGame()
+    {
+        yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Tab));
+        pressToStartText.SetActive(false);
+        controlsText.SetActive(false);
+        spawnManager.SpawnRandomElement();
+    }        
 }
