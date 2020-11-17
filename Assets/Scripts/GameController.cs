@@ -22,6 +22,8 @@ public class GameController : MonoBehaviour
     [SerializeField]
     private GameObject controlsText;
     [SerializeField]
+    private GameObject goToMainMenuButton;
+    [SerializeField]
     private Text lblLevel;
     [SerializeField]
     private Text lblGoal;
@@ -79,9 +81,12 @@ public class GameController : MonoBehaviour
 
     public void GamePause()
     {
-        Time.timeScale = (Time.timeScale == 0) ? 1 : 0;
-        pauseText.SetActive(Time.timeScale == 0);
-        controlsText.SetActive(Time.timeScale == 0);
+        bool gameOnPause = Time.timeScale == 0;
+        Time.timeScale = gameOnPause ? 1 : 0;
+        
+        pauseText.SetActive(!gameOnPause);
+        controlsText.SetActive(!gameOnPause);
+        goToMainMenuButton.SetActive(!gameOnPause);
     }
 
     private IEnumerator StartTheGame()
@@ -90,5 +95,10 @@ public class GameController : MonoBehaviour
         pressToStartText.SetActive(false);
         controlsText.SetActive(false);
         spawnManager.SpawnRandomElement();
+    } 
+    
+    public void GoToMainMenu()
+    {
+        Tools.LoadMainMenu();
     }        
 }

@@ -9,17 +9,23 @@ public class PlayerInput : MonoBehaviour
     private ElementMovement elementMovement;
     [SerializeField]
     private ElementRotation elementRotation;      
-    [SerializeField] [Range(10f, 100f)]
-    private float manualFallingSpeed = 50f; // скорость падения при зажатой клавише (меньше - быстрее)     
+    [SerializeField] [Range(10f, 1000f)]
+    private float manualFallingSpeed = 500f; // скорость падения при зажатой клавише (меньше - быстрее)     
 
     private void Start()
     {        
-        StartCoroutine(FallingDownManual());
+       // StartCoroutine(FallingDownManual());
     }
 
     void Update()
     {
         CheckPlayerInput();
+    }
+
+    private void FixedUpdate()
+    {
+        if (Input.GetButton("FallingDown"))
+            elementMovement.FallingDown();
     }
 
     private void CheckPlayerInput()
@@ -39,7 +45,7 @@ public class PlayerInput : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.Escape))
         {
             gameController.GamePause();
-        }
+        }        
     }
 
     private IEnumerator FallingDownManual()
@@ -48,7 +54,7 @@ public class PlayerInput : MonoBehaviour
         {
             yield return new WaitUntil(() => Input.GetButton("FallingDown"));
             elementMovement.FallingDown();
-            yield return new WaitForSeconds(1 / manualFallingSpeed);
+            yield return new WaitForSecondsRealtime(1 / manualFallingSpeed);
         }
-    }
+    }    
 }

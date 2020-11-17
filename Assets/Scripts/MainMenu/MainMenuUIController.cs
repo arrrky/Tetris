@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -8,7 +7,12 @@ public class MainMenuUIController : MonoBehaviour
 {
     [SerializeField] private Button play;
     [SerializeField] private Button quit;
+    [SerializeField] private Text rainbowButton;
     [SerializeField] private Text title;
+    [SerializeField] private GameObject sprRainbow;
+    [SerializeField] private GameObject easterEgg;
+
+    private Coroutine colorChangeRoutine;
 
     private Color randomColor;
 
@@ -25,8 +29,10 @@ public class MainMenuUIController : MonoBehaviour
 
     // Start is called before the first frame update
     void Start()
-    {       
-        StartCoroutine(ColorChange());
+    {
+        easterEgg.transform.position = new Vector3(-3, 3, 0);
+        colorChangeRoutine = StartCoroutine(ColorChange());
+        rainbowButton.text = "Turn rainbow OFF";
     }
 
     public void PlayTheGame()
@@ -61,6 +67,56 @@ public class MainMenuUIController : MonoBehaviour
         {
             title.color = SetRandomRainbowColor();
             yield return new WaitForSeconds(1f);
+        }
+    }
+
+    private bool rainbowButtonCheck = false;
+    private Coroutine slowComingOutRoutine;
+
+    public void RainbowButton()
+    {
+        if (rainbowButtonCheck)
+            RainbowButtonOn();
+        else
+            RainbowButtonOff();
+    }
+
+    private void RainbowButtonOn()
+    {
+        rainbowButton.text = "Turn rainbow OFF";
+        sprRainbow.SetActive(true);            
+        title.text = "TETRIS FORCE";
+        IvanComingBack();
+        rainbowButtonCheck = !rainbowButtonCheck;
+    }
+
+    private void RainbowButtonOff()
+    {
+        rainbowButton.text = "Turn rainbow ON";
+        sprRainbow.SetActive(false);    
+        title.text = "";
+        IvanComingOut();
+        rainbowButtonCheck = !rainbowButtonCheck;
+    }
+
+    private void IvanComingOut()
+    {   
+        // easterEgg.transform.position = new Vector3(30, 3, 0);
+        slowComingOutRoutine = StartCoroutine(SlowComingOut());
+    }
+
+    private void IvanComingBack()
+    {      
+        easterEgg.transform.position = new Vector3(-3, 3, 0);
+        StopCoroutine(slowComingOutRoutine);
+    }
+
+    private IEnumerator SlowComingOut()
+    {
+        while(easterEgg.transform.position.x < 30)
+        {
+            easterEgg.transform.position += new Vector3(1, 0, 0);
+            yield return new WaitForSeconds(0.05f);
         }
     }
 }
