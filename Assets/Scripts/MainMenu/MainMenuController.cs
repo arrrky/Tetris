@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using MiscTools;
+using UnityEngine.SceneManagement;
 
 public class MainMenuController : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class MainMenuController : MonoBehaviour
 
     private void Start()
     {
+        Time.timeScale = 1;
         MainBorderInit();
     }
 
@@ -25,5 +27,13 @@ public class MainMenuController : MonoBehaviour
         mainMenuBorder.CreateBorder(screenBounds.x * 2 - 1, screenBounds.y * 2 - 1, mainMenuBorderBlockPrefab, mainMenuBorderBlocksParent);
     }
 
+    public void PlayTheGame()
+    {
+        SceneManager.LoadScene(1);
+    }
 
+    public void QuitTheGame()
+    {
+        Application.Quit();
+    }
 }
