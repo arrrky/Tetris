@@ -8,7 +8,7 @@ namespace MiscTools
         Empty = 0,
         Falling = 1,
         Fallen = 2
-    }    
+    }
 
     public class Tools
     {
@@ -51,14 +51,14 @@ namespace MiscTools
         }
 
         public static Color32[] rainbowColors =
-    {
-        Color.red,
-        new Color32(255, 128, 0, 255), // оранжевый
-        Color.yellow,
-        Color.green,
-        new Color32(32, 72, 203, 255), // голубой
-        Color.blue,
-        new Color32(42, 7 ,49 , 255) // фиолетовый
-    };
+        {
+            Color.red,
+            new Color32(255, 128, 0, 255), // оранжевый
+            Color.yellow,
+            Color.green,
+            new Color32(32, 72, 203, 255), // голубой
+            Color.blue,
+            new Color32(42, 7 ,49 , 255) // фиолетовый
+        };
     }
 }

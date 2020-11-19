@@ -3,12 +3,9 @@ using UnityEngine;
 
 public class PlayerInput : MonoBehaviour
 {
-    [SerializeField]
-    private GameController gameController;
-    [SerializeField]
-    private ElementMovement elementMovement;
-    [SerializeField]
-    private ElementRotation elementRotation;      
+    [SerializeField] private GameController gameController;
+    [SerializeField] private ElementMovement elementMovement;
+    [SerializeField] private ElementRotation elementRotation;      
     [SerializeField] [Range(10f, 1000f)]
     private float manualFallingSpeed = 500f; // скорость падения при зажатой клавише (меньше - быстрее)     
 

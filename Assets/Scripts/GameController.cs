@@ -5,35 +5,22 @@ using MiscTools;
 
 public class GameController : MonoBehaviour
 { 
-    [SerializeField]
-    private ElementMovement elementMovement;
-    [SerializeField]
-    private SpawnManager spawnManager;
-    [SerializeField]
-    private GameObject playerInput;      
-    [SerializeField]
-    private GameObject gameOverText;
-    [SerializeField]
-    private GameObject youWinText;
-    [SerializeField]
-    private GameObject pauseText;
-    [SerializeField]
-    private GameObject pressToStartText;
-    [SerializeField]
-    private GameObject controlsText;
-    [SerializeField]
-    private GameObject goToMainMenuButton;
-    [SerializeField]
-    private Text lblLevel;
-    [SerializeField]
-    private Text lblGoal;
+    [SerializeField] private ElementMovement elementMovement;
+    [SerializeField] private SpawnManager spawnManager;
+    [SerializeField] private GameObject playerInput;      
+    [SerializeField] private GameObject gameOverText;
+    [SerializeField] private GameObject youWinText;
+    [SerializeField] private GameObject pauseText;
+    [SerializeField] private GameObject pressToStartText;
+    [SerializeField] private GameObject controlsText;
+    [SerializeField] private GameObject goToMainMenuButton;
+    [SerializeField] private Text lblLevel;
+    [SerializeField] private Text lblGoal;
    
-    [SerializeField]
-    private GameObject mainBorderBlockPrefab;
-    [SerializeField]
-    private GameObject mainBorderBlocksParent;
+    [SerializeField] private GameObject mainBorderBlockPrefab;
+    [SerializeField] private GameObject mainBorderBlocksParent;
 
-    public const float gameStartTime = 2f;
+    public const float GAME_START_TIME = 2f;
     public static Vector3 screenBounds;
 
     private Border mainBorder;   

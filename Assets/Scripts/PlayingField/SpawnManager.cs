@@ -4,22 +4,16 @@ using MiscTools;
 
 public class SpawnManager : MonoBehaviour
 {
-    [SerializeField]
-    private GameController gameController;
-    [SerializeField]
-    private Elements elements;
-    [SerializeField]
-    private PlayingFieldController playingFieldController;
-    [SerializeField]
-    private NextElementFieldController nextElementFieldController;
-    [SerializeField]
-    private ElementMovement elementMovement; 
+    [SerializeField] private GameController gameController;
+    [SerializeField] private Elements elements;
+    [SerializeField] private PlayingFieldController playingFieldController;
+    [SerializeField] private NextElementFieldController nextElementFieldController;   
 
     public const int spawnPoint = 4;
 
     private void Start()
-    {       
-        elementMovement.LastRowOrElementsCollide += SpawnRandomElement;
+    {
+        playingFieldController.ElementFell += SpawnRandomElement;
     }          
 
     public void SpawnElement(FieldState[,] element, Field field)
@@ -39,7 +33,7 @@ public class SpawnManager : MonoBehaviour
         playingFieldController.currentElementArray = element.Matrix;
         playingFieldController.currentElementSize = element.Matrix.GetLength(0);
 
-        playingFieldController.topLeftPositionOfCurrentElement = playingFieldController.topLeftPositionDefault;      
+        playingFieldController.TopLeftPositionOfCurrentElement = playingFieldController.topLeftPositionDefault;      
 
         for (int y = 0; y < element.Matrix.GetLength(0); y++)
         {

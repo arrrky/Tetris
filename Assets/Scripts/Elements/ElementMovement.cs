@@ -4,12 +4,8 @@ using MiscTools;
 
 public class ElementMovement : MonoBehaviour
 {
-    [SerializeField]
-    private PlayingFieldController playingFieldController;
-    [SerializeField]
-    private SpawnManager spawnManager;
-    [SerializeField]
-    private ScoreController scoreController;
+    [SerializeField] private PlayingFieldController playingFieldController;   
+    [SerializeField] private ScoreController scoreController;
 
     private Field playingField;
 
@@ -42,20 +38,10 @@ public class ElementMovement : MonoBehaviour
                 {
                     if (IsFallingElementAboveFallen(x, y) || IsLastRow(x, y))
                     {
-                        playingFieldController.FallingToFallen();
-                        spawnManager.SpawnRandomElement();
+                        LastRowOrElementsCollide?.Invoke();
                         return;
                     }
                 }
-
-                //if (y > 0)
-                //{
-                //    if (IsFallingElementAboveFallen(x, y) || IsLastRow(x, y))
-                //    {
-                //        LastRowOrElementsCollide?.Invoke();
-                //        return;
-                //    }
-                //}
 
                 if (playingField.Matrix[y, x] == FieldState.Falling)
                 {
@@ -63,7 +49,7 @@ public class ElementMovement : MonoBehaviour
                 }
             }
         }
-        playingFieldController.topLeftPositionOfCurrentElement += new Vector2(0, 1);
+        playingFieldController.TopLeftPositionOfCurrentElement += new Vector2(0, 1);
         playingFieldController.WriteAndUpdate(tempMatrix);
     }
 
@@ -121,6 +107,6 @@ public class ElementMovement : MonoBehaviour
             }
         }
         playingFieldController.WriteAndUpdate(tempMatrix);
-        playingFieldController.topLeftPositionOfCurrentElement += new Vector2(direction, 0);
+        playingFieldController.TopLeftPositionOfCurrentElement += new Vector2(direction, 0);
     }
 }

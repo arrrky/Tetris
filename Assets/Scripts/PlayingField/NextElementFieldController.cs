@@ -3,14 +3,10 @@ using MiscTools;
 
 public class NextElementFieldController : PlayingFieldController
 {
-    [SerializeField]
-    private Elements elements;
-    [SerializeField]
-    private SpawnManager spawnManager;
-    [SerializeField]
-    private GameObject nextFieldBorderBlockPrefab;
-    [SerializeField]
-    private GameObject nextFieldBorderBlocksParent;
+    [SerializeField] private Elements elements;
+    [SerializeField] private SpawnManager spawnManager;
+    [SerializeField] private GameObject nextFieldBorderBlockPrefab;
+    [SerializeField] private GameObject nextFieldBorderBlocksParent;
 
     private Border nextElementBorder;    
 
@@ -35,7 +31,7 @@ public class NextElementFieldController : PlayingFieldController
 
     private void NextElementBorderInit()
     {
-        nextElementBorderXShift = playingFieldWidth / 2 + 3;
+        nextElementBorderXShift = PLAYING_FIELD_WIDTH / 2 + 3;
         nextElementBorderSize = 8;
         nextElementBorder = gameObject.AddComponent(typeof(Border)) as Border;
         nextElementBorder.SpriteShift = Tools.GetSpriteShift(nextFieldBorderBlockPrefab);

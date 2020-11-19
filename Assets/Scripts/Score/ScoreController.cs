@@ -3,14 +3,10 @@ using UnityEngine.UI;
 
 public class ScoreController : MonoBehaviour
 {
-    [SerializeField]
-    private GameController gameController;
-    [SerializeField]
-    private PlayingFieldController playingFieldController;
-    [SerializeField]
-    private Text lblScore;    
-    [SerializeField]
-    private int scoreForOneRow = 10;
+    [SerializeField] private GameController gameController;
+    [SerializeField] private PlayingFieldController playingFieldController;
+    [SerializeField] private Text lblScore;    
+    [SerializeField] private int scoreForOneRow = 10;
 
     public int Score { get; set; }
 

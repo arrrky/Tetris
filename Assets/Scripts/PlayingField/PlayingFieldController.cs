@@ -4,18 +4,11 @@ using System;
 
 public class PlayingFieldController : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject blockPrefab;
-    [SerializeField]
-    private GameObject parentOfBlocks;
-    [SerializeField]
-    private GameObject playingFieldBorderBlockPrefab;
-    [SerializeField]
-    private GameObject playingFiedBorderBlocksParent;
-    [SerializeField]
-    private ScoreController scoreController;
-    [SerializeField]
-    private ElementMovement elementMovement;
+    [SerializeField] private GameObject blockPrefab;
+    [SerializeField] private GameObject parentOfBlocks;
+    [SerializeField] private GameObject playingFieldBorderBlockPrefab;
+    [SerializeField] private GameObject playingFiedBorderBlocksParent; 
+    [SerializeField] private ElementMovement elementMovement;
 
     private Border playingFieldBorder;    
 
@@ -23,13 +16,39 @@ public class PlayingFieldController : MonoBehaviour
     public int currentElementSize;
     public FieldState[,] currentElementArray;
     public Vector2 topLeftPositionDefault;
-    public Vector2 topLeftPositionOfCurrentElement;
+
+    private Vector2 topLeftPositionOfCurrentElement;
+    public Vector2 TopLeftPositionOfCurrentElement
+    {
+        get => topLeftPositionOfCurrentElement;
+        set
+        {
+            // Проверки для того, чтобы верхний левый угол текущего элемента находился в пределах массива
+            // с учетом места, необходимого для разворота элемента
+            if (value.x < 0)
+            {
+                topLeftPositionOfCurrentElement.x = 0;
+                topLeftPositionOfCurrentElement.y = value.y;
+            }
+            else if (value.x > playingField.Width - currentElementSize)
+            {
+                topLeftPositionOfCurrentElement.x = playingField.Width - currentElementSize;
+                topLeftPositionOfCurrentElement.y = value.y;
+            }
+            else
+            {
+                topLeftPositionOfCurrentElement = value;
+            }
+        }
+    }
+
     public event Action RowDeleted;
+    public event Action ElementFell;
     
-    public const int playingFieldHeight = 20;
-    public const int playingFieldWidth = 10;
-    private const float playingFieldXShift = -4.5f;
-    private const float playingFieldYShift = -10.5f;
+    public const int PLAYING_FIELD_HEIGHT = 20;
+    public const int PLAYING_FIELD_WIDTH = 10;
+    private const float PLAYING_FIELD_X_SHIFT = -4.5f;
+    private const float PLAYING_FIELD_Y_SHIFT = -10.5f;
 
     private void Start()
     {
@@ -37,7 +56,7 @@ public class PlayingFieldController : MonoBehaviour
         PlayingFieldBorderInit();
 
         topLeftPositionDefault = new Vector2(SpawnManager.spawnPoint, 0);
-        topLeftPositionOfCurrentElement = topLeftPositionDefault;       
+        TopLeftPositionOfCurrentElement = topLeftPositionDefault;       
 
         elementMovement.LastRowOrElementsCollide += FallingToFallen;
     }
@@ -46,18 +65,18 @@ public class PlayingFieldController : MonoBehaviour
     {
         playingFieldBorder = gameObject.AddComponent(typeof(Border)) as Border;
         playingFieldBorder.SpriteShift = Tools.GetSpriteShift(playingFieldBorderBlockPrefab);
-        playingFieldBorder.TopLeftPoint = new Vector2(-playingFieldWidth / 2 - 1, GameController.screenBounds.y - 1);
-        playingFieldBorder.CreateBorder(playingFieldWidth + 1, playingFieldHeight + 1, playingFieldBorderBlockPrefab, playingFiedBorderBlocksParent);
+        playingFieldBorder.TopLeftPoint = new Vector2(-PLAYING_FIELD_WIDTH / 2 - 1, GameController.screenBounds.y - 1);
+        playingFieldBorder.CreateBorder(PLAYING_FIELD_WIDTH + 1, PLAYING_FIELD_HEIGHT + 1, playingFieldBorderBlockPrefab, playingFiedBorderBlocksParent);
     }
 
     private void PlayingFieldInit()
     {
         playingField = gameObject.AddComponent(typeof(Field)) as Field;
-        playingField.Height = playingFieldHeight;
-        playingField.Width = playingFieldWidth;
-        playingField.Matrix = new FieldState[playingFieldHeight, playingFieldWidth];
-        playingField.Objects = new GameObject[playingFieldHeight, playingFieldWidth];
-        FillTheField(playingField, playingFieldXShift, playingFieldYShift);
+        playingField.Height = PLAYING_FIELD_HEIGHT;
+        playingField.Width = PLAYING_FIELD_WIDTH;
+        playingField.Matrix = new FieldState[PLAYING_FIELD_HEIGHT, PLAYING_FIELD_WIDTH];
+        playingField.Objects = new GameObject[PLAYING_FIELD_HEIGHT, PLAYING_FIELD_WIDTH];
+        FillTheField(playingField, PLAYING_FIELD_X_SHIFT, PLAYING_FIELD_Y_SHIFT);
         UpdateThePlayingField(playingField);
     }
 
@@ -99,7 +118,8 @@ public class PlayingFieldController : MonoBehaviour
                 if (playingField.Matrix[y, x] != FieldState.Empty)
                     playingField.Matrix[y, x] = FieldState.Fallen;
             }
-        }       
+        }
+        ElementFell?.Invoke();
     }
 
     public int fullRowsCount;
