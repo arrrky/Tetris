@@ -8,7 +8,7 @@ public class Elements : MonoBehaviour
     private List<Element> listOfElements;
     private const int sumOfChances = 100;
 
-    // Нужно инициализировать список элементов ДО спауна первого элемента
+    // Нужно инициализировать список элементов ДО спауна первого элемента - поэтому делаем это в Awake
     private void Awake()
     {
         listOfElements = new List<Element>();
@@ -32,8 +32,10 @@ public class Elements : MonoBehaviour
                  {1,1},
                  {1,1}
             }),
-            SpawnChance = 10
+            SpawnChance = 10,
+            Color = Tools.rainbowColors["red"],
         });
+
         listOfElements.Add(new Element
         {
             Name = "T",
@@ -43,8 +45,10 @@ public class Elements : MonoBehaviour
                 {0,1,0},
                 {0,0,0}
             }),
-            SpawnChance = 10
+            SpawnChance = 10,
+            Color = Tools.rainbowColors["orange"],
         });
+
         listOfElements.Add(new Element
         {
             Name = "I",
@@ -55,8 +59,10 @@ public class Elements : MonoBehaviour
                 {0,0,0,0},
                 {0,0,0,0}
             }),
-            SpawnChance = 10
+            SpawnChance = 10,
+            Color = Tools.rainbowColors["yellow"],
         });
+
         listOfElements.Add(new Element
         {
             Name = "L",
@@ -66,8 +72,10 @@ public class Elements : MonoBehaviour
                 {1,0,0},
                 {0,0,0}
             }),
-            SpawnChance = 15
+            SpawnChance = 15,
+            Color = Tools.rainbowColors["green"],
         });
+
         listOfElements.Add(new Element
         {
             Name = "J",
@@ -77,8 +85,10 @@ public class Elements : MonoBehaviour
                 {0,0,1},
                 {0,0,0}
             }),
-            SpawnChance = 15
+            SpawnChance = 15,
+            Color = Tools.rainbowColors["lightblue"],
         });
+
         listOfElements.Add(new Element
         {
             Name = "Z",
@@ -88,8 +98,10 @@ public class Elements : MonoBehaviour
                 {0,1,1},
                 {0,0,0}
             }),
-            SpawnChance = 20
+            SpawnChance = 20,
+            Color = Tools.rainbowColors["blue"],
         });
+
         listOfElements.Add(new Element
         {
             Name = "S",
@@ -99,7 +111,8 @@ public class Elements : MonoBehaviour
                 {1,1,0},
                 {0,0,0}
             }),
-            SpawnChance = 20
+            SpawnChance = 20,
+            Color = Tools.rainbowColors["violet"],
         });
     }
     #endregion
@@ -123,7 +136,6 @@ public class Elements : MonoBehaviour
     public Element GetRandomElement()
     {
         int roll = Random.Range(1, 100);
-
         int cumulativeChance = 0;
 
         for (int i = 0; i < listOfElements.Count; i++)

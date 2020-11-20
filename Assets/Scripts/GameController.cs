@@ -6,7 +6,8 @@ using MiscTools;
 public class GameController : MonoBehaviour
 { 
     [SerializeField] private ElementMovement elementMovement;
-    [SerializeField] private SpawnManager spawnManager;
+    [SerializeField] private SpawnController spawnManager;
+
     [SerializeField] private GameObject playerInput;      
     [SerializeField] private GameObject gameOverText;
     [SerializeField] private GameObject youWinText;
@@ -14,6 +15,7 @@ public class GameController : MonoBehaviour
     [SerializeField] private GameObject pressToStartText;
     [SerializeField] private GameObject controlsText;
     [SerializeField] private GameObject goToMainMenuButton;
+
     [SerializeField] private Text lblLevel;
     [SerializeField] private Text lblGoal;
    

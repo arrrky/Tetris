@@ -2,12 +2,13 @@
 using UnityEngine;
 using MiscTools;
 using UnityEngine.UI;
+using System.Linq;
 
 public class Rainbow : EasterEggsController
 {
     [SerializeField] private Text title;
 
-    private Color randomColor;    
+    private Color32 randomColor;    
     private Coroutine colorChangeRoutine;
 
     protected override void ButtonOn()
@@ -23,11 +24,11 @@ public class Rainbow : EasterEggsController
         title.color = Color.white;
     }
 
-    private Color SetRandomRainbowColor()
+    private Color32 SetRandomRainbowColor()
     {
         do
         {
-            randomColor = Tools.rainbowColors[Random.Range(0, Tools.rainbowColors.Length)];
+            randomColor = Tools.rainbowColors.ElementAt(Random.Range(0, Tools.rainbowColors.Count)).Value;
 
         } while (randomColor == title.color);
 

@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerInput : MonoBehaviour
 {
@@ -7,12 +6,7 @@ public class PlayerInput : MonoBehaviour
     [SerializeField] private ElementMovement elementMovement;
     [SerializeField] private ElementRotation elementRotation;      
     [SerializeField] [Range(10f, 1000f)]
-    private float manualFallingSpeed = 500f; // скорость падения при зажатой клавише (меньше - быстрее)     
-
-    private void Start()
-    {        
-       // StartCoroutine(FallingDownManual());
-    }
+    private float manualFallingSpeed = 500f; // скорость падения при зажатой клавише (меньше - быстрее)       
 
     void Update()
     {
@@ -21,8 +15,7 @@ public class PlayerInput : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (Input.GetButton("FallingDown"))
-            elementMovement.FallingDown();
+        CheckManualFallingDown();
     }
 
     private void CheckPlayerInput()
@@ -45,13 +38,17 @@ public class PlayerInput : MonoBehaviour
         }        
     }
 
-    private IEnumerator FallingDownManual()
+    private float timeOfPress;
+
+    private void CheckManualFallingDown()
     {
-        while (true)
+        if (Input.GetButton("FallingDown"))
         {
-            yield return new WaitUntil(() => Input.GetButton("FallingDown"));
-            elementMovement.FallingDown();
-            yield return new WaitForSecondsRealtime(1 / manualFallingSpeed);
+            if (Time.time - timeOfPress > Time.deltaTime)
+            {
+                elementMovement.FallingDown();
+                timeOfPress = Time.time;
+            }
         }
     }    
 }

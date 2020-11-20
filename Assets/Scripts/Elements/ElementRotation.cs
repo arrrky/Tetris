@@ -54,7 +54,7 @@ public class ElementRotation : MonoBehaviour
                 for (int x = 0; x < playingFieldController.currentElementSize; x++)
                     playingField.Matrix[y + yShift, x + xShift] = temp[y, x];
 
-            playingFieldController.UpdateThePlayingField(playingField);
+            playingFieldController.UpdateThePlayingField(playingField, playingFieldController.currentElementColor);
         }
     }
 }

@@ -15,12 +15,7 @@ public class ElementMovement : MonoBehaviour
     {
         playingField = playingFieldController.playingField;
         InvokeRepeating(nameof(FallingDown), 1f, LevelController.Instance.FallingDownAutoSpeed);
-    }
-
-    public void StopFallingDown()
-    {
-        CancelInvoke(nameof(FallingDown));
-    }
+    }   
 
     public void FallingDown()
     {
@@ -51,6 +46,11 @@ public class ElementMovement : MonoBehaviour
         }
         playingFieldController.TopLeftPositionOfCurrentElement += new Vector2(0, 1);
         playingFieldController.WriteAndUpdate(tempMatrix);
+    }
+
+    public void StopFallingDown()
+    {
+        CancelInvoke(nameof(FallingDown));
     }
 
     private bool IsFallingElementAboveFallen(int x, int y)

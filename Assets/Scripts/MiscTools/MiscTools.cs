@@ -1,5 +1,6 @@
 using UnityEngine.SceneManagement;
 using UnityEngine;
+using System.Collections.Generic;
 
 namespace MiscTools
 {
@@ -48,17 +49,18 @@ namespace MiscTools
         public static void LoadMainMenu()
         {
             SceneManager.LoadScene(0);
-        }
+        }        
 
-        public static Color32[] rainbowColors =
+        public static Dictionary<string, Color32> rainbowColors = new Dictionary<string, Color32>
         {
-            Color.red,
-            new Color32(255, 128, 0, 255), // оранжевый
-            Color.yellow,
-            Color.green,
-            new Color32(32, 72, 203, 255), // голубой
-            Color.blue,
-            new Color32(42, 7 ,49 , 255) // фиолетовый
+            {"red",      new Color32(255, 50, 19, 255) },
+            {"orange",   new Color32(255, 128, 0, 255) },
+            {"yellow",   new Color32(255, 213, 0, 255)  },
+            {"green",    new Color32 (114, 203, 59, 255) },
+            {"lightblue",new Color32(10, 150, 203, 255) },
+            {"blue",     new Color32(3, 65, 174, 255) },
+            {"violet",   new Color32(136, 43, 222 , 255) }
+
         };
     }
 }

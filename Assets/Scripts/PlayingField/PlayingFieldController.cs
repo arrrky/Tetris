@@ -15,6 +15,7 @@ public class PlayingFieldController : MonoBehaviour
     public Field playingField;
     public int currentElementSize;
     public FieldState[,] currentElementArray;
+    public Color32 currentElementColor;
     public Vector2 topLeftPositionDefault;
 
     private Vector2 topLeftPositionOfCurrentElement;
@@ -55,7 +56,7 @@ public class PlayingFieldController : MonoBehaviour
         PlayingFieldInit();
         PlayingFieldBorderInit();
 
-        topLeftPositionDefault = new Vector2(SpawnManager.spawnPoint, 0);
+        topLeftPositionDefault = new Vector2(SpawnController.SPAWN_POINT, 0);
         TopLeftPositionOfCurrentElement = topLeftPositionDefault;       
 
         elementMovement.LastRowOrElementsCollide += FallingToFallen;
@@ -77,7 +78,7 @@ public class PlayingFieldController : MonoBehaviour
         playingField.Matrix = new FieldState[PLAYING_FIELD_HEIGHT, PLAYING_FIELD_WIDTH];
         playingField.Objects = new GameObject[PLAYING_FIELD_HEIGHT, PLAYING_FIELD_WIDTH];
         FillTheField(playingField, PLAYING_FIELD_X_SHIFT, PLAYING_FIELD_Y_SHIFT);
-        UpdateThePlayingField(playingField);
+        UpdateThePlayingField(playingField, currentElementColor);
     }
 
     public void FillTheField(Field field, float xShift, float yShift)
@@ -98,13 +99,18 @@ public class PlayingFieldController : MonoBehaviour
     /// <summary>
     /// Обновление состояния игрового поля
     /// </summary>
-    public void UpdateThePlayingField(Field field)
+    public void UpdateThePlayingField(Field field, Color32 elementColor)
     {
         for (int y = 0; y < field.Height; y++)
         {
             for (int x = 0; x < field.Width; x++)
             {
                 field.Objects[y, x].SetActive(field.Matrix[y, x] != FieldState.Empty);
+                
+                if (field.Matrix[y, x] == FieldState.Falling)
+                {
+                    field.Objects[y, x].GetComponent<SpriteRenderer>().color = elementColor;
+                }
             }
         }
     }
@@ -206,6 +212,6 @@ public class PlayingFieldController : MonoBehaviour
     {
         playingField.Matrix = tempMatrix;
         FullRowCheck();
-        UpdateThePlayingField(playingField);
+        UpdateThePlayingField(playingField, currentElementColor);
     }
 }
