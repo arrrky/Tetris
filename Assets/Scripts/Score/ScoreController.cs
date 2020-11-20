@@ -23,7 +23,7 @@ public class ScoreController : MonoBehaviour
 
         if (Score >= LevelController.Instance.Goal)
         {
-            StartCoroutine(gameController.NextLevel());            
+            StartCoroutine(gameController.NextLevelRoutine());            
         }
     }      
 }

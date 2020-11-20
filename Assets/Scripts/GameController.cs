@@ -1,12 +1,12 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using MiscTools;
 
 public class GameController : MonoBehaviour
 { 
-    [SerializeField] private ElementMovement elementMovement;
-    [SerializeField] private SpawnController spawnManager;
+    [SerializeField] private ElementMovement elementMovement;    
 
     [SerializeField] private GameObject playerInput;      
     [SerializeField] private GameObject gameOverText;
@@ -25,7 +25,11 @@ public class GameController : MonoBehaviour
     public const float GAME_START_TIME = 2f;
     public static Vector3 screenBounds;
 
-    private Border mainBorder;   
+    private Border mainBorder;
+
+    public event Action GameStarted;
+    public event Action GameOver;
+    public event Action NextLevel;
 
     private void Start()
     {
@@ -44,10 +48,10 @@ public class GameController : MonoBehaviour
         mainBorder.CreateBorder(screenBounds.x * 2 - 1, screenBounds.y * 2 - 1, mainBorderBlockPrefab, mainBorderBlocksParent);
     }
 
-    public IEnumerator GameOver()
+    public IEnumerator GameOverRoutine()
     {
-        gameOverText.SetActive(true);
-        elementMovement.StopFallingDown();
+        GameOver?.Invoke();
+        gameOverText.SetActive(true);     
         playerInput.SetActive(false);
 
         LevelController.Instance.Reset();
@@ -56,10 +60,10 @@ public class GameController : MonoBehaviour
         Tools.LoadMainMenu();
     }
 
-    public IEnumerator NextLevel()
+    public IEnumerator NextLevelRoutine()
     {
-        youWinText.SetActive(true);
-        elementMovement.StopFallingDown();
+        NextLevel?.Invoke();
+        youWinText.SetActive(true);        
         playerInput.SetActive(false);
 
         LevelController.Instance.ChangeLevel();
@@ -83,7 +87,7 @@ public class GameController : MonoBehaviour
         yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Tab));
         pressToStartText.SetActive(false);
         controlsText.SetActive(false);
-        spawnManager.SpawnRandomElement();
+        GameStarted?.Invoke();
     } 
     
     public void GoToMainMenu()

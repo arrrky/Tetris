@@ -12,6 +12,7 @@ public class SpawnController : MonoBehaviour
 
     private void Start()
     {
+        gameController.GameStarted += SpawnRandomElement;
         playingFieldController.ElementFell += SpawnRandomElement;
     }          
 
@@ -43,7 +44,7 @@ public class SpawnController : MonoBehaviour
             {
                 if (playingFieldController.playingField.Matrix[y, x + SPAWN_POINT] == FieldState.Fallen)
                 {
-                    StartCoroutine(gameController.GameOver());
+                    StartCoroutine(gameController.GameOverRoutine());
                 }
                 playingFieldController.playingField.Matrix[y, x + SPAWN_POINT] = element.Matrix[y, x];
             }

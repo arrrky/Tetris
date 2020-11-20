@@ -4,6 +4,7 @@ using MiscTools;
 
 public class ElementMovement : MonoBehaviour
 {
+    [SerializeField] private GameController gameController;
     [SerializeField] private PlayingFieldController playingFieldController;   
     [SerializeField] private ScoreController scoreController;
 
@@ -15,6 +16,8 @@ public class ElementMovement : MonoBehaviour
     {
         playingField = playingFieldController.playingField;
         InvokeRepeating(nameof(FallingDown), 1f, LevelController.Instance.FallingDownAutoSpeed);
+        gameController.GameOver += StopFallingDown;
+        gameController.NextLevel += StopFallingDown;
     }   
 
     public void FallingDown()

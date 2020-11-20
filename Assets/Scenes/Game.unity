@@ -219,7 +219,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   elementMovement: {fileID: 1941403081}
-  spawnManager: {fileID: 855480023}
   playerInput: {fileID: 1991867805}
   gameOverText: {fileID: 1383675060}
   youWinText: {fileID: 962186342}
@@ -1806,6 +1805,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc63771c7e6772e4bb79361f403c73b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameController: {fileID: 81836447}
   playingFieldController: {fileID: 978196883}
   scoreController: {fileID: 1410449721}
 --- !u!114 &1941403082
