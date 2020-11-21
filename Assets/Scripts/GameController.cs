@@ -23,7 +23,7 @@ public class GameController : MonoBehaviour
     [SerializeField] private GameObject mainBorderBlocksParent;
 
     public const float GAME_START_TIME = 2f;
-    public static Vector3 screenBounds;
+    public static Vector3 ScreenBounds { get; set; }
 
     private Border mainBorder;
 
@@ -33,19 +33,27 @@ public class GameController : MonoBehaviour
 
     private void Start()
     {
-        screenBounds = Tools.GetScreenBounds();
+        ScreenBounds = Tools.GetScreenBounds();
         MainBorderInit();
         lblGoal.text = $"Goal: {LevelController.Instance.Goal}";
         lblLevel.text = $"Level: {LevelController.Instance.Level}";
-        StartCoroutine(StartTheGame());
+        StartCoroutine(StartTheGameRoutine());
     }    
 
     private void MainBorderInit()
     {
         mainBorder = gameObject.AddComponent(typeof(Border)) as Border;
         mainBorder.SpriteShift = Tools.GetSpriteShift(mainBorderBlockPrefab);
-        mainBorder.TopLeftPoint = new Vector2(-screenBounds.x, screenBounds.y - 1);
-        mainBorder.CreateBorder(screenBounds.x * 2 - 1, screenBounds.y * 2 - 1, mainBorderBlockPrefab, mainBorderBlocksParent);
+        mainBorder.TopLeftPoint = new Vector2(-ScreenBounds.x, ScreenBounds.y - 1);
+        mainBorder.CreateBorder(ScreenBounds.x * 2 - 1, ScreenBounds.y * 2 - 1, mainBorderBlockPrefab, mainBorderBlocksParent);
+    }
+
+    private IEnumerator StartTheGameRoutine()
+    {
+        yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Tab));
+        pressToStartText.SetActive(false);
+        controlsText.SetActive(false);
+        GameStarted?.Invoke();
     }
 
     public IEnumerator GameOverRoutine()
@@ -80,15 +88,7 @@ public class GameController : MonoBehaviour
         pauseText.SetActive(!gameOnPause);
         controlsText.SetActive(!gameOnPause);
         goToMainMenuButton.SetActive(!gameOnPause);
-    }
-
-    private IEnumerator StartTheGame()
-    {
-        yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Tab));
-        pressToStartText.SetActive(false);
-        controlsText.SetActive(false);
-        GameStarted?.Invoke();
-    } 
+    }   
     
     public void GoToMainMenu()
     {

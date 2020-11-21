@@ -10,8 +10,8 @@ public class NextElementFieldController : PlayingFieldController
 
     private Border nextElementBorder;
 
-    public Field nextElementField;
-    public Element nextElement;
+    private Field nextElementField;
+    private Element nextElement;
 
     private const int NEXT_ELEMENT_FIELD_HEIGHT = 4;
     private const int NEXT_ELEMENT_FIELD_WIDTH = 4;
@@ -19,15 +19,20 @@ public class NextElementFieldController : PlayingFieldController
     private int nextElementBorderXShift; // смещение относительно центра экрана
     private int nextElementBorderSize;
 
+    #region PROPERTIES
+    public Field NextElementField { get => nextElementField; set => nextElementField = value; }
+    public Element NextElement { get => nextElement; set => nextElement = value; }
+    #endregion
+
     private void Start()
     {
         NextElementBorderInit();
         NextElementFieldInit();
 
-        nextElement = elements.GetRandomElement();
+        NextElement = elements.GetRandomElement();
 
-        spawnController.SpawnElement(nextElement.Matrix, nextElementField);
-        UpdateThePlayingField(nextElementField, nextElement.Color);
+        spawnController.SpawnElement(NextElement.Matrix, NextElementField);
+        UpdateThePlayingField(NextElementField, NextElement.Color);
     }
 
     private void NextElementBorderInit()
@@ -45,11 +50,12 @@ public class NextElementFieldController : PlayingFieldController
         int nextElementFieldXShift = (int)nextElementBorder.TopLeftPoint.x + 3;
         int nextElementFieldYShift = (int)nextElementBorder.TopLeftPoint.y - 7;
 
-        nextElementField = gameObject.AddComponent(typeof(Field)) as Field;
-        nextElementField.Height = NEXT_ELEMENT_FIELD_HEIGHT;
-        nextElementField.Width = NEXT_ELEMENT_FIELD_WIDTH;
-        nextElementField.Matrix = new FieldState[NEXT_ELEMENT_FIELD_HEIGHT, NEXT_ELEMENT_FIELD_WIDTH];
-        nextElementField.Objects = new GameObject[NEXT_ELEMENT_FIELD_HEIGHT, NEXT_ELEMENT_FIELD_WIDTH];
-        FillTheField(nextElementField, nextElementFieldXShift, nextElementFieldYShift);
+        NextElementField = gameObject.AddComponent(typeof(Field)) as Field;
+        NextElementField.Height = NEXT_ELEMENT_FIELD_HEIGHT;
+        NextElementField.Width = NEXT_ELEMENT_FIELD_WIDTH;
+        NextElementField.Matrix = new FieldState[NEXT_ELEMENT_FIELD_HEIGHT, NEXT_ELEMENT_FIELD_WIDTH];
+        NextElementField.Objects = new GameObject[NEXT_ELEMENT_FIELD_HEIGHT, NEXT_ELEMENT_FIELD_WIDTH];
+        NextElementField.Sprites = new SpriteRenderer[NEXT_ELEMENT_FIELD_HEIGHT, NEXT_ELEMENT_FIELD_WIDTH];
+        FillTheField(NextElementField, nextElementFieldXShift, nextElementFieldYShift);
     }
 }

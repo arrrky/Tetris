@@ -18,7 +18,7 @@ public class ScoreController : MonoBehaviour
     
     public void IncreaseScore()
     {
-        Score += (int)Mathf.Pow(scoreForOneRow, playingFieldController.fullRowsCount);
+        Score += (int)Mathf.Pow(scoreForOneRow, playingFieldController.FullRowsCount);
         lblScore.text = $"Score: {Score}";
 
         if (Score >= LevelController.Instance.Goal)

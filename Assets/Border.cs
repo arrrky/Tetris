@@ -3,8 +3,7 @@
 public class Border : MonoBehaviour
 {
     public Vector2 SpriteShift { get; set; }
-    public Vector2 TopLeftPoint { get; set; }
-    private SpriteRenderer spriteRenderer;    
+    public Vector2 TopLeftPoint { get; set; }     
 
     public void CreateBorder(float width, float height, GameObject borderBlockPrefab, GameObject parentOfBlocks)
     {

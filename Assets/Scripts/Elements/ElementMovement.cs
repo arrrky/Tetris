@@ -14,7 +14,7 @@ public class ElementMovement : MonoBehaviour
 
     private void Start()
     {
-        playingField = playingFieldController.playingField;
+        playingField = playingFieldController.PlayingField;
         InvokeRepeating(nameof(FallingDown), 1f, LevelController.Instance.FallingDownAutoSpeed);
         gameController.GameOver += StopFallingDown;
         gameController.NextLevel += StopFallingDown;

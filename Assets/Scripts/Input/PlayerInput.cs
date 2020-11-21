@@ -4,9 +4,9 @@ public class PlayerInput : MonoBehaviour
 {
     [SerializeField] private GameController gameController;
     [SerializeField] private ElementMovement elementMovement;
-    [SerializeField] private ElementRotation elementRotation;      
-    [SerializeField] [Range(10f, 1000f)]
-    private float manualFallingSpeed = 500f; // скорость падения при зажатой клавише (меньше - быстрее)       
+    [SerializeField] private ElementRotation elementRotation;
+
+    private float timeOfButtonPress;
 
     void Update()
     {
@@ -38,16 +38,14 @@ public class PlayerInput : MonoBehaviour
         }        
     }
 
-    private float timeOfPress;
-
     private void CheckManualFallingDown()
     {
         if (Input.GetButton("FallingDown"))
         {
-            if (Time.time - timeOfPress > Time.deltaTime)
+            if (Time.time - timeOfButtonPress > Time.deltaTime)
             {
                 elementMovement.FallingDown();
-                timeOfPress = Time.time;
+                timeOfButtonPress = Time.time;
             }
         }
     }    

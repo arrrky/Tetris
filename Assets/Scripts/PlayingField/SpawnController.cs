@@ -29,35 +29,36 @@ public class SpawnController : MonoBehaviour
 
     public void SpawnRandomElement()
     {
-        Element element = nextElementFieldController.nextElement;
-        playingFieldController.currentElementColor = nextElementFieldController.nextElement.Color;
+        playingFieldController.FullRowCheck();
+        Element element = nextElementFieldController.NextElement;
+        playingFieldController.CurrentElementColor = nextElementFieldController.NextElement.Color;
 
-        playingFieldController.currentElementArray = element.Matrix;
-        playingFieldController.currentElementSize = element.Matrix.GetLength(0);
+        playingFieldController.CurrentElementArray = element.Matrix;
+        playingFieldController.CurrentElementSize = element.Matrix.GetLength(0);
 
-        playingFieldController.TopLeftPositionOfCurrentElement = playingFieldController.topLeftPositionDefault;     
+        playingFieldController.TopLeftPositionOfCurrentElement = playingFieldController.TOP_LEFT_POSITION_DEFAULT;     
         
 
         for (int y = 0; y < element.Matrix.GetLength(0); y++)
         {
             for (int x = 0; x < element.Matrix.GetLength(1); x++)
             {
-                if (playingFieldController.playingField.Matrix[y, x + SPAWN_POINT] == FieldState.Fallen)
+                if (playingFieldController.PlayingField.Matrix[y, x + SPAWN_POINT] == FieldState.Fallen)
                 {
                     StartCoroutine(gameController.GameOverRoutine());
                 }
-                playingFieldController.playingField.Matrix[y, x + SPAWN_POINT] = element.Matrix[y, x];
+                playingFieldController.PlayingField.Matrix[y, x + SPAWN_POINT] = element.Matrix[y, x];
             }
         }
-        playingFieldController.UpdateThePlayingField(playingFieldController.playingField, playingFieldController.currentElementColor);
+        playingFieldController.UpdateThePlayingField(playingFieldController.PlayingField, playingFieldController.CurrentElementColor);
         SpawnNextElement();        
     }
 
     private void SpawnNextElement()
     {
-        nextElementFieldController.nextElement = elements.GetRandomElement();     
-        nextElementFieldController.ClearField(nextElementFieldController.nextElementField);
-        SpawnElement(nextElementFieldController.nextElement.Matrix, nextElementFieldController.nextElementField);
-        nextElementFieldController.UpdateThePlayingField(nextElementFieldController.nextElementField, nextElementFieldController.nextElement.Color);
+        nextElementFieldController.NextElement = elements.GetRandomElement();     
+        nextElementFieldController.ClearField(nextElementFieldController.NextElementField);
+        SpawnElement(nextElementFieldController.NextElement.Matrix, nextElementFieldController.NextElementField);
+        nextElementFieldController.UpdateThePlayingField(nextElementFieldController.NextElementField, nextElementFieldController.NextElement.Color);
     }
 }
