@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using MiscTools;
 
 public class SpawnController : MonoBehaviour
 {
@@ -28,8 +27,7 @@ public class SpawnController : MonoBehaviour
     }  
 
     public void SpawnRandomElement()
-    {
-        playingFieldController.FullRowCheck();
+    {        
         Element element = nextElementFieldController.NextElement;
         playingFieldController.CurrentElementColor = nextElementFieldController.NextElement.Color;
 
@@ -50,7 +48,7 @@ public class SpawnController : MonoBehaviour
                 playingFieldController.PlayingField.Matrix[y, x + SPAWN_POINT] = element.Matrix[y, x];
             }
         }
-        playingFieldController.UpdateThePlayingField(playingFieldController.PlayingField, playingFieldController.CurrentElementColor);
+        playingFieldController.UpdatePlayingFieldState(playingFieldController.PlayingField, playingFieldController.CurrentElementColor);
         SpawnNextElement();        
     }
 
@@ -59,6 +57,6 @@ public class SpawnController : MonoBehaviour
         nextElementFieldController.NextElement = elements.GetRandomElement();     
         nextElementFieldController.ClearField(nextElementFieldController.NextElementField);
         SpawnElement(nextElementFieldController.NextElement.Matrix, nextElementFieldController.NextElementField);
-        nextElementFieldController.UpdateThePlayingField(nextElementFieldController.NextElementField, nextElementFieldController.NextElement.Color);
+        nextElementFieldController.UpdatePlayingFieldState(nextElementFieldController.NextElementField, nextElementFieldController.NextElement.Color);
     }
 }

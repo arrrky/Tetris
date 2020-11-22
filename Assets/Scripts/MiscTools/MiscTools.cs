@@ -4,13 +4,6 @@ using System.Collections.Generic;
 
 namespace MiscTools
 {
-    public enum FieldState
-    {
-        Empty = 0,
-        Falling = 1,
-        Fallen = 2
-    }
-
     public class Tools
     {
         public static FieldState[,] ConvertToFieldState(int[,] element)

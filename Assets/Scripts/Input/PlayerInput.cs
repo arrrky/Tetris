@@ -8,7 +8,7 @@ public class PlayerInput : MonoBehaviour
 
     private float timeOfButtonPress;
 
-    void Update()
+    private void Update()
     {
         CheckPlayerInput();
     }

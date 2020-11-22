@@ -32,7 +32,7 @@ public class NextElementFieldController : PlayingFieldController
         NextElement = elements.GetRandomElement();
 
         spawnController.SpawnElement(NextElement.Matrix, NextElementField);
-        UpdateThePlayingField(NextElementField, NextElement.Color);
+        UpdatePlayingFieldState(NextElementField, NextElement.Color);
     }
 
     private void NextElementBorderInit()

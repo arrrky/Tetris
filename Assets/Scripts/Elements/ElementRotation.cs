@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using MiscTools;
 
 public class ElementRotation : MonoBehaviour
 {    
@@ -54,7 +53,7 @@ public class ElementRotation : MonoBehaviour
                 for (int x = 0; x < playingFieldController.CurrentElementSize; x++)
                     playingField.Matrix[y + yShift, x + xShift] = temp[y, x];
 
-            playingFieldController.UpdateThePlayingField(playingField, playingFieldController.CurrentElementColor);
+            playingFieldController.UpdatePlayingFieldState(playingField, playingFieldController.CurrentElementColor);
         }
     }
 }

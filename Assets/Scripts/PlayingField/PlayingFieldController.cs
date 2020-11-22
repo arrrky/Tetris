@@ -8,6 +8,7 @@ public class PlayingFieldController : MonoBehaviour
     [SerializeField] private GameObject parentOfBlocks;
     [SerializeField] private GameObject playingFieldBorderBlockPrefab;
     [SerializeField] private GameObject playingFiedBorderBlocksParent;
+
     [SerializeField] private ElementMovement elementMovement;
 
     private Border playingFieldBorder;
@@ -67,10 +68,11 @@ public class PlayingFieldController : MonoBehaviour
     {
         PlayingFieldInit();
         PlayingFieldBorderInit();
-     
+
         TopLeftPositionOfCurrentElement = TOP_LEFT_POSITION_DEFAULT;
 
-        elementMovement.LastRowOrElementsCollide += FallingToFallen;
+        elementMovement.ElementMoved += FullUpdate;
+        elementMovement.LastRowOrElementsCollided += FallingToFallen;
     }
 
     private void PlayingFieldBorderInit()
@@ -90,7 +92,7 @@ public class PlayingFieldController : MonoBehaviour
         PlayingField.Objects = new GameObject[PLAYING_FIELD_HEIGHT, PLAYING_FIELD_WIDTH];
         PlayingField.Sprites = new SpriteRenderer[PLAYING_FIELD_HEIGHT, PLAYING_FIELD_WIDTH];
         FillTheField(PlayingField, PLAYING_FIELD_X_SHIFT, PLAYING_FIELD_Y_SHIFT);
-        UpdateThePlayingField(PlayingField, CurrentElementColor);
+        UpdatePlayingFieldState(PlayingField, CurrentElementColor);
     }
 
     public void FillTheField(Field field, float xShift, float yShift)
@@ -112,7 +114,7 @@ public class PlayingFieldController : MonoBehaviour
     /// <summary>
     /// Обновление состояния игрового поля
     /// </summary>
-    public void UpdateThePlayingField(Field field, Color32 elementColor)
+    public void UpdatePlayingFieldState(Field field, Color32 elementColor)
     {
         for (int y = 0; y < field.Height; y++)
         {
@@ -138,6 +140,7 @@ public class PlayingFieldController : MonoBehaviour
                     PlayingField.Matrix[y, x] = FieldState.Fallen;
             }
         }
+        FullRowCheck();
         ElementFell?.Invoke();
     }
 
@@ -166,7 +169,7 @@ public class PlayingFieldController : MonoBehaviour
             PlayingField.Matrix[numberOfRowToDelete, x] = FieldState.Empty;
         }
 
-        FullRowCheck(); // Повторная проверка на случай, если заполненых рядов несколько
+        FullRowCheck(); // повторная проверка на случай, если заполненных рядов несколько
 
         if (FullRowsCount != 0)
         {
@@ -188,7 +191,7 @@ public class PlayingFieldController : MonoBehaviour
                     return;
                 PlayingField.Matrix[y + 1, x] = PlayingField.Matrix[y, x];
             }
-        }
+        }        
     }
 
     /// <summary>
@@ -219,10 +222,12 @@ public class PlayingFieldController : MonoBehaviour
         }
     }
 
-    public void WriteAndUpdate(FieldState[,] tempMatrix)
+    public void FullUpdate(FieldState[,] tempMatrix, Vector2 topLeftPointOfElementShift)
     {
+        FallenToTemp(tempMatrix);
         PlayingField.Matrix = tempMatrix;
         FullRowCheck();
-        UpdateThePlayingField(PlayingField, CurrentElementColor);
+        UpdatePlayingFieldState(PlayingField, CurrentElementColor);
+        TopLeftPositionOfCurrentElement += topLeftPointOfElementShift;
     }
 }

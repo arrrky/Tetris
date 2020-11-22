@@ -1,21 +1,24 @@
 ﻿using System;
 using UnityEngine;
-using MiscTools;
 
 public class ElementMovement : MonoBehaviour
 {
-    [SerializeField] private GameController gameController;
-    [SerializeField] private PlayingFieldController playingFieldController;   
+    [SerializeField] private GameController gameController;     
     [SerializeField] private ScoreController scoreController;
 
     private Field playingField;
 
-    public event Action LastRowOrElementsCollide;
+    private Func<int, bool> BorderCheck;
+
+    public event Action LastRowOrElementsCollided;
+    public event Action<FieldState[,], Vector2> ElementMoved;
 
     private void Start()
     {
-        playingField = playingFieldController.PlayingField;
+        playingField = FindObjectOfType<PlayingFieldController>().PlayingField;
+
         InvokeRepeating(nameof(FallingDown), 1f, LevelController.Instance.FallingDownAutoSpeed);
+
         gameController.GameOver += StopFallingDown;
         gameController.NextLevel += StopFallingDown;
     }   
@@ -24,7 +27,6 @@ public class ElementMovement : MonoBehaviour
     {
         // Во временную матрицу будем записывать поле с уже смещенным элементом
         FieldState[,] tempMatrix = new FieldState[playingField.Height, playingField.Width];
-        playingFieldController.FallenToTemp(tempMatrix);
 
         // Меняем состояние в матрице-поле снизу вверх, иначе (при проходе сверху вниз) мы будем проходить по уже измененным элементам
         // и элемент "упадет" за один проход циклов
@@ -36,7 +38,7 @@ public class ElementMovement : MonoBehaviour
                 {
                     if (IsFallingElementAboveFallen(x, y) || IsLastRow(x, y))
                     {
-                        LastRowOrElementsCollide?.Invoke();
+                        LastRowOrElementsCollided?.Invoke();
                         return;
                     }
                 }
@@ -47,8 +49,40 @@ public class ElementMovement : MonoBehaviour
                 }
             }
         }
-        playingFieldController.TopLeftPositionOfCurrentElement += new Vector2(0, 1);
-        playingFieldController.WriteAndUpdate(tempMatrix);
+        ElementMoved?.Invoke(tempMatrix, new Vector2(0, 1));    
+    }
+
+    public void HorizontalMovement()
+    {
+        FieldState[,] tempMatrix = new FieldState[playingField.Height, playingField.Width];
+        int direction = 0;
+
+        if (Input.GetButtonDown("MoveToTheRight"))
+        {
+            direction = 1;
+            BorderCheck = IsRightBorderNear;
+        }
+        if (Input.GetButtonDown("MoveToTheLeft"))
+        {
+            direction = -1;
+            BorderCheck = IsLeftBorderNear;
+        }
+
+        for (int y = playingField.Height - 1; y >= 0; y--)
+        {
+            for (int x = playingField.Width - 1; x >= 0; x--)
+            {
+                if (playingField.Matrix[y, x] == FieldState.Falling)
+                {
+                    if (BorderCheck(x))
+                        return;
+                    if (IsOtherBlockNear(x, y, direction))
+                        return;
+                    tempMatrix[y, x + direction] = FieldState.Falling;
+                }
+            }
+        }
+        ElementMoved?.Invoke(tempMatrix, new Vector2(direction, 0));
     }
 
     public void StopFallingDown()
@@ -74,42 +108,5 @@ public class ElementMovement : MonoBehaviour
     private bool IsOtherBlockNear(int x, int y, int direction)
     {
         return (playingField.Matrix[y, x + direction] == FieldState.Fallen);
-    }
-
-    private Func<int, bool> borderCheck;
-
-    public void HorizontalMovement()
-    {
-        FieldState[,] tempMatrix = new FieldState[playingField.Height, playingField.Width];
-        playingFieldController.FallenToTemp(tempMatrix);
-        int direction = 0;
-
-        if (Input.GetButtonDown("MoveToTheRight"))
-        {
-            direction = 1;
-            borderCheck = IsRightBorderNear;
-        }
-        if (Input.GetButtonDown("MoveToTheLeft"))
-        {
-            direction = -1;
-            borderCheck = IsLeftBorderNear;
-        }
-
-        for (int y = playingField.Height - 1; y >= 0; y--)
-        {
-            for (int x = playingField.Width - 1; x >= 0; x--)
-            {
-                if (playingField.Matrix[y, x] == FieldState.Falling)
-                {
-                    if (borderCheck(x))
-                        return;
-                    if (IsOtherBlockNear(x, y, direction))
-                        return;
-                    tempMatrix[y, x + direction] = FieldState.Falling;
-                }
-            }
-        }
-        playingFieldController.WriteAndUpdate(tempMatrix);
-        playingFieldController.TopLeftPositionOfCurrentElement += new Vector2(direction, 0);
-    }
+    }    
 }
