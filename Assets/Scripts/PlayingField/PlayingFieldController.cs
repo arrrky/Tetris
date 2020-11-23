@@ -141,7 +141,7 @@ public class PlayingFieldController : MonoBehaviour
             }
         }
         FullRowCheck();
-        ElementFell?.Invoke();
+        ElementFell?.Invoke();       
     }
 
     public void FullRowCheck()

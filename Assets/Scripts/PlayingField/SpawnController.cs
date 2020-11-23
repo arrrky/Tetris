@@ -34,8 +34,7 @@ public class SpawnController : MonoBehaviour
         playingFieldController.CurrentElementArray = element.Matrix;
         playingFieldController.CurrentElementSize = element.Matrix.GetLength(0);
 
-        playingFieldController.TopLeftPositionOfCurrentElement = playingFieldController.TOP_LEFT_POSITION_DEFAULT;     
-        
+        playingFieldController.TopLeftPositionOfCurrentElement = playingFieldController.TOP_LEFT_POSITION_DEFAULT;            
 
         for (int y = 0; y < element.Matrix.GetLength(0); y++)
         {

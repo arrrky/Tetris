@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class ElementMovement : MonoBehaviour
 {
-    [SerializeField] private GameController gameController;     
+    [SerializeField] private GameController gameController;
     [SerializeField] private ScoreController scoreController;
 
     private Field playingField;
@@ -21,7 +21,7 @@ public class ElementMovement : MonoBehaviour
 
         gameController.GameOver += StopFallingDown;
         gameController.NextLevel += StopFallingDown;
-    }   
+    }
 
     public void FallingDown()
     {
@@ -34,14 +34,12 @@ public class ElementMovement : MonoBehaviour
         {
             for (int x = 0; x < playingField.Width; x++)
             {
-                if (y > 0)
+                if (IsFallingElementAboveFallen(x, y) || IsLastRow(x, y))
                 {
-                    if (IsFallingElementAboveFallen(x, y) || IsLastRow(x, y))
-                    {
-                        LastRowOrElementsCollided?.Invoke();
-                        return;
-                    }
+                    LastRowOrElementsCollided?.Invoke();
+                    return;
                 }
+
 
                 if (playingField.Matrix[y, x] == FieldState.Falling)
                 {
@@ -49,7 +47,7 @@ public class ElementMovement : MonoBehaviour
                 }
             }
         }
-        ElementMoved?.Invoke(tempMatrix, new Vector2(0, 1));    
+        ElementMoved?.Invoke(tempMatrix, new Vector2(0, 1));
     }
 
     public void HorizontalMovement()
@@ -108,5 +106,5 @@ public class ElementMovement : MonoBehaviour
     private bool IsOtherBlockNear(int x, int y, int direction)
     {
         return (playingField.Matrix[y, x + direction] == FieldState.Fallen);
-    }    
+    }
 }

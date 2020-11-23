@@ -4,7 +4,7 @@ using MiscTools;
 using UnityEngine.UI;
 using System.Linq;
 
-public class Rainbow : EasterEggsController
+public class Rainbow : EasterEggController
 {
     [SerializeField] private Text title;
 
