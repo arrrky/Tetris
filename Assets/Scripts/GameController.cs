@@ -22,7 +22,7 @@ public class GameController : MonoBehaviour
     [SerializeField] private GameObject mainBorderBlockPrefab;
     [SerializeField] private GameObject mainBorderBlocksParent;
 
-    public const float GAME_START_TIME = 2f;
+    public const float GameStartTime = 2f;
     public static Vector3 ScreenBounds { get; set; }
 
     private Border mainBorder;
@@ -38,7 +38,13 @@ public class GameController : MonoBehaviour
         lblGoal.text = $"Goal: {LevelController.Instance.Goal}";
         lblLevel.text = $"Level: {LevelController.Instance.Level}";
         StartCoroutine(StartTheGameRoutine());
-    }    
+
+        SavePlayerProfile();
+
+        Debug.Log(PlayerProfileController.Instance.playerProfile.Name);     
+        Debug.Log(PlayerProfileController.Instance.playerProfile.MaxLevel);
+        Debug.Log(LevelController.Instance.Level);
+    }
 
     private void MainBorderInit()
     {
@@ -57,15 +63,15 @@ public class GameController : MonoBehaviour
     }
 
     public IEnumerator GameOverRoutine()
-    {
+    {        
         GameOver?.Invoke();
         gameOverText.SetActive(true);     
-        playerInput.SetActive(false);
+        playerInput.SetActive(false);    
 
         LevelController.Instance.Reset();
 
         yield return new WaitForSeconds(3f);
-        Tools.LoadMainMenu();
+        Tools.LoadScene(Scenes.MainMenu);
     }
 
     public IEnumerator NextLevelRoutine()
@@ -92,6 +98,11 @@ public class GameController : MonoBehaviour
     
     public void GoToMainMenu()
     {
-        Tools.LoadMainMenu();
+        Tools.LoadScene(Scenes.MainMenu);
     }        
+
+    public void SavePlayerProfile()
+    {
+        PlayerProfileController.Instance.playerProfile.MaxLevel = LevelController.Instance.Level - 1;
+    }
 }

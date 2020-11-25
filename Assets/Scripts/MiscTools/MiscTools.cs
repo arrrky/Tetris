@@ -2,6 +2,12 @@ using UnityEngine.SceneManagement;
 using UnityEngine;
 using System.Collections.Generic;
 
+public enum Scenes
+{
+    MainMenu = 0,
+    Game = 1,
+}
+
 namespace MiscTools
 {
     public class Tools
@@ -37,12 +43,12 @@ namespace MiscTools
         {
             SpriteRenderer spriteRenderer = borderBlockPrefab.GetComponent<SpriteRenderer>();
             return new Vector2(spriteRenderer.bounds.extents.x, spriteRenderer.bounds.extents.y);
-        }
-
-        public static void LoadMainMenu()
-        {
-            SceneManager.LoadScene(0);
         }        
+        
+        public static void LoadScene(Scenes scene)
+        {
+            SceneManager.LoadScene((int)scene);
+        }
 
         public static Dictionary<string, Color32> rainbowColors = new Dictionary<string, Color32>
         {

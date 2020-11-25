@@ -13,8 +13,8 @@ public class NextElementFieldController : PlayingFieldController
     private Field nextElementField;
     private Element nextElement;
 
-    private const int NEXT_ELEMENT_FIELD_HEIGHT = 4;
-    private const int NEXT_ELEMENT_FIELD_WIDTH = 4;
+    private const int NextElementFieldHeight = 4;
+    private const int NextElementFieldWidth = 4;
 
     private int nextElementBorderXShift; // смещение относительно центра экрана
     private int nextElementBorderSize;
@@ -37,7 +37,7 @@ public class NextElementFieldController : PlayingFieldController
 
     private void NextElementBorderInit()
     {
-        nextElementBorderXShift = PLAYING_FIELD_WIDTH / 2 + 3;
+        nextElementBorderXShift = PlayingFieldWIdth / 2 + 3;
         nextElementBorderSize = 8;
         nextElementBorder = gameObject.AddComponent(typeof(Border)) as Border;
         nextElementBorder.SpriteShift = Tools.GetSpriteShift(nextFieldBorderBlockPrefab);
@@ -51,11 +51,11 @@ public class NextElementFieldController : PlayingFieldController
         int nextElementFieldYShift = (int)nextElementBorder.TopLeftPoint.y - 7;
 
         NextElementField = gameObject.AddComponent(typeof(Field)) as Field;
-        NextElementField.Height = NEXT_ELEMENT_FIELD_HEIGHT;
-        NextElementField.Width = NEXT_ELEMENT_FIELD_WIDTH;
-        NextElementField.Matrix = new FieldState[NEXT_ELEMENT_FIELD_HEIGHT, NEXT_ELEMENT_FIELD_WIDTH];
-        NextElementField.Objects = new GameObject[NEXT_ELEMENT_FIELD_HEIGHT, NEXT_ELEMENT_FIELD_WIDTH];
-        NextElementField.Sprites = new SpriteRenderer[NEXT_ELEMENT_FIELD_HEIGHT, NEXT_ELEMENT_FIELD_WIDTH];
+        NextElementField.Height = NextElementFieldHeight;
+        NextElementField.Width = NextElementFieldWidth;
+        NextElementField.Matrix = new FieldState[NextElementFieldHeight, NextElementFieldWidth];
+        NextElementField.Objects = new GameObject[NextElementFieldHeight, NextElementFieldWidth];
+        NextElementField.Sprites = new SpriteRenderer[NextElementFieldHeight, NextElementFieldWidth];
         FillTheField(NextElementField, nextElementFieldXShift, nextElementFieldYShift);
     }
 }

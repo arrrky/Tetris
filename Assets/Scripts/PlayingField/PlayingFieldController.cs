@@ -54,12 +54,12 @@ public class PlayingFieldController : MonoBehaviour
 
     #endregion    
 
-    public readonly Vector2 TOP_LEFT_POSITION_DEFAULT = new Vector2(SpawnController.SPAWN_POINT, 0);
+    public readonly Vector2 TopLeftPositionDefault = new Vector2(SpawnController.SpawnPoint, 0);
 
-    public const int PLAYING_FIELD_HEIGHT = 20;
-    public const int PLAYING_FIELD_WIDTH = 10;
-    private const float PLAYING_FIELD_X_SHIFT = -4.5f;
-    private const float PLAYING_FIELD_Y_SHIFT = -10.5f;
+    public const int PlayingFieldHeight = 20;
+    public const int PlayingFieldWIdth = 10;
+    private const float PlayingFieldXShift = -4.5f;
+    private const float PlayingFieldYShift = -10.5f;
 
     public event Action RowDeleted;
     public event Action ElementFell;
@@ -69,7 +69,7 @@ public class PlayingFieldController : MonoBehaviour
         PlayingFieldInit();
         PlayingFieldBorderInit();
 
-        TopLeftPositionOfCurrentElement = TOP_LEFT_POSITION_DEFAULT;
+        TopLeftPositionOfCurrentElement = TopLeftPositionDefault;
 
         elementMovement.ElementMoved += FullUpdate;
         elementMovement.LastRowOrElementsCollided += FallingToFallen;
@@ -79,19 +79,19 @@ public class PlayingFieldController : MonoBehaviour
     {
         playingFieldBorder = gameObject.AddComponent(typeof(Border)) as Border;
         playingFieldBorder.SpriteShift = Tools.GetSpriteShift(playingFieldBorderBlockPrefab);
-        playingFieldBorder.TopLeftPoint = new Vector2(-PLAYING_FIELD_WIDTH / 2 - 1, GameController.ScreenBounds.y - 1);
-        playingFieldBorder.CreateBorder(PLAYING_FIELD_WIDTH + 1, PLAYING_FIELD_HEIGHT + 1, playingFieldBorderBlockPrefab, playingFiedBorderBlocksParent);
+        playingFieldBorder.TopLeftPoint = new Vector2(-PlayingFieldWIdth / 2 - 1, GameController.ScreenBounds.y - 1);
+        playingFieldBorder.CreateBorder(PlayingFieldWIdth + 1, PlayingFieldHeight + 1, playingFieldBorderBlockPrefab, playingFiedBorderBlocksParent);
     }
 
     private void PlayingFieldInit()
     {
         PlayingField = gameObject.AddComponent(typeof(Field)) as Field;
-        PlayingField.Height = PLAYING_FIELD_HEIGHT;
-        PlayingField.Width = PLAYING_FIELD_WIDTH;
-        PlayingField.Matrix = new FieldState[PLAYING_FIELD_HEIGHT, PLAYING_FIELD_WIDTH];
-        PlayingField.Objects = new GameObject[PLAYING_FIELD_HEIGHT, PLAYING_FIELD_WIDTH];
-        PlayingField.Sprites = new SpriteRenderer[PLAYING_FIELD_HEIGHT, PLAYING_FIELD_WIDTH];
-        FillTheField(PlayingField, PLAYING_FIELD_X_SHIFT, PLAYING_FIELD_Y_SHIFT);
+        PlayingField.Height = PlayingFieldHeight;
+        PlayingField.Width = PlayingFieldWIdth;
+        PlayingField.Matrix = new FieldState[PlayingFieldHeight, PlayingFieldWIdth];
+        PlayingField.Objects = new GameObject[PlayingFieldHeight, PlayingFieldWIdth];
+        PlayingField.Sprites = new SpriteRenderer[PlayingFieldHeight, PlayingFieldWIdth];
+        FillTheField(PlayingField, PlayingFieldXShift, PlayingFieldYShift);
         UpdatePlayingFieldState(PlayingField, CurrentElementColor);
     }
 

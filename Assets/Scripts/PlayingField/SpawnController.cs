@@ -7,7 +7,7 @@ public class SpawnController : MonoBehaviour
     [SerializeField] private PlayingFieldController playingFieldController;
     [SerializeField] private NextElementFieldController nextElementFieldController;   
 
-    public const int SPAWN_POINT = 4;
+    public const int SpawnPoint = 4;
 
     private void Start()
     {
@@ -34,17 +34,17 @@ public class SpawnController : MonoBehaviour
         playingFieldController.CurrentElementArray = element.Matrix;
         playingFieldController.CurrentElementSize = element.Matrix.GetLength(0);
 
-        playingFieldController.TopLeftPositionOfCurrentElement = playingFieldController.TOP_LEFT_POSITION_DEFAULT;            
+        playingFieldController.TopLeftPositionOfCurrentElement = playingFieldController.TopLeftPositionDefault;            
 
         for (int y = 0; y < element.Matrix.GetLength(0); y++)
         {
             for (int x = 0; x < element.Matrix.GetLength(1); x++)
             {
-                if (playingFieldController.PlayingField.Matrix[y, x + SPAWN_POINT] == FieldState.Fallen)
-                {
+                if (playingFieldController.PlayingField.Matrix[y, x + SpawnPoint] == FieldState.Fallen)
+                {                   
                     StartCoroutine(gameController.GameOverRoutine());
                 }
-                playingFieldController.PlayingField.Matrix[y, x + SPAWN_POINT] = element.Matrix[y, x];
+                playingFieldController.PlayingField.Matrix[y, x + SpawnPoint] = element.Matrix[y, x];
             }
         }
         playingFieldController.UpdatePlayingFieldState(playingFieldController.PlayingField, playingFieldController.CurrentElementColor);
