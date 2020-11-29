@@ -20,6 +20,11 @@ namespace MiscTools
                 for (int x = 0; x < element.GetLength(1); x++)
                     temp[y, x] = (FieldState)element[y, x];
             return temp;
+        }        
+
+        public static void LoadScene(Scenes scene)
+        {
+            SceneManager.LoadScene((int)scene);
         }
 
         public static void CurrentSceneReload()
@@ -43,12 +48,7 @@ namespace MiscTools
         {
             SpriteRenderer spriteRenderer = borderBlockPrefab.GetComponent<SpriteRenderer>();
             return new Vector2(spriteRenderer.bounds.extents.x, spriteRenderer.bounds.extents.y);
-        }        
-        
-        public static void LoadScene(Scenes scene)
-        {
-            SceneManager.LoadScene((int)scene);
-        }
+        }    
 
         public static Dictionary<string, Color32> rainbowColors = new Dictionary<string, Color32>
         {
@@ -59,7 +59,6 @@ namespace MiscTools
             {"lightblue",new Color32(10, 150, 203, 255) },
             {"blue",     new Color32(3, 65, 174, 255) },
             {"violet",   new Color32(136, 43, 222 , 255) }
-
         };
     }
 }

@@ -33,17 +33,12 @@ public class GameController : MonoBehaviour
 
     private void Start()
     {
+        SavePlayerDataInRuntime();
         ScreenBounds = Tools.GetScreenBounds();
         MainBorderInit();
         lblGoal.text = $"Goal: {LevelController.Instance.Goal}";
         lblLevel.text = $"Level: {LevelController.Instance.Level}";
-        StartCoroutine(StartTheGameRoutine());
-
-        SavePlayerProfile();
-
-        Debug.Log(PlayerProfileController.Instance.playerProfile.Name);     
-        Debug.Log(PlayerProfileController.Instance.playerProfile.MaxLevel);
-        Debug.Log(LevelController.Instance.Level);
+        StartCoroutine(StartTheGameRoutine());   
     }
 
     private void MainBorderInit()
@@ -65,6 +60,7 @@ public class GameController : MonoBehaviour
     public IEnumerator GameOverRoutine()
     {        
         GameOver?.Invoke();
+        PlayerProfileController.Instance.CallSavePlayerData();
         gameOverText.SetActive(true);     
         playerInput.SetActive(false);    
 
@@ -99,10 +95,12 @@ public class GameController : MonoBehaviour
     public void GoToMainMenu()
     {
         Tools.LoadScene(Scenes.MainMenu);
-    }        
-
-    public void SavePlayerProfile()
+    } 
+    
+   private void SavePlayerDataInRuntime()
     {
-        PlayerProfileController.Instance.playerProfile.MaxLevel = LevelController.Instance.Level - 1;
+        if (PlayerProfileController.Instance.playerProfile.MaxLevel > LevelController.Instance.Level - 1)
+            return;
+        PlayerProfileController.Instance.playerProfile.MaxLevel = LevelController.Instance.Level - 1; //записываем предыдущий (пройденный) уровень
     }
 }

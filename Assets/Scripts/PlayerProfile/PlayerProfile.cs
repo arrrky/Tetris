@@ -1,31 +1,10 @@
 ﻿public class PlayerProfile
 {
-    private string name;
-
-    public string Name
-    {
-        get { return name; }
-        set
-        {
-            if (value == "")
-            {
-                name = "Unknown";
-            }
-            else
-            {
-                name = value;
-            }
-        }
-    }        
-     
+    public string Name { get; set; }     
     public int MaxLevel { get; set; }
     public int MaxScore { get; set; }
 
-    public PlayerProfile()
-    {
-        
-    }
-
+    public PlayerProfile() { }
     public PlayerProfile(string name, int maxLevel, int maxScore)
     {
         Name = name;

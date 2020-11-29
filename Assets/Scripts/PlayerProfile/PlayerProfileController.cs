@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections;
 
 public class PlayerProfileController : MonoBehaviour
 {
@@ -25,4 +26,30 @@ public class PlayerProfileController : MonoBehaviour
             playerProfile = new PlayerProfile();
         }
     }
+
+    public void CallSavePlayerData()
+    {
+        if (playerProfile.Name == null)
+            return;
+        StartCoroutine(SavePlayerDataRoutine());
+    }
+
+    private IEnumerator SavePlayerDataRoutine()
+    {
+        WWWForm form = new WWWForm();
+        form.AddField("name", playerProfile.Name);
+        form.AddField("max_level", playerProfile.MaxLevel);
+
+        WWW www = new WWW("http://localhost/tetris/savedata.php", form);
+        yield return www;
+
+        if (www.text == "0")
+        {
+            Debug.Log("Player profile saved");
+        }
+        else
+        {
+            Debug.Log("Save failed. Error #" + www.text);
+        }
+    }    
 }
