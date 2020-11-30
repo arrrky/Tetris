@@ -6,6 +6,8 @@ public class PlayerProfileController : MonoBehaviour
     public static PlayerProfileController Instance { get; set; }
     public PlayerProfile playerProfile;
 
+    public const string linkToDB = "https://ivaltetris.000webhostapp.com/";
+
     private void Awake()
     {
         if (Instance == null)
@@ -40,7 +42,7 @@ public class PlayerProfileController : MonoBehaviour
         form.AddField("name", playerProfile.Name);
         form.AddField("max_level", playerProfile.MaxLevel);
 
-        WWW www = new WWW("http://localhost/tetris/savedata.php", form);
+        WWW www = new WWW(linkToDB + "savedata.php", form);
         yield return www;
 
         if (www.text == "0")

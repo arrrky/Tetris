@@ -86,4 +86,9 @@ public class MainMenuController : MonoBehaviour
         PlayerProfileController.Instance.playerProfile.Name = null;
         Tools.CurrentSceneReload();
     }
+
+    public void OpenScoreboardPage()
+    {
+        Application.OpenURL(PlayerProfileController.linkToDB + "scoreboard.php");
+    }
 }

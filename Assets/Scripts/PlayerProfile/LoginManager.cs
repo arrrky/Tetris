@@ -18,7 +18,7 @@ public class LoginManager : InputFieldController
         form.AddField("name", nameInputField.text);
         form.AddField("password", passwordInputField.text);
 
-        WWW www = new WWW("http://localhost/tetris/login.php", form);
+        WWW www = new WWW(PlayerProfileController.linkToDB + "login.php", form);
 
         yield return www;
 

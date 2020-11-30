@@ -15,7 +15,7 @@ public class RegisterManager : InputFieldController
         form.AddField("name", nameInputField.text);
         form.AddField("password", passwordInputField.text);
 
-        WWW www = new WWW("http://localhost/tetris/register.php", form);
+        WWW www = new WWW(PlayerProfileController.linkToDB + "register.php", form);
 
         yield return www;
 
