@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 
 public class ElementMovement : MonoBehaviour
@@ -8,7 +9,7 @@ public class ElementMovement : MonoBehaviour
 
     private Field playingField;
 
-    private Func<int, bool> BorderCheck;
+    private Func<int, bool> BorderCheck;    
 
     public event Action LastRowOrElementsCollided;
     public event Action<FieldState[,], Vector2> ElementMoved;
@@ -17,10 +18,9 @@ public class ElementMovement : MonoBehaviour
     {
         playingField = FindObjectOfType<PlayingFieldController>().PlayingField;
 
-        InvokeRepeating(nameof(FallingDown), 1f, LevelController.Instance.FallingDownAutoSpeed);
-
-        gameController.GameOver += StopFallingDown;
-        gameController.NextLevel += StopFallingDown;
+        StartAutoFallingDown();
+        gameController.GameOver += StopAutoFallingDown;
+        gameController.NextLevel += StopAutoFallingDown;
     }
 
     public void FallingDown()
@@ -37,9 +37,12 @@ public class ElementMovement : MonoBehaviour
                 if (IsFallingElementAboveFallen(x, y) || IsLastRow(x, y))
                 {
                     LastRowOrElementsCollided?.Invoke();
+                    if (GameModeManager.Instance.ChosenGameMode == GameMode.Score)
+                    {
+                        RestartAutoFallingDown();
+                    }
                     return;
                 }
-
 
                 if (playingField.Matrix[y, x] == FieldState.Falling)
                 {
@@ -83,9 +86,21 @@ public class ElementMovement : MonoBehaviour
         ElementMoved?.Invoke(tempMatrix, new Vector2(direction, 0));
     }
 
-    public void StopFallingDown()
+    public void StartAutoFallingDown()
+    {
+        InvokeRepeating(nameof(FallingDown), 1, LevelController.Instance.FallingDownAutoSpeed);
+    }
+
+    public void StopAutoFallingDown()
     {
         CancelInvoke(nameof(FallingDown));
+    }
+
+    public void RestartAutoFallingDown()
+    {
+        CancelInvoke(nameof(FallingDown));
+        LevelController.Instance.IncreaseScoreModeAutoFallingSpeed();
+        InvokeRepeating(nameof(FallingDown), LevelController.Instance.FallingDownAutoSpeed, LevelController.Instance.FallingDownAutoSpeed);
     }
 
     private bool IsFallingElementAboveFallen(int x, int y)
@@ -106,5 +121,5 @@ public class ElementMovement : MonoBehaviour
     private bool IsOtherBlockNear(int x, int y, int direction)
     {
         return (playingField.Matrix[y, x + direction] == FieldState.Fallen);
-    }
+    }     
 }

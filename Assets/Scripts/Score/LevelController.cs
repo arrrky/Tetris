@@ -8,6 +8,8 @@ public class LevelController : MonoBehaviour
     private const int LevelAtStart = 1;
     private const float FallingDownAutoSpeedAtStart = 1.5f;
     private const float FallingDownAutoSpeedIncrease = 0.15f;
+    private const float ScoreModeFallingDownAutoSpeedLerpRatio = 0.02f;
+
 
     private readonly int[] goalMultipliers = new int[2] { 5, 2 };
 
@@ -30,6 +32,11 @@ public class LevelController : MonoBehaviour
 
     public void ChangeLevel()
     {
+        if (PlayerProfileController.Instance.playerProfile.MaxLevel < Level)
+        {
+            PlayerProfileController.Instance.playerProfile.MaxLevel = Level;
+        }        
+
         Level++;
         Goal *= (Level % 2 == 0) ? goalMultipliers[0] : goalMultipliers[1];
         FallingDownAutoSpeed -= FallingDownAutoSpeedIncrease;
@@ -40,5 +47,10 @@ public class LevelController : MonoBehaviour
         Goal = GoalAtStart;
         Level = LevelAtStart;
         FallingDownAutoSpeed = FallingDownAutoSpeedAtStart;       
+    }
+
+    public void IncreaseScoreModeAutoFallingSpeed()
+    {
+        FallingDownAutoSpeed = Mathf.Lerp(FallingDownAutoSpeed, 0,ScoreModeFallingDownAutoSpeedLerpRatio);
     }
 }

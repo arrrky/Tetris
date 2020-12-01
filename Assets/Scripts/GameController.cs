@@ -5,10 +5,10 @@ using System.Collections;
 using MiscTools;
 
 public class GameController : MonoBehaviour
-{ 
-    [SerializeField] private ElementMovement elementMovement;    
+{
+    [SerializeField] private ElementMovement elementMovement;
 
-    [SerializeField] private GameObject playerInput;      
+    [SerializeField] private GameObject playerInput;
     [SerializeField] private GameObject gameOverText;
     [SerializeField] private GameObject youWinText;
     [SerializeField] private GameObject pauseText;
@@ -18,7 +18,7 @@ public class GameController : MonoBehaviour
 
     [SerializeField] private Text lblLevel;
     [SerializeField] private Text lblGoal;
-   
+
     [SerializeField] private GameObject mainBorderBlockPrefab;
     [SerializeField] private GameObject mainBorderBlocksParent;
 
@@ -32,13 +32,13 @@ public class GameController : MonoBehaviour
     public event Action NextLevel;
 
     private void Start()
-    {
-        SavePlayerDataInRuntime();
+    {        
         ScreenBounds = Tools.GetScreenBounds();
         MainBorderInit();
-        lblGoal.text = $"Goal: {LevelController.Instance.Goal}";
-        lblLevel.text = $"Level: {LevelController.Instance.Level}";
-        StartCoroutine(StartTheGameRoutine());   
+
+        GameModeSetup();
+
+        StartCoroutine(StartTheGameRoutine());
     }
 
     private void MainBorderInit()
@@ -58,11 +58,10 @@ public class GameController : MonoBehaviour
     }
 
     public IEnumerator GameOverRoutine()
-    {        
+    {
         GameOver?.Invoke();
-        PlayerProfileController.Instance.CallSavePlayerData();
-        gameOverText.SetActive(true);     
-        playerInput.SetActive(false);    
+        gameOverText.SetActive(true);
+        playerInput.SetActive(false);
 
         LevelController.Instance.Reset();
 
@@ -73,7 +72,7 @@ public class GameController : MonoBehaviour
     public IEnumerator NextLevelRoutine()
     {
         NextLevel?.Invoke();
-        youWinText.SetActive(true);        
+        youWinText.SetActive(true);
         playerInput.SetActive(false);
 
         LevelController.Instance.ChangeLevel();
@@ -86,21 +85,29 @@ public class GameController : MonoBehaviour
     {
         bool gameOnPause = Time.timeScale == 0;
         Time.timeScale = gameOnPause ? 1 : 0;
-        
+
         pauseText.SetActive(!gameOnPause);
         controlsText.SetActive(!gameOnPause);
         goToMainMenuButton.SetActive(!gameOnPause);
-    }   
-    
+    }
+
     public void GoToMainMenu()
     {
         Tools.LoadScene(Scenes.MainMenu);
-    } 
-    
-   private void SavePlayerDataInRuntime()
+    }   
+
+    private void GameModeSetup()
     {
-        if (PlayerProfileController.Instance.playerProfile.MaxLevel > LevelController.Instance.Level - 1)
-            return;
-        PlayerProfileController.Instance.playerProfile.MaxLevel = LevelController.Instance.Level - 1; //записываем предыдущий (пройденный) уровень
+        switch(GameModeManager.Instance.ChosenGameMode)
+        {
+            case GameMode.Level:
+                lblGoal.text = $"Goal: {LevelController.Instance.Goal}";
+                lblLevel.text = $"Level: {LevelController.Instance.Level}";           
+                break;
+            case GameMode.Score:
+                lblGoal.text = "";
+                lblLevel.text = "";            
+                break;
+        }
     }
 }

@@ -41,6 +41,7 @@ public class PlayerProfileController : MonoBehaviour
         WWWForm form = new WWWForm();
         form.AddField("name", playerProfile.Name);
         form.AddField("max_level", playerProfile.MaxLevel);
+        form.AddField("max_score", playerProfile.MaxScore);
 
         WWW www = new WWW(linkToDB + "savedata.php", form);
         yield return www;

@@ -68,12 +68,13 @@ public class MainMenuController : MonoBehaviour
     {
         if (PlayerProfileController.Instance.playerProfile.Name == null)
         {
-            CurrentPlayerProfile.text = "Player: \nunknown";
+            CurrentPlayerProfile.text = "Player: \n" +
+                                        "unknown";
         }
         else
         {
             CurrentPlayerProfile.text =
-                "Player: \n" + PlayerProfileController.Instance.playerProfile.Name + "\n" +
+                "Player: \n"    + PlayerProfileController.Instance.playerProfile.Name + "\n" +
                 "Max Level: \n" + PlayerProfileController.Instance.playerProfile.MaxLevel + "\n" +
                 "Max Score: \n" + PlayerProfileController.Instance.playerProfile.MaxScore;
         }
@@ -90,5 +91,5 @@ public class MainMenuController : MonoBehaviour
     public void OpenScoreboardPage()
     {
         Application.OpenURL(PlayerProfileController.linkToDB + "scoreboard.php");
-    }
+    }       
 }
