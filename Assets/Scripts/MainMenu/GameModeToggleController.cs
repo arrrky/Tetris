@@ -6,25 +6,24 @@ public class GameModeToggleController : MonoBehaviour
     [SerializeField] private Toggle levelMode;
     [SerializeField] private Toggle scoreMode;
 
-    private void Awake()
+    private void Start()
     {
         levelMode.isOn = true;
+        levelMode.interactable = false;
         scoreMode.isOn = false;
     }
 
     public void LevelModeOn()
     {
         GameModeManager.Instance.ChosenGameMode = GameMode.Level;
-        scoreMode.isOn = false;
-        levelMode.interactable = false;
         scoreMode.interactable = true;
+        levelMode.interactable = false;
     }
 
     public void ScoreModeOn()
     {
         GameModeManager.Instance.ChosenGameMode = GameMode.Score;
-        levelMode.isOn = false;
-        scoreMode.interactable = false;
         levelMode.interactable = true;
+        scoreMode.interactable = false;
     }
 }

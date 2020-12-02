@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using MiscTools;
 using System;
+using System.Collections;
 
 public class PlayingFieldController : MonoBehaviour
 {
@@ -157,16 +158,18 @@ public class PlayingFieldController : MonoBehaviour
             if (isFullRow)
             {
                 FullRowsCount++;
-                DeleteFullRow(y);
+                StartCoroutine(DeleteFullRow(y));
             }
         }
     }
 
-    private void DeleteFullRow(int numberOfRowToDelete)
+    private IEnumerator DeleteFullRow(int numberOfRowToDelete)
     {
-        for (int x = PlayingField.Width - 1; x >= 0; x--)
+        for (int x = 0; x < PlayingField.Width; x++)
         {
-            PlayingField.Matrix[numberOfRowToDelete, x] = FieldState.Empty;
+            PlayingField.Matrix[numberOfRowToDelete, x] = FieldState.Empty;           
+            PlayingField.Objects[numberOfRowToDelete, x].SetActive(false);
+            yield return new WaitForSeconds(0.01f);
         }
 
         FullRowCheck(); // повторная проверка на случай, если заполненных рядов несколько
@@ -176,8 +179,12 @@ public class PlayingFieldController : MonoBehaviour
             RowDeleted?.Invoke();
         }
 
-        FullRowsCount = 0;
-        MoveRowsAboveDeletedRow(numberOfRowToDelete);
+        for (int i = 0; i < FullRowsCount; i++)
+        {
+            MoveRowsAboveDeletedRow(numberOfRowToDelete);
+        }
+
+        FullRowsCount = 0;  
     }
 
     private void MoveRowsAboveDeletedRow(int numberOfRowToDelete)
@@ -191,7 +198,7 @@ public class PlayingFieldController : MonoBehaviour
                     return;
                 PlayingField.Matrix[y + 1, x] = PlayingField.Matrix[y, x];
             }
-        }        
+        }          
     }
 
     /// <summary>

@@ -39,6 +39,8 @@ public class ElementMovement : MonoBehaviour
                     LastRowOrElementsCollided?.Invoke();
                     if (GameModeManager.Instance.ChosenGameMode == GameMode.Score)
                     {
+                        if (gameController.isGameOver)
+                            return;
                         RestartAutoFallingDown();
                     }
                     return;
@@ -93,7 +95,7 @@ public class ElementMovement : MonoBehaviour
 
     public void StopAutoFallingDown()
     {
-        CancelInvoke(nameof(FallingDown));
+        CancelInvoke();
     }
 
     public void RestartAutoFallingDown()

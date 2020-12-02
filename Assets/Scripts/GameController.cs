@@ -31,6 +31,8 @@ public class GameController : MonoBehaviour
     public event Action GameOver;
     public event Action NextLevel;
 
+    public bool isGameOver = false;
+
     private void Start()
     {        
         ScreenBounds = Tools.GetScreenBounds();
@@ -59,9 +61,10 @@ public class GameController : MonoBehaviour
 
     public IEnumerator GameOverRoutine()
     {
+        isGameOver = true;
         GameOver?.Invoke();
         gameOverText.SetActive(true);
-        playerInput.SetActive(false);
+        playerInput.SetActive(false);        
 
         LevelController.Instance.Reset();
 

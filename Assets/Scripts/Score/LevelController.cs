@@ -10,7 +10,6 @@ public class LevelController : MonoBehaviour
     private const float FallingDownAutoSpeedIncrease = 0.15f;
     private const float ScoreModeFallingDownAutoSpeedLerpRatio = 0.02f;
 
-
     private readonly int[] goalMultipliers = new int[2] { 5, 2 };
 
     public int Goal { get; set; } = GoalAtStart;
