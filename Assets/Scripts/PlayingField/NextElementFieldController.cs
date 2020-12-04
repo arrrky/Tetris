@@ -20,8 +20,10 @@ public class NextElementFieldController : PlayingFieldController
     private int nextElementBorderSize;
 
     #region PROPERTIES
+
     public Field NextElementField { get => nextElementField; set => nextElementField = value; }
     public Element NextElement { get => nextElement; set => nextElement = value; }
+
     #endregion
 
     private void Start()

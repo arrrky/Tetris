@@ -22,6 +22,8 @@ public class GameController : MonoBehaviour
     [SerializeField] private GameObject mainBorderBlockPrefab;
     [SerializeField] private GameObject mainBorderBlocksParent;
 
+    private AudioSource audioSource;
+
     public const float GameStartTime = 2f;
     public static Vector3 ScreenBounds { get; set; }
 
@@ -38,8 +40,12 @@ public class GameController : MonoBehaviour
         ScreenBounds = Tools.GetScreenBounds();
         MainBorderInit();
 
-        GameModeSetup();
+        audioSource = GetComponent<AudioSource>();
 
+        elementMovement.ElementMoved += PlayMoveSound;
+
+        GameModeSetup();
+       
         StartCoroutine(StartTheGameRoutine());
     }
 
@@ -112,5 +118,10 @@ public class GameController : MonoBehaviour
                 lblLevel.text = "";            
                 break;
         }
+    }
+
+    private void PlayMoveSound(FieldState[,] tempMatrix, Vector2 topLeftPointOfElementShift)
+    {        
+        audioSource.Play();
     }
 }

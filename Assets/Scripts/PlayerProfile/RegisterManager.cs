@@ -1,6 +1,8 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using MiscTools;
+using UnityEngine.Networking;
 
 public class RegisterManager : InputFieldController
 {
@@ -11,22 +13,40 @@ public class RegisterManager : InputFieldController
 
     private IEnumerator RegisterRoutine()
     {
-        WWWForm form = new WWWForm();
-        form.AddField("name", nameInputField.text);
-        form.AddField("password", passwordInputField.text);
+        List<IMultipartFormSection> formData = new List<IMultipartFormSection>();
+        formData.Add(new MultipartFormDataSection("name", nameInputField.text));
+        formData.Add(new MultipartFormDataSection("password", passwordInputField.text));
 
-        WWW www = new WWW(PlayerProfileController.linkToDB + "register.php", form);
+        UnityWebRequest www = UnityWebRequest.Post(PlayerProfileController.linkToDB + "register.php", formData);
 
-        yield return www;
+        yield return www.SendWebRequest();
 
-        if (www.text == "0")
+        if (www.isHttpError || www.isNetworkError)
+        {
+            Debug.Log("Account creation failed " + www.downloadHandler.text);
+        }
+        if (www.downloadHandler.text == "0")
         {
             Debug.Log("User succesfully created an account");
             Tools.LoadScene(Scenes.MainMenu);
         }
-        else
-        {
-            Debug.Log("Account creation failed " + www.text);
-        }
+
+        //WWWForm form = new WWWForm();
+        //form.AddField("name", nameInputField.text);
+        //form.AddField("password", passwordInputField.text);
+
+        //WWW www = new WWW(PlayerProfileController.linkToDB + "register.php", form);        
+
+        //yield return www;
+
+        //if (www.text == "0")
+        //{
+        //    Debug.Log("User succesfully created an account");
+        //    Tools.LoadScene(Scenes.MainMenu);
+        //}
+        //else
+        //{
+        //    Debug.Log("Account creation failed " + www.text);
+        //}
     }
 }

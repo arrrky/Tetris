@@ -20,6 +20,7 @@ public class PlayerInput : MonoBehaviour
 
     private void CheckPlayerInput()
     {
+        // Управление элементом
         if (Input.GetButtonDown("MoveToTheRight") || Input.GetButtonDown("MoveToTheLeft"))
         {
             elementMovement.HorizontalMovement();
@@ -32,10 +33,30 @@ public class PlayerInput : MonoBehaviour
         {
             elementMovement.FallingDown();
         }
+
+        // Интерфейс / меню
         if(Input.GetKeyDown(KeyCode.Escape))
         {
             gameController.GamePause();
-        }        
+        }
+
+        // Звук
+        if (Input.GetButton("VolumeLevel+"))
+        {
+            AudioController.Instance.IncreaseVolumeLevel();
+        }
+        if (Input.GetButton("VolumeLevel-"))
+        {
+            AudioController.Instance.DecreaseVolumeLevel();
+        }
+        if (Input.GetButtonDown("RandomSong"))
+        {
+            AudioController.Instance.PlayRandomSong();
+        }
+        if (Input.GetButtonDown("Mute"))
+        {
+            AudioController.Instance.MuteUnmute();
+        }
     }
 
     private void CheckManualFallingDown()

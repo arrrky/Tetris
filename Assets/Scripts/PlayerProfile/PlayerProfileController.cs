@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using UnityEngine.Networking;
 
 public class PlayerProfileController : MonoBehaviour
 {
@@ -38,21 +40,22 @@ public class PlayerProfileController : MonoBehaviour
 
     private IEnumerator SavePlayerDataRoutine()
     {
-        WWWForm form = new WWWForm();
-        form.AddField("name", playerProfile.Name);
-        form.AddField("max_level", playerProfile.MaxLevel);
-        form.AddField("max_score", playerProfile.MaxScore);
+        List<IMultipartFormSection> formData = new List<IMultipartFormSection>();
+        formData.Add(new MultipartFormDataSection("name", playerProfile.Name));
+        formData.Add(new MultipartFormDataSection("max_level", playerProfile.MaxLevel.ToString()));
+        formData.Add(new MultipartFormDataSection("max_score", playerProfile.MaxScore.ToString()));
 
-        WWW www = new WWW(linkToDB + "savedata.php", form);
-        yield return www;
+        UnityWebRequest www = UnityWebRequest.Post(linkToDB + "savedata.php", formData);
 
-        if (www.text == "0")
+        yield return www.SendWebRequest();
+
+        if (www.downloadHandler.text == "0")
         {
             Debug.Log("Player profile saved");
         }
         else
         {
-            Debug.Log("Save failed. Error #" + www.text);
+            Debug.Log("Save failed. Error #" + www.downloadHandler.text);
         }
     }    
 }

@@ -6,11 +6,11 @@ using System.Collections;
 public class PlayingFieldController : MonoBehaviour
 {
     [SerializeField] private GameObject blockPrefab;
-    [SerializeField] private GameObject parentOfBlocks;
+    [SerializeField] private GameObject blocksParent;
     [SerializeField] private GameObject playingFieldBorderBlockPrefab;
     [SerializeField] private GameObject playingFiedBorderBlocksParent;
 
-    [SerializeField] private ElementMovement elementMovement;
+    [SerializeField] private ElementMovement elementMovement;  
 
     private Border playingFieldBorder;
 
@@ -61,6 +61,7 @@ public class PlayingFieldController : MonoBehaviour
     public const int PlayingFieldWIdth = 10;
     private const float PlayingFieldXShift = -4.5f;
     private const float PlayingFieldYShift = -10.5f;
+    private const float RowDeletingDelay = 0.01f;
 
     public event Action RowDeleted;
     public event Action ElementFell;
@@ -68,13 +69,13 @@ public class PlayingFieldController : MonoBehaviour
     private void Start()
     {
         PlayingFieldInit();
-        PlayingFieldBorderInit();
+        PlayingFieldBorderInit();       
 
         TopLeftPositionOfCurrentElement = TopLeftPositionDefault;
 
         elementMovement.ElementMoved += FullUpdate;
         elementMovement.LastRowOrElementsCollided += FallingToFallen;
-    }
+    }    
 
     private void PlayingFieldBorderInit()
     {
@@ -106,7 +107,7 @@ public class PlayingFieldController : MonoBehaviour
         {
             for (int x = 0; x < field.Width; x++)
             {
-                field.Objects[y, x] = Instantiate(blockPrefab, new Vector3(x + xShift, field.Height - y + yShift, 0), Quaternion.identity, parentOfBlocks.transform);
+                field.Objects[y, x] = Instantiate(blockPrefab, new Vector3(x + xShift, field.Height - y + yShift, 0), Quaternion.identity, blocksParent.transform);
                 field.Sprites[y, x] = field.Objects[y, x].GetComponent<SpriteRenderer>();
             }
         }
@@ -165,11 +166,12 @@ public class PlayingFieldController : MonoBehaviour
 
     private IEnumerator DeleteFullRow(int numberOfRowToDelete)
     {
+        // Удаление ряда с задержкой
         for (int x = 0; x < PlayingField.Width; x++)
         {
-            PlayingField.Matrix[numberOfRowToDelete, x] = FieldState.Empty;           
+            PlayingField.Matrix[numberOfRowToDelete, x] = FieldState.Empty;
             PlayingField.Objects[numberOfRowToDelete, x].SetActive(false);
-            yield return new WaitForSeconds(0.01f);
+            yield return new WaitForSeconds(RowDeletingDelay);
         }
 
         FullRowCheck(); // повторная проверка на случай, если заполненных рядов несколько
@@ -236,5 +238,5 @@ public class PlayingFieldController : MonoBehaviour
         FullRowCheck();
         UpdatePlayingFieldState(PlayingField, CurrentElementColor);
         TopLeftPositionOfCurrentElement += topLeftPointOfElementShift;
-    }
+    }   
 }

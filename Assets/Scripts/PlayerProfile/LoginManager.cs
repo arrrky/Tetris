@@ -1,4 +1,6 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine.Networking;
 using UnityEngine;
 using System;
 using MiscTools;
@@ -14,28 +16,28 @@ public class LoginManager : InputFieldController
 
     private IEnumerator LoginRoutine()
     {
-        WWWForm form = new WWWForm();
-        form.AddField("name", nameInputField.text);
-        form.AddField("password", passwordInputField.text);
+        List<IMultipartFormSection> formData = new List<IMultipartFormSection>();
+        formData.Add(new MultipartFormDataSection("name", nameInputField.text));
+        formData.Add(new MultipartFormDataSection("password", passwordInputField.text));
 
-        WWW www = new WWW(PlayerProfileController.linkToDB + "login.php", form);
+        UnityWebRequest www = UnityWebRequest.Post(PlayerProfileController.linkToDB + "login.php", formData);
 
-        yield return www;
+        yield return www.SendWebRequest();
 
-        if (www.text[0] == '0')
+        if (www.downloadHandler.text[0] == '0')
         {
             Debug.Log("User succesfully logged in");      
 
             PlayerProfileController.Instance.playerProfile.Name = nameInputField.text;
-            PlayerProfileController.Instance.playerProfile.MaxLevel = int.Parse(www.text.Split('\t')[1]);
-            PlayerProfileController.Instance.playerProfile.MaxScore = int.Parse(www.text.Split('\t')[2]);
+            PlayerProfileController.Instance.playerProfile.MaxLevel = int.Parse(www.downloadHandler.text.Split('\t')[1]);
+            PlayerProfileController.Instance.playerProfile.MaxScore = int.Parse(www.downloadHandler.text.Split('\t')[2]);
 
             PlayerLoggedIn?.Invoke();
             Tools.LoadScene(Scenes.MainMenu);
         }
         else
         {
-            Debug.Log("Login failed. Error #" + www.text);
+            Debug.Log("Login failed. Error #" + www.downloadHandler.text);
         }
     }
 }
