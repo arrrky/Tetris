@@ -10,7 +10,8 @@ public class PlayingFieldController : MonoBehaviour
     [SerializeField] private GameObject playingFieldBorderBlockPrefab;
     [SerializeField] private GameObject playingFiedBorderBlocksParent;
 
-    [SerializeField] private ElementMovement elementMovement;  
+    [SerializeField] private ElementMovement elementMovement; 
+    [SerializeField] private ElementRotation elementRotation;
 
     private Border playingFieldBorder;
 
@@ -73,8 +74,9 @@ public class PlayingFieldController : MonoBehaviour
 
         TopLeftPositionOfCurrentElement = TopLeftPositionDefault;
 
-        elementMovement.ElementMoved += FullUpdate;
+        elementMovement.ElementMoved += UpdateAfterMovement;
         elementMovement.LastRowOrElementsCollided += FallingToFallen;
+        elementRotation.ElementWasRotated += UpdateAfterRotation;
     }    
 
     private void PlayingFieldBorderInit()
@@ -231,7 +233,12 @@ public class PlayingFieldController : MonoBehaviour
         }
     }
 
-    public void FullUpdate(FieldState[,] tempMatrix, Vector2 topLeftPointOfElementShift)
+    public void UpdateAfterRotation()
+    {
+        UpdatePlayingFieldState(PlayingField, CurrentElementColor);
+    }
+
+    public void UpdateAfterMovement(FieldState[,] tempMatrix, Vector2 topLeftPointOfElementShift)
     {
         FallenToTemp(tempMatrix);
         PlayingField.Matrix = tempMatrix;

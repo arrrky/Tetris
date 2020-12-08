@@ -7,7 +7,6 @@ public class AudioController : MonoBehaviour
     public static AudioController Instance;
 
     private AudioSource song; 
-
     private Object[] allSongs;
 
     [SerializeField] private AudioClip clickSound;
@@ -21,7 +20,7 @@ public class AudioController : MonoBehaviour
         song = GetComponent<AudioSource>();
         allSongs = Resources.LoadAll<AudioClip>("Music");
         song.clip = allSongs[Random.Range(0, allSongs.Length)] as AudioClip;
-        song.Play();
+        //song.Play();
 
         GetComponent<AudioSource>().volume = 0;
     }
@@ -42,11 +41,11 @@ public class AudioController : MonoBehaviour
 
     private void Update()
     {
-        if (!song.isPlaying)
-            PlayRandomSong();
-        // Если игрок не увеличивает громкость сам - она вырастет до максимального значения (maxVolume)
-        if (song.volume < maxVolume && usersInput == false)
-            SlowlyIncreaseVolume(song.volume);
+        //if (!song.isPlaying)
+        //    PlayRandomSong();
+        //// Если игрок не увеличивает громкость сам - она вырастет до максимального значения (maxVolume)
+        //if (song.volume < maxVolume && usersInput == false)
+        //    SlowlyIncreaseVolume(song.volume);
     }
 
     public void IncreaseVolumeLevel()

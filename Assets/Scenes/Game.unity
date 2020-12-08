@@ -1260,6 +1260,7 @@ MonoBehaviour:
   playingFieldBorderBlockPrefab: {fileID: 8520220381069669123, guid: 06dc67bbae15964409005b78bd1b0c16, type: 3}
   playingFiedBorderBlocksParent: {fileID: 521404624}
   elementMovement: {fileID: 1941403081}
+  elementRotation: {fileID: 1941403080}
 --- !u!4 &978196884
 Transform:
   m_ObjectHideFlags: 0
@@ -1827,6 +1828,7 @@ MonoBehaviour:
   playingFieldBorderBlockPrefab: {fileID: 8520220381069669123, guid: 06dc67bbae15964409005b78bd1b0c16, type: 3}
   playingFiedBorderBlocksParent: {fileID: 768341142}
   elementMovement: {fileID: 0}
+  elementRotation: {fileID: 0}
   elements: {fileID: 1941403082}
   spawnController: {fileID: 855480023}
   nextFieldBorderBlockPrefab: {fileID: 8520220381069669123, guid: 06dc67bbae15964409005b78bd1b0c16, type: 3}

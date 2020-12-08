@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class ElementRotation : MonoBehaviour
 {    
@@ -8,6 +9,8 @@ public class ElementRotation : MonoBehaviour
     private FieldState[,] currentElementMatrixOnTheField; 
     private int xShift;
     private int yShift;
+
+    public event Action ElementWasRotated;
 
     private void Start()
     {
@@ -27,6 +30,7 @@ public class ElementRotation : MonoBehaviour
         {
             for (int x = 0; x < playingFieldController.CurrentElementSize; x++)
             {
+                // Если в пределах поворота элемента (квадрат n*n, где n - самая длинная сторона элемента) есть упавшие блоки - не даем поворачивать
                 if (playingField.Matrix[y + yShift, x + xShift] == FieldState.Fallen)
                     return false;
 
@@ -53,7 +57,7 @@ public class ElementRotation : MonoBehaviour
                 for (int x = 0; x < playingFieldController.CurrentElementSize; x++)
                     playingField.Matrix[y + yShift, x + xShift] = temp[y, x];
 
-            playingFieldController.UpdatePlayingFieldState(playingField, playingFieldController.CurrentElementColor);
+            ElementWasRotated?.Invoke();
         }
     }
 }
