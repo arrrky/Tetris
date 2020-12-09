@@ -5,19 +5,13 @@ public class NextElementFieldController : PlayingFieldController
 {
     [SerializeField] private Elements elements;
     [SerializeField] private SpawnController spawnController;
-    [SerializeField] private GameObject nextFieldBorderBlockPrefab;
-    [SerializeField] private GameObject nextFieldBorderBlocksParent;
-
-    private Border nextElementBorder;
+    [SerializeField] private BorderController borderController;
 
     private Field nextElementField;
     private Element nextElement;
 
-    private const int NextElementFieldHeight = 4;
-    private const int NextElementFieldWidth = 4;
-
-    private int nextElementBorderXShift; // смещение относительно центра экрана
-    private int nextElementBorderSize;
+    public static readonly int NextElementFieldHeight = 4;
+    public static readonly int NextElementFieldWidth = 4;   
 
     #region PROPERTIES
 
@@ -27,30 +21,19 @@ public class NextElementFieldController : PlayingFieldController
     #endregion
 
     private void Start()
-    {
-        NextElementBorderInit();
+    {      
         NextElementFieldInit();
 
         NextElement = elements.GetRandomElement();
 
         spawnController.SpawnElement(NextElement.Matrix, NextElementField);
         UpdatePlayingFieldState(NextElementField, NextElement.Color);
-    }
-
-    private void NextElementBorderInit()
-    {
-        nextElementBorderXShift = PlayingFieldWIdth / 2 + 3;
-        nextElementBorderSize = 8;
-        nextElementBorder = gameObject.AddComponent(typeof(Border)) as Border;
-        nextElementBorder.SpriteShift = Tools.GetSpriteShift(nextFieldBorderBlockPrefab);
-        nextElementBorder.TopLeftPoint = new Vector2(nextElementBorderXShift, 0);
-        nextElementBorder.CreateBorder(nextElementBorderSize, nextElementBorderSize, nextFieldBorderBlockPrefab, nextFieldBorderBlocksParent);
-    }
+    }   
 
     private void NextElementFieldInit()
     {
-        int nextElementFieldXShift = (int)nextElementBorder.TopLeftPoint.x + 3;
-        int nextElementFieldYShift = (int)nextElementBorder.TopLeftPoint.y - 7;
+        int nextElementFieldXShift = (int)borderController.TopLeftPointOfNextElementBorder.x + 3;
+        int nextElementFieldYShift = (int)borderController.TopLeftPointOfNextElementBorder.y - 7;
 
         NextElementField = gameObject.AddComponent(typeof(Field)) as Field;
         NextElementField.Height = NextElementFieldHeight;

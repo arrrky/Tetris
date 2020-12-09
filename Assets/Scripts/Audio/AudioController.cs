@@ -1,10 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class AudioController : MonoBehaviour
 {
-    public static AudioController Instance;
+    public static AudioController Instance { get; set; }
 
     private AudioSource song; 
     private Object[] allSongs;
@@ -12,7 +10,7 @@ public class AudioController : MonoBehaviour
     [SerializeField] private AudioClip clickSound;
 
     private readonly float maxVolume = 0.15f;
-    private bool usersInput = false;
+    private bool userInput = false;
     private bool mute = false;
 
     void Start()
@@ -51,13 +49,13 @@ public class AudioController : MonoBehaviour
     public void IncreaseVolumeLevel()
     {
         song.volume += 0.0005f;
-        usersInput = true;
+        userInput = true;
     }
 
     public void DecreaseVolumeLevel()
     {
         song.volume -= 0.0005f;
-        usersInput = true;
+        userInput = true;
     }
 
     private void SlowlyIncreaseVolume(float volume)
@@ -73,7 +71,7 @@ public class AudioController : MonoBehaviour
 
     public void MuteUnmute()
     {
-        usersInput = true;
+        userInput = true;
         mute = !mute;
         if (mute)
             song.volume = 0;

@@ -6,14 +6,10 @@ using System.Collections;
 public class PlayingFieldController : MonoBehaviour
 {
     [SerializeField] private GameObject blockPrefab;
-    [SerializeField] private GameObject blocksParent;
-    [SerializeField] private GameObject playingFieldBorderBlockPrefab;
-    [SerializeField] private GameObject playingFiedBorderBlocksParent;
+    [SerializeField] private GameObject blocksParent;    
 
     [SerializeField] private ElementMovement elementMovement; 
-    [SerializeField] private ElementRotation elementRotation;
-
-    private Border playingFieldBorder;
+    [SerializeField] private ElementRotation elementRotation; 
 
     private Vector2 topLeftPositionOfCurrentElement;
     private Field playingField;
@@ -58,8 +54,9 @@ public class PlayingFieldController : MonoBehaviour
 
     public readonly Vector2 TopLeftPositionDefault = new Vector2(SpawnController.SpawnPoint, 0);
 
-    public const int PlayingFieldHeight = 20;
-    public const int PlayingFieldWIdth = 10;
+    public static readonly int PlayingFieldHeight = 20;
+    public static readonly int PlayingFieldWidth = 10;
+
     private const float PlayingFieldXShift = -4.5f;
     private const float PlayingFieldYShift = -10.5f;
     private const float RowDeletingDelay = 0.01f;
@@ -69,32 +66,23 @@ public class PlayingFieldController : MonoBehaviour
 
     private void Start()
     {
-        PlayingFieldInit();
-        PlayingFieldBorderInit();       
+        PlayingFieldInit();       
 
         TopLeftPositionOfCurrentElement = TopLeftPositionDefault;
 
         elementMovement.ElementMoved += UpdateAfterMovement;
         elementMovement.LastRowOrElementsCollided += FallingToFallen;
         elementRotation.ElementWasRotated += UpdateAfterRotation;
-    }    
-
-    private void PlayingFieldBorderInit()
-    {
-        playingFieldBorder = gameObject.AddComponent(typeof(Border)) as Border;
-        playingFieldBorder.SpriteShift = Tools.GetSpriteShift(playingFieldBorderBlockPrefab);
-        playingFieldBorder.TopLeftPoint = new Vector2(-PlayingFieldWIdth / 2 - 1, GameController.ScreenBounds.y - 1);
-        playingFieldBorder.CreateBorder(PlayingFieldWIdth + 1, PlayingFieldHeight + 1, playingFieldBorderBlockPrefab, playingFiedBorderBlocksParent);
-    }
+    }       
 
     private void PlayingFieldInit()
     {
         PlayingField = gameObject.AddComponent(typeof(Field)) as Field;
         PlayingField.Height = PlayingFieldHeight;
-        PlayingField.Width = PlayingFieldWIdth;
-        PlayingField.Matrix = new FieldState[PlayingFieldHeight, PlayingFieldWIdth];
-        PlayingField.Objects = new GameObject[PlayingFieldHeight, PlayingFieldWIdth];
-        PlayingField.Sprites = new SpriteRenderer[PlayingFieldHeight, PlayingFieldWIdth];
+        PlayingField.Width = PlayingFieldWidth;
+        PlayingField.Matrix = new FieldState[PlayingFieldHeight, PlayingFieldWidth];
+        PlayingField.Objects = new GameObject[PlayingFieldHeight, PlayingFieldWidth];
+        PlayingField.Sprites = new SpriteRenderer[PlayingFieldHeight, PlayingFieldWidth];
         FillTheField(PlayingField, PlayingFieldXShift, PlayingFieldYShift);
         UpdatePlayingFieldState(PlayingField, CurrentElementColor);
     }
