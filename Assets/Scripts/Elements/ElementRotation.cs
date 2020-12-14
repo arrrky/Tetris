@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-public class ElementRotation : MonoBehaviour
+public class ElementRotation : MonoBehaviour, IRotate
 {    
     [SerializeField] private PlayingFieldController playingFieldController;
 

@@ -2,8 +2,8 @@
 
 public class SpawnController : MonoBehaviour
 {
-    [SerializeField] private GameController gameController;
     [SerializeField] private Elements elements;
+    [SerializeField] private GameController gameController;
     [SerializeField] private PlayingFieldController playingFieldController;
     [SerializeField] private NextElementFieldController nextElementFieldController;
 

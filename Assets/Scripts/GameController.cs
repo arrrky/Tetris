@@ -4,8 +4,7 @@ using System.Collections;
 using MiscTools;
 
 public class GameController : MonoBehaviour
-{
-    [SerializeField] private ElementMovement elementMovement;
+{ 
     [SerializeField] private GameObject playerInput;     
 
     public event Action GameStarted;

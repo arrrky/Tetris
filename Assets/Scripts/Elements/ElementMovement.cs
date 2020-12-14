@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class ElementMovement : MonoBehaviour
+public class ElementMovement : MonoBehaviour, IMove
 {
     [SerializeField] private GameController gameController;
     [SerializeField] private ScoreController scoreController;
@@ -19,6 +19,12 @@ public class ElementMovement : MonoBehaviour
         playingField = FindObjectOfType<PlayingFieldController>().PlayingField;
 
         StartAutoFallingDown();
+        EventsSetup();
+        
+    }
+
+    private void EventsSetup()
+    {
         gameController.GameOver += StopAutoFallingDown;
         gameController.NextLevel += StopAutoFallingDown;
     }

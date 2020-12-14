@@ -18,10 +18,7 @@ public class GameUIController : MonoBehaviour
     void Start()
     {
         GameModeUISetup();
-        gameController.GameStarted += StartTheGameUISetup;
-        gameController.GameOver += GameOverUISetup;
-        gameController.GamePaused += GameOnPauseUISetup;
-        gameController.NextLevel += NextLevelUISetup;
+        EventsSetup();       
     }
 
     private void GameModeUISetup()
@@ -60,5 +57,13 @@ public class GameUIController : MonoBehaviour
         pauseText.SetActive(!isGameOnPause);
         controlsText.SetActive(!isGameOnPause);
         goToMainMenuButton.SetActive(!isGameOnPause);
+    }
+
+    private void EventsSetup()
+    {
+        gameController.GameStarted += StartTheGameUISetup;
+        gameController.GameOver += GameOverUISetup;
+        gameController.GamePaused += GameOnPauseUISetup;
+        gameController.NextLevel += NextLevelUISetup;
     }
 }

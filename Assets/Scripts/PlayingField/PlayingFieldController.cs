@@ -66,14 +66,17 @@ public class PlayingFieldController : MonoBehaviour
 
     private void Start()
     {
-        PlayingFieldInit();       
-
+        PlayingFieldInit();
+        EventsSetup();
         TopLeftPositionOfCurrentElement = TopLeftPositionDefault;
+    }
 
+    private void EventsSetup()
+    {
         elementMovement.ElementMoved += UpdateAfterMovement;
         elementMovement.LastRowOrElementsCollided += FallingToFallen;
         elementRotation.ElementWasRotated += UpdateAfterRotation;
-    }       
+    }
 
     private void PlayingFieldInit()
     {
@@ -233,5 +236,5 @@ public class PlayingFieldController : MonoBehaviour
         FullRowCheck();
         UpdatePlayingFieldState(PlayingField, CurrentElementColor);
         TopLeftPositionOfCurrentElement += topLeftPointOfElementShift;
-    }   
+    }      
 }

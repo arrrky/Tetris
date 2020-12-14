@@ -219,7 +219,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 592e0ca16f3d027449475decf3680d8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  elementMovement: {fileID: 1941403081}
   playerInput: {fileID: 1991867805}
   isGameOver: 0
 --- !u!4 &81836448
@@ -1166,8 +1165,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: adc20a41774b84040bf6ef4078bae5f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameController: {fileID: 81836447}
   elements: {fileID: 1941403082}
+  gameController: {fileID: 81836447}
   playingFieldController: {fileID: 978196883}
   nextElementFieldController: {fileID: 1740267026}
 --- !u!4 &855480024
