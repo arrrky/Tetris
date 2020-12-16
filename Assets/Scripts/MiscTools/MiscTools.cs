@@ -60,5 +60,12 @@ namespace MiscTools
             {"blue",     new Color32(3, 65, 174, 255) },
             {"violet",   new Color32(136, 43, 222 , 255) }
         };
+
+        public static Dictionary<string, Color32> additionalColors = new Dictionary<string, Color32>
+        {
+            {"grey",     new Color32(160, 160, 160, 255) },
+            {"brown",    new Color32(153, 76, 0, 255) },
+            {"pink",     new Color32(255, 0, 127, 255) },
+        };
     }
 }

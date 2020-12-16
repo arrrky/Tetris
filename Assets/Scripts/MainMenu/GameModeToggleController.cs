@@ -26,4 +26,9 @@ public class GameModeToggleController : MonoBehaviour
         levelMode.interactable = true;
         scoreMode.interactable = false;
     }
+
+    public void FunModeChoice()
+    {
+        GameModeManager.Instance.IsFunMode = !GameModeManager.Instance.IsFunMode;
+    }
 }

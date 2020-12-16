@@ -114,6 +114,48 @@ public class Elements : MonoBehaviour
             SpawnChance = 20,
             Color = Tools.rainbowColors["violet"],
         });
+
+        if (GameModeManager.Instance.IsFunMode)
+        {
+            listOfElements.Add(new Element
+            {
+                Name = "Cross",
+                Matrix = Tools.ConvertToFieldState(new int[,]
+            {
+                {0,1,0},
+                {1,1,1},
+                {0,1,0}
+            }),
+                SpawnChance = 20,
+                Color = Tools.additionalColors["grey"],
+            });
+
+            listOfElements.Add(new Element
+            {
+                Name = "Bench",
+                Matrix = Tools.ConvertToFieldState(new int[,]
+            {
+                {1,1,1},
+                {1,0,1},
+                {0,0,0}
+            }),
+                SpawnChance = 20,
+                Color = Tools.additionalColors["brown"],
+            });
+
+            listOfElements.Add(new Element
+            {
+                Name = "Stair",
+                Matrix = Tools.ConvertToFieldState(new int[,]
+            {
+                {1,0,0},
+                {1,1,0},
+                {0,1,1}
+            }),
+                SpawnChance = 20,
+                Color = Tools.additionalColors["pink"],
+            });
+        }
     }
     #endregion
 
@@ -130,12 +172,24 @@ public class Elements : MonoBehaviour
         } 
     }
 
+    private int GetSumOfChances ()
+    {
+        int sumOfChances = 0;
+
+        for (int i = 0; i < listOfElements.Count; i++)
+        {
+            sumOfChances += listOfElements[i].SpawnChance;
+        }
+
+        return sumOfChances;
+    }
+
     // Используется метод из этой статьи: https://jonlabelle.com/snippets/view/csharp/pick-random-elements-based-on-probability
     // Важно задать шансы так, чтобы суммарно они были равны 100 (для корректной работы метода)
     // Метод будет работать в любом случае, просто шанс выпадения элемента не будет статистически верен
     public Element GetRandomElement()
     {
-        int roll = Random.Range(1, 100);
+        int roll = Random.Range(1, GetSumOfChances());
         int cumulativeChance = 0;
 
         for (int i = 0; i < listOfElements.Count; i++)

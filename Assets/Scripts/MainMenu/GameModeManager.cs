@@ -11,6 +11,8 @@ public class GameModeManager : MonoBehaviour
     public static GameModeManager Instance { get; set; }
 
     public GameMode ChosenGameMode { get; set; } = GameMode.Level;
+    public bool IsFunMode { get; set; } = false;
+
 
     private void Awake()
     {

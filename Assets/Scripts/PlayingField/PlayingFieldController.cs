@@ -54,21 +54,42 @@ public class PlayingFieldController : MonoBehaviour
 
     public readonly Vector2 TopLeftPositionDefault = new Vector2(SpawnController.SpawnPoint, 0);
 
-    public static readonly int PlayingFieldHeight = 20;
-    public static readonly int PlayingFieldWidth = 10;
+    public static int PlayingFieldHeight;
+    public static int PlayingFieldWidth;
 
-    private const float PlayingFieldXShift = -4.5f;
-    private const float PlayingFieldYShift = -10.5f;
+    private float PlayingFieldXShift = -4.5f;
+    private float PlayingFieldYShift = -10.5f;
+
     private const float RowDeletingDelay = 0.01f;
 
     public event Action RowDeleted;
     public event Action ElementFell;
 
-    private void Start()
+    private void Awake()
     {
+        PlayingFieldSizeInit();
+    }
+
+    private void Start()
+    {        
         PlayingFieldInit();
         EventsSetup();
         TopLeftPositionOfCurrentElement = TopLeftPositionDefault;
+    }
+
+    private void PlayingFieldSizeInit()
+    {
+        if (GameModeManager.Instance.IsFunMode)
+        {
+            PlayingFieldHeight = 20;
+            PlayingFieldWidth = 12;
+            PlayingFieldXShift -= 1;
+        }
+        else
+        {
+            PlayingFieldHeight = 20;
+            PlayingFieldWidth = 10;
+        }
     }
 
     private void EventsSetup()
@@ -152,7 +173,18 @@ public class PlayingFieldController : MonoBehaviour
             if (isFullRow)
             {
                 FullRowsCount++;
-                StartCoroutine(DeleteFullRow(y));
+
+                if (!GameModeManager.Instance.IsFunMode)
+                {
+                    Debug.LogError(FullRowsCount);
+                    StartCoroutine(DeleteFullRow(y));
+                }
+
+                if (GameModeManager.Instance.IsFunMode && FullRowsCount >= 2)
+                {
+                    Debug.LogError(FullRowsCount);
+                    StartCoroutine(DeleteFullRow(y));
+                }
             }
         }
     }
