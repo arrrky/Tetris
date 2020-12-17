@@ -5,7 +5,11 @@ using MiscTools;
 
 public class GameController : MonoBehaviour
 { 
-    [SerializeField] private GameObject playerInput;     
+    [SerializeField] private GameObject playerInput;
+    [SerializeField] public GameObject blockPrefab;
+    [SerializeField] public GameObject blocksParent;
+    [SerializeField] public ElementMovement elementMovement;
+    [SerializeField] public ElementRotation elementRotation;
 
     public event Action GameStarted;
     public event Action GameOver;
@@ -14,8 +18,23 @@ public class GameController : MonoBehaviour
 
     public bool isGameOver = false;
 
+    public IPlayingFieldController PlayingFieldController;    
+
+    private void Awake()
+    {
+        switch(GameModeManager.Instance.IsFunMode)
+        {
+            case true:
+                PlayingFieldController = gameObject.AddComponent<PlayingFieldControllerFunMode>();
+                break;
+            case false:
+                PlayingFieldController = gameObject.AddComponent<PlayingFieldController>();
+                break;
+        }
+    }
+
     private void Start()
-    {     
+    {             
         StartCoroutine(StartTheGameRoutine());
     }    
 

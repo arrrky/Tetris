@@ -2,10 +2,10 @@
 using UnityEngine;
 
 public class ElementRotation : MonoBehaviour, IRotate
-{    
-    [SerializeField] private PlayingFieldController playingFieldController;
+{
+    [SerializeField] private GameController gameController;
 
-    private Field playingField;
+    private IPlayingFieldController playingFieldController;
     private FieldState[,] currentElementMatrixOnTheField; 
     private int xShift;
     private int yShift;
@@ -14,7 +14,7 @@ public class ElementRotation : MonoBehaviour, IRotate
 
     private void Start()
     {
-        playingField = playingFieldController.PlayingField;
+        playingFieldController = gameController.PlayingFieldController;
     }
 
     private bool IsRotateValid()
@@ -31,11 +31,11 @@ public class ElementRotation : MonoBehaviour, IRotate
             for (int x = 0; x < playingFieldController.CurrentElementSize; x++)
             {
                 // Если в пределах поворота элемента (квадрат n*n, где n - самая длинная сторона элемента) есть упавшие блоки - не даем поворачивать
-                if (playingField.Matrix[y + yShift, x + xShift] == FieldState.Fallen)
+                if (playingFieldController.PlayingField.Matrix[y + yShift, x + xShift] == FieldState.Fallen)
                     return false;
 
-                if (playingField.Matrix[y + yShift, x + xShift] == FieldState.Falling)
-                    currentElementMatrixOnTheField[y, x] = playingField.Matrix[y + yShift, x + xShift];
+                if (playingFieldController.PlayingField.Matrix[y + yShift, x + xShift] == FieldState.Falling)
+                    currentElementMatrixOnTheField[y, x] = playingFieldController.PlayingField.Matrix[y + yShift, x + xShift];
             }
         }
         return true;
@@ -55,7 +55,7 @@ public class ElementRotation : MonoBehaviour, IRotate
             // Записываем в базовую матрицу-поле перевернутый элемент
             for (int y = 0; y < playingFieldController.CurrentElementSize; y++)
                 for (int x = 0; x < playingFieldController.CurrentElementSize; x++)
-                    playingField.Matrix[y + yShift, x + xShift] = temp[y, x];
+                    playingFieldController.PlayingField.Matrix[y + yShift, x + xShift] = temp[y, x];
 
             ElementWasRotated?.Invoke();
         }

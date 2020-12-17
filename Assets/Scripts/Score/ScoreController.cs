@@ -4,11 +4,17 @@ using UnityEngine.UI;
 public class ScoreController : MonoBehaviour
 {
     [SerializeField] private GameController gameController;
-    [SerializeField] private PlayingFieldController playingFieldController;
     [SerializeField] private Text lblScore;
     [SerializeField] private int scoreForOneRow = 10;
 
+    private IPlayingFieldController playingFieldController;
+
     public int Score { get; set; }
+
+    private void Awake()
+    {
+        playingFieldController = gameController.PlayingFieldController;
+    }
 
     private void Start()
     {

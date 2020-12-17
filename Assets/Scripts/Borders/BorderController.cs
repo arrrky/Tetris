@@ -3,6 +3,8 @@ using MiscTools;
 
 public class BorderController : MonoBehaviour
 {
+    [SerializeField] private GameController gameController;
+
     [SerializeField] private GameObject borderBlockPrefab;
 
     [SerializeField] private GameObject mainBorderBlocksParent;   
@@ -35,20 +37,30 @@ public class BorderController : MonoBehaviour
         mainBorder = gameObject.AddComponent(typeof(Border)) as Border;
         mainBorder.SpriteShift = Tools.GetSpriteShift(borderBlockPrefab);
         mainBorder.TopLeftPoint = new Vector2(-ScreenBounds.x, ScreenBounds.y - 1);
-        mainBorder.CreateBorder(ScreenBounds.x * 2 - 1, ScreenBounds.y * 2 - 1, borderBlockPrefab, mainBorderBlocksParent);
+
+        mainBorder.CreateBorder(
+            ScreenBounds.x * 2 - 1,
+            ScreenBounds.y * 2 - 1,
+            borderBlockPrefab,
+            mainBorderBlocksParent);
     }
 
     private void PlayingFieldBorderInit()
     {
         playingFieldBorder = gameObject.AddComponent(typeof(Border)) as Border;
         playingFieldBorder.SpriteShift = Tools.GetSpriteShift(borderBlockPrefab);
-        playingFieldBorder.TopLeftPoint = new Vector2(-PlayingFieldController.PlayingFieldWidth / 2 - 1, ScreenBounds.y - 1);
-        playingFieldBorder.CreateBorder(PlayingFieldController.PlayingFieldWidth + 1, PlayingFieldController.PlayingFieldHeight + 1, borderBlockPrefab, playingFiedBorderBlocksParent);
+        playingFieldBorder.TopLeftPoint = new Vector2(-gameController.PlayingFieldController.PlayingField.Width / 2 - 1, ScreenBounds.y - 1);
+
+        playingFieldBorder.CreateBorder(
+            gameController.PlayingFieldController.PlayingField.Width + 1,
+            gameController.PlayingFieldController.PlayingField.Height + 1,
+            borderBlockPrefab,
+            playingFiedBorderBlocksParent);
     }
 
     private void NextElementBorderInit()
     {
-        nextElementBorderXShift = PlayingFieldController.PlayingFieldWidth / 2 + 3;
+        nextElementBorderXShift = gameController.PlayingFieldController.PlayingField.Width / 2 + 3;
         nextElementBorderSize = 8;
         nextElementBorder = gameObject.AddComponent(typeof(Border)) as Border;
         nextElementBorder.SpriteShift = Tools.GetSpriteShift(borderBlockPrefab);

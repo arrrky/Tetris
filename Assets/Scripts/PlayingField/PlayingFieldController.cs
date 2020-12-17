@@ -3,13 +3,14 @@ using MiscTools;
 using System;
 using System.Collections;
 
-public class PlayingFieldController : MonoBehaviour
+public class PlayingFieldController : MonoBehaviour, IPlayingFieldController
 {
-    [SerializeField] private GameObject blockPrefab;
-    [SerializeField] private GameObject blocksParent;    
+    private GameController gameController;
 
-    [SerializeField] private ElementMovement elementMovement; 
-    [SerializeField] private ElementRotation elementRotation; 
+    private GameObject blockPrefab;
+    private GameObject blocksParent;
+    private ElementMovement elementMovement;
+    private ElementRotation elementRotation;
 
     private Vector2 topLeftPositionOfCurrentElement;
     private Field playingField;
@@ -54,11 +55,11 @@ public class PlayingFieldController : MonoBehaviour
 
     public readonly Vector2 TopLeftPositionDefault = new Vector2(SpawnController.SpawnPoint, 0);
 
-    public static int PlayingFieldHeight;
-    public static int PlayingFieldWidth;
+    public virtual int PlayingFieldHeight { get; } = 20;
+    public virtual int PlayingFieldWidth { get; } = 10;
 
-    private float PlayingFieldXShift = -4.5f;
-    private float PlayingFieldYShift = -10.5f;
+    public virtual float PlayingFieldXShift { get; } = -4.5f;
+    public virtual float PlayingFieldYShift { get; } = -10.5f;
 
     private const float RowDeletingDelay = 0.01f;
 
@@ -67,30 +68,24 @@ public class PlayingFieldController : MonoBehaviour
 
     private void Awake()
     {
-        PlayingFieldSizeInit();
+        gameController = FindObjectOfType<GameController>();
+        DependenciesSetup();
     }
 
-    private void Start()
-    {        
+    protected void Start()
+    {
         PlayingFieldInit();
         EventsSetup();
         TopLeftPositionOfCurrentElement = TopLeftPositionDefault;
-    }
-
-    private void PlayingFieldSizeInit()
+    } 
+    
+    private void DependenciesSetup()
     {
-        if (GameModeManager.Instance.IsFunMode)
-        {
-            PlayingFieldHeight = 20;
-            PlayingFieldWidth = 12;
-            PlayingFieldXShift -= 1;
-        }
-        else
-        {
-            PlayingFieldHeight = 20;
-            PlayingFieldWidth = 10;
-        }
-    }
+        blockPrefab = gameController.blockPrefab;
+        blocksParent = gameController.blocksParent;
+        elementMovement = gameController.elementMovement;
+        elementRotation = gameController.elementRotation;
+    }    
 
     private void EventsSetup()
     {
@@ -99,7 +94,7 @@ public class PlayingFieldController : MonoBehaviour
         elementRotation.ElementWasRotated += UpdateAfterRotation;
     }
 
-    private void PlayingFieldInit()
+    protected void PlayingFieldInit()
     {
         PlayingField = gameObject.AddComponent(typeof(Field)) as Field;
         PlayingField.Height = PlayingFieldHeight;
@@ -157,7 +152,7 @@ public class PlayingFieldController : MonoBehaviour
             }
         }
         FullRowCheck();
-        ElementFell?.Invoke();       
+        ElementFell?.Invoke();
     }
 
     public void FullRowCheck()
@@ -173,18 +168,7 @@ public class PlayingFieldController : MonoBehaviour
             if (isFullRow)
             {
                 FullRowsCount++;
-
-                if (!GameModeManager.Instance.IsFunMode)
-                {
-                    Debug.LogError(FullRowsCount);
-                    StartCoroutine(DeleteFullRow(y));
-                }
-
-                if (GameModeManager.Instance.IsFunMode && FullRowsCount >= 2)
-                {
-                    Debug.LogError(FullRowsCount);
-                    StartCoroutine(DeleteFullRow(y));
-                }
+                StartCoroutine(DeleteFullRow(y));              
             }
         }
     }
@@ -211,7 +195,7 @@ public class PlayingFieldController : MonoBehaviour
             MoveRowsAboveDeletedRow(numberOfRowToDelete);
         }
 
-        FullRowsCount = 0;  
+        FullRowsCount = 0;
     }
 
     private void MoveRowsAboveDeletedRow(int numberOfRowToDelete)
@@ -225,7 +209,7 @@ public class PlayingFieldController : MonoBehaviour
                     return;
                 PlayingField.Matrix[y + 1, x] = PlayingField.Matrix[y, x];
             }
-        }          
+        }
     }
 
     /// <summary>
@@ -268,5 +252,5 @@ public class PlayingFieldController : MonoBehaviour
         FullRowCheck();
         UpdatePlayingFieldState(PlayingField, CurrentElementColor);
         TopLeftPositionOfCurrentElement += topLeftPointOfElementShift;
-    }      
+    }
 }

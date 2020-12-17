@@ -4,10 +4,16 @@ public class SpawnController : MonoBehaviour
 {
     [SerializeField] private Elements elements;
     [SerializeField] private GameController gameController;
-    [SerializeField] private PlayingFieldController playingFieldController;
     [SerializeField] private NextElementFieldController nextElementFieldController;
 
+    private IPlayingFieldController playingFieldController;
+
     public const int SpawnPoint = 4;
+
+    private void Awake()
+    {
+        playingFieldController = gameController.PlayingFieldController;
+    }
 
     private void Start()
     {
@@ -34,7 +40,7 @@ public class SpawnController : MonoBehaviour
         playingFieldController.CurrentElementArray = element.Matrix;
         playingFieldController.CurrentElementSize = element.Matrix.GetLength(0);
 
-        playingFieldController.TopLeftPositionOfCurrentElement = playingFieldController.TopLeftPositionDefault;
+        playingFieldController.TopLeftPositionOfCurrentElement = new Vector2(SpawnPoint, 0);
 
         for (int y = 0; y < element.Matrix.GetLength(0); y++)
         {

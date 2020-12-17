@@ -16,7 +16,7 @@ public class ElementMovement : MonoBehaviour, IMove
 
     private void Start()
     {
-        playingField = FindObjectOfType<PlayingFieldController>().PlayingField;
+        playingField = gameController.PlayingFieldController.PlayingField;
 
         StartAutoFallingDown();
         EventsSetup();
