@@ -32,9 +32,9 @@ public class ScoreController : MonoBehaviour
             StartCoroutine(gameController.NextLevelRoutine());
         }
 
-        if (Score > PlayerProfileController.Instance.playerProfile.MaxScore && GameModeManager.Instance.ChosenGameMode == GameMode.Score)
+        if (Score > PlayerProfileController.Instance.PlayerProfile.MaxScore && GameModeManager.Instance.ChosenGameMode == GameMode.Score)
         {
-            PlayerProfileController.Instance.playerProfile.MaxScore = Score;
+            PlayerProfileController.Instance.PlayerProfile.MaxScore = Score;
         }
     }
 }

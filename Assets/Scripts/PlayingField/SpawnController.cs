@@ -1,14 +1,15 @@
 ﻿using UnityEngine;
+using Zenject;
 
 public class SpawnController : MonoBehaviour
 {
-    [SerializeField] private Elements elements;
     [SerializeField] private GameController gameController;
     [SerializeField] private NextElementFieldController nextElementFieldController;
 
+    private Elements elements;
     private IPlayingFieldController playingFieldController;
 
-    public const int SpawnPoint = 4;
+    public static int SpawnPoint = 4;
 
     private void Awake()
     {
@@ -17,6 +18,18 @@ public class SpawnController : MonoBehaviour
 
     private void Start()
     {
+        EventsSetup();
+    }
+
+    [Inject]
+    private void ElementsInit(Elements elements)
+    {
+        this.elements = elements;
+    }
+
+    private void EventsSetup()
+    {
+        nextElementFieldController.FirstElementSpawned += SpawnElement;
         gameController.GameStarted += SpawnRandomElement;
         playingFieldController.ElementFell += SpawnRandomElement;
     }

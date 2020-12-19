@@ -5,12 +5,13 @@ public class GameModeToggleController : MonoBehaviour
 {
     [SerializeField] private Toggle levelMode;
     [SerializeField] private Toggle scoreMode;
+    [SerializeField] private Toggle funMode;
 
     private void Start()
     {
         levelMode.isOn = true;
         levelMode.interactable = false;
-        scoreMode.isOn = false;
+        scoreMode.isOn = GameModeManager.Instance.IsFunMode;        
     }
 
     public void LevelModeOn()

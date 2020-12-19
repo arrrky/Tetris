@@ -16,9 +16,12 @@ public class GameController : MonoBehaviour
     public event Action NextLevel;
     public event Action<bool> GamePaused;
 
-    public bool isGameOver = false;
+    private bool isGameOver = false;
+    public bool IsGameOver { get => isGameOver; set => isGameOver = value; }
 
-    public IPlayingFieldController PlayingFieldController;    
+
+    public IPlayingFieldController PlayingFieldController;
+
 
     private void Awake()
     {
@@ -46,7 +49,7 @@ public class GameController : MonoBehaviour
 
     public IEnumerator GameOverRoutine()
     {
-        isGameOver = true;
+        IsGameOver = true;
         GameOver?.Invoke();       
         playerInput.SetActive(false);        
 

@@ -28,9 +28,9 @@ public class LoginManager : InputFieldController
         {
             Debug.Log("User succesfully logged in");      
 
-            PlayerProfileController.Instance.playerProfile.Name = nameInputField.text;
-            PlayerProfileController.Instance.playerProfile.MaxLevel = int.Parse(www.downloadHandler.text.Split('\t')[1]);
-            PlayerProfileController.Instance.playerProfile.MaxScore = int.Parse(www.downloadHandler.text.Split('\t')[2]);
+            PlayerProfileController.Instance.PlayerProfile.Name = nameInputField.text;
+            PlayerProfileController.Instance.PlayerProfile.MaxLevel = int.Parse(www.downloadHandler.text.Split('\t')[1]);
+            PlayerProfileController.Instance.PlayerProfile.MaxScore = int.Parse(www.downloadHandler.text.Split('\t')[2]);
 
             PlayerLoggedIn?.Invoke();
             Tools.LoadScene(Scenes.MainMenu);

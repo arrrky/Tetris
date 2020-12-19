@@ -6,7 +6,9 @@ using UnityEngine.Networking;
 public class PlayerProfileController : MonoBehaviour
 {
     public static PlayerProfileController Instance { get; set; }
-    public PlayerProfile playerProfile;
+
+    private PlayerProfile playerProfile;
+    public PlayerProfile PlayerProfile { get => playerProfile; set => playerProfile = value; }
 
     public const string linkToDB = "https://ivaltetris.000webhostapp.com/";
 
@@ -25,15 +27,15 @@ public class PlayerProfileController : MonoBehaviour
 
     private void Start()
     {
-        if (playerProfile == null)
+        if (PlayerProfile == null)
         {
-            playerProfile = new PlayerProfile();
+            PlayerProfile = new PlayerProfile();
         }
     }
 
     public void CallSavePlayerData()
     {
-        if (playerProfile.Name == null)
+        if (PlayerProfile.Name == null)
             return;
         StartCoroutine(SavePlayerDataRoutine());
     }
@@ -41,9 +43,9 @@ public class PlayerProfileController : MonoBehaviour
     private IEnumerator SavePlayerDataRoutine()
     {
         List<IMultipartFormSection> formData = new List<IMultipartFormSection>();
-        formData.Add(new MultipartFormDataSection("name", playerProfile.Name));
-        formData.Add(new MultipartFormDataSection("max_level", playerProfile.MaxLevel.ToString()));
-        formData.Add(new MultipartFormDataSection("max_score", playerProfile.MaxScore.ToString()));
+        formData.Add(new MultipartFormDataSection("name", PlayerProfile.Name));
+        formData.Add(new MultipartFormDataSection("max_level", PlayerProfile.MaxLevel.ToString()));
+        formData.Add(new MultipartFormDataSection("max_score", PlayerProfile.MaxScore.ToString()));
 
         UnityWebRequest www = UnityWebRequest.Post(linkToDB + "savedata.php", formData);
 

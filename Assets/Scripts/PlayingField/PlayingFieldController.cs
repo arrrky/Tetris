@@ -12,8 +12,8 @@ public class PlayingFieldController : MonoBehaviour, IPlayingFieldController
     private ElementMovement elementMovement;
     private ElementRotation elementRotation;
 
-    private Vector2 topLeftPositionOfCurrentElement;
     private Field playingField;
+    private Vector2 topLeftPositionOfCurrentElement;
     private int currentElementSize;
     private FieldState[,] currentElementArray;
     private Color32 currentElementColor;
@@ -96,12 +96,14 @@ public class PlayingFieldController : MonoBehaviour, IPlayingFieldController
 
     protected void PlayingFieldInit()
     {
-        PlayingField = gameObject.AddComponent(typeof(Field)) as Field;
-        PlayingField.Height = PlayingFieldHeight;
-        PlayingField.Width = PlayingFieldWidth;
-        PlayingField.Matrix = new FieldState[PlayingFieldHeight, PlayingFieldWidth];
-        PlayingField.Objects = new GameObject[PlayingFieldHeight, PlayingFieldWidth];
-        PlayingField.Sprites = new SpriteRenderer[PlayingFieldHeight, PlayingFieldWidth];
+        PlayingField = new Field
+        {
+            Height = PlayingFieldHeight,
+            Width = PlayingFieldWidth,
+            Matrix = new FieldState[PlayingFieldHeight, PlayingFieldWidth],
+            Objects = new GameObject[PlayingFieldHeight, PlayingFieldWidth],
+            Sprites = new SpriteRenderer[PlayingFieldHeight, PlayingFieldWidth]
+        };
         FillTheField(PlayingField, PlayingFieldXShift, PlayingFieldYShift);
         UpdatePlayingFieldState(PlayingField, CurrentElementColor);
     }
@@ -202,7 +204,7 @@ public class PlayingFieldController : MonoBehaviour, IPlayingFieldController
     {
         for (int y = numberOfRowToDelete - 1; y >= 0; y--)
         {
-            for (int x = PlayingField.Width - 1; x >= 0; x--)
+            for (int x = 0; x < PlayingFieldWidth; x++)
             {
                 // Проверка, чтобы НЕ опускать падающий элемент
                 if (PlayingField.Matrix[y, x] == FieldState.Falling)

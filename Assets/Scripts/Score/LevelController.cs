@@ -31,9 +31,9 @@ public class LevelController : MonoBehaviour
 
     public void ChangeLevel()
     {
-        if (PlayerProfileController.Instance.playerProfile.MaxLevel < Level)
+        if (PlayerProfileController.Instance.PlayerProfile.MaxLevel < Level)
         {
-            PlayerProfileController.Instance.playerProfile.MaxLevel = Level;
+            PlayerProfileController.Instance.PlayerProfile.MaxLevel = Level;
         }        
 
         Level++;

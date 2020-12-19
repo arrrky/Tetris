@@ -155,7 +155,7 @@ RectTransform:
   m_Children:
   - {fileID: 19981461}
   m_Father: {fileID: 2093344917}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1490,7 +1490,7 @@ RectTransform:
   m_GameObject: {fileID: 701400673}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
   m_Children:
   - {fileID: 920067043}
   - {fileID: 580513945}
@@ -1499,7 +1499,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -50, y: 50}
   m_SizeDelta: {x: 300, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &701400675
@@ -2894,6 +2894,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelMode: {fileID: 701400675}
   scoreMode: {fileID: 1927114524}
+  funMode: {fileID: 1841665864}
 --- !u!114 &1164184257
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3097,7 +3098,7 @@ RectTransform:
   m_Children:
   - {fileID: 1742011105}
   m_Father: {fileID: 2093344917}
-  m_RootOrder: 7
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -4799,7 +4800,7 @@ RectTransform:
   m_GameObject: {fileID: 1841665862}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
   m_Children:
   - {fileID: 1461172278}
   - {fileID: 1142818874}
@@ -4808,7 +4809,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -150}
+  m_AnchoredPosition: {x: -50, y: -75}
   m_SizeDelta: {x: 300, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1841665864
@@ -4853,7 +4854,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1461172279}
   toggleTransition: 1
   graphic: {fileID: 1050048418}
-  m_Group: {fileID: 1164184257}
+  m_Group: {fileID: 0}
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
@@ -5140,7 +5141,7 @@ RectTransform:
   m_GameObject: {fileID: 1927114522}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
   m_Children:
   - {fileID: 437942377}
   - {fileID: 1028936199}
@@ -5149,7 +5150,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -50}
+  m_AnchoredPosition: {x: -50, y: 0}
   m_SizeDelta: {x: 300, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1927114524
@@ -5255,7 +5256,7 @@ RectTransform:
   m_Children:
   - {fileID: 1335079742}
   m_Father: {fileID: 2093344917}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -5669,9 +5670,9 @@ RectTransform:
   - {fileID: 728756492}
   - {fileID: 1164184255}
   - {fileID: 1527167617}
+  - {fileID: 1303253873}
   - {fileID: 1959983565}
   - {fileID: 9582202}
-  - {fileID: 1303253873}
   - {fileID: 1356800022}
   - {fileID: 2048376531}
   - {fileID: 1151660282}
@@ -5922,12 +5923,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainMenuBorderBlockPrefab: {fileID: 8520220381069669123, guid: 06dc67bbae15964409005b78bd1b0c16, type: 3}
   mainMenuBorderBlocksParent: {fileID: 376759443}
-  PlayButton: {fileID: 1527167616}
-  QuitButton: {fileID: 1303253872}
-  LogOutButton: {fileID: 2119353385}
-  RegisterInputFields: {fileID: 1151660281}
-  LoginInputFields: {fileID: 2048376530}
-  CurrentPlayerProfile: {fileID: 857182456}
+  playButton: {fileID: 1527167616}
+  quitButton: {fileID: 1303253872}
+  logOutButton: {fileID: 2119353385}
+  registerInputFields: {fileID: 1151660281}
+  loginInputFields: {fileID: 2048376530}
+  currentPlayerProfile: {fileID: 857182456}
 --- !u!4 &2128251424
 Transform:
   m_ObjectHideFlags: 0

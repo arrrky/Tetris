@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using UnityEngine;
 
 public class ElementMovement : MonoBehaviour, IMove
@@ -45,7 +44,7 @@ public class ElementMovement : MonoBehaviour, IMove
                     LastRowOrElementsCollided?.Invoke();
                     if (GameModeManager.Instance.ChosenGameMode == GameMode.Score)
                     {
-                        if (gameController.isGameOver)
+                        if (gameController.IsGameOver)
                             return;
                         RestartAutoFallingDown();
                     }

@@ -3,23 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using MiscTools;
 
-public class Elements : MonoBehaviour
+public class Elements
 {    
     private List<Element> listOfElements;
     private const int sumOfChances = 100;
 
-    // Нужно инициализировать список элементов ДО спауна первого элемента - поэтому делаем это в Awake
-    private void Awake()
+    private Elements()
     {
         listOfElements = new List<Element>();
         ElementsInit();
-    }
-
-    private void Start()
-    {      
-        //ElementsSortByChance();
         CorrectChancesCheck();
-    }
+    }   
 
     #region Инициализация элементов
     private void ElementsInit()
@@ -166,7 +160,7 @@ public class Elements : MonoBehaviour
         {
             sum += element.SpawnChance;
         }
-        if (sum != 100)
+        if (sum != sumOfChances)
         {
             Debug.LogError("Chances are incorrect!");
         } 
@@ -180,7 +174,6 @@ public class Elements : MonoBehaviour
         {
             sumOfChances += listOfElements[i].SpawnChance;
         }
-
         return sumOfChances;
     }
 

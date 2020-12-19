@@ -7,7 +7,7 @@ public enum FieldState
     Fallen = 2
 }
 
-public class Field : MonoBehaviour
+public class Field
 {  
     public int Width { get; set; }    
     public int Height { get; set; }   

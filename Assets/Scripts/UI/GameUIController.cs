@@ -3,6 +3,8 @@ using UnityEngine.UI;
 
 public class GameUIController : MonoBehaviour
 {
+    [SerializeField] GameController gameController;
+
     [SerializeField] private GameObject gameOverText;
     [SerializeField] private GameObject youWinText;
     [SerializeField] private GameObject pauseText;
@@ -13,9 +15,8 @@ public class GameUIController : MonoBehaviour
     [SerializeField] private Text lblLevel;
     [SerializeField] private Text lblGoal;
 
-    [SerializeField] GameController gameController;
  
-    void Start()
+    private void Start()
     {
         GameModeUISetup();
         EventsSetup();       

@@ -7,14 +7,14 @@ public class MainMenuController : MonoBehaviour
     [SerializeField] private GameObject mainMenuBorderBlockPrefab;
     [SerializeField] private GameObject mainMenuBorderBlocksParent;
 
-    [SerializeField] private GameObject PlayButton;
-    [SerializeField] private GameObject QuitButton;
-    [SerializeField] private GameObject LogOutButton;
+    [SerializeField] private GameObject playButton;
+    [SerializeField] private GameObject quitButton;
+    [SerializeField] private GameObject logOutButton;
 
-    [SerializeField] private GameObject RegisterInputFields;
-    [SerializeField] private GameObject LoginInputFields;
+    [SerializeField] private GameObject registerInputFields;
+    [SerializeField] private GameObject loginInputFields;
 
-    [SerializeField] private Text CurrentPlayerProfile;
+    [SerializeField] private Text currentPlayerProfile;
 
     private LoginManager loginManager;
 
@@ -25,13 +25,13 @@ public class MainMenuController : MonoBehaviour
     {     
         UpdatePlayerDisplay();
 
-        loginManager = LoginInputFields.GetComponentInChildren<LoginManager>();
+        loginManager = loginInputFields.GetComponentInChildren<LoginManager>();
         loginManager.PlayerLoggedIn += UpdatePlayerDisplay;
 
         Time.timeScale = 1;
         MainBorderInit();
 
-        LogOutButton.SetActive(PlayerProfileController.Instance.playerProfile.Name != null);
+        logOutButton.SetActive(PlayerProfileController.Instance.PlayerProfile.Name != null);
     }
 
     private void MainBorderInit()
@@ -56,35 +56,35 @@ public class MainMenuController : MonoBehaviour
 
     public void GoToRegisterInputFields()
     {
-        RegisterInputFields.SetActive(true);
+        registerInputFields.SetActive(true);
     }
 
     public void GoToLoginInputFuelds()
     {
-        LoginInputFields.SetActive(true);
+        loginInputFields.SetActive(true);
     }
 
     private void UpdatePlayerDisplay()
     {
-        if (PlayerProfileController.Instance.playerProfile.Name == null)
+        if (PlayerProfileController.Instance.PlayerProfile.Name == null)
         {
-            CurrentPlayerProfile.text = "Player: \n" +
+            currentPlayerProfile.text = "Player: \n" +
                                         "unknown";
         }
         else
         {
-            CurrentPlayerProfile.text =
-                "Player: \n"    + PlayerProfileController.Instance.playerProfile.Name + "\n" +
-                "Max Level: \n" + PlayerProfileController.Instance.playerProfile.MaxLevel + "\n" +
-                "Max Score: \n" + PlayerProfileController.Instance.playerProfile.MaxScore;
+            currentPlayerProfile.text =
+                "Player: \n"    + PlayerProfileController.Instance.PlayerProfile.Name + "\n" +
+                "Max Level: \n" + PlayerProfileController.Instance.PlayerProfile.MaxLevel + "\n" +
+                "Max Score: \n" + PlayerProfileController.Instance.PlayerProfile.MaxScore;
         }
     }
 
     public void LogOut()
     {       
-        if (PlayerProfileController.Instance.playerProfile.Name == null)
+        if (PlayerProfileController.Instance.PlayerProfile.Name == null)
             return;
-        PlayerProfileController.Instance.playerProfile.Name = null;
+        PlayerProfileController.Instance.PlayerProfile.Name = null;
         Tools.CurrentSceneReload();
     }
 
