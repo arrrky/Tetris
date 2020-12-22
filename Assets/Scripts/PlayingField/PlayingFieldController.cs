@@ -60,8 +60,8 @@ public class PlayingFieldController : MonoBehaviour, IPlayingFieldController
 
     public virtual float PlayingFieldXShift { get; } = -4.5f;
     public virtual float PlayingFieldYShift { get; } = -10.5f;
-
-    private const float RowDeletingDelay = 0.01f;
+        
+    protected const float RowDeletingDelay = 0.01f;
 
     public event Action RowDeleted;
     public event Action ElementFell;
@@ -157,7 +157,7 @@ public class PlayingFieldController : MonoBehaviour, IPlayingFieldController
         ElementFell?.Invoke();
     }
 
-    public void FullRowCheck()
+    public virtual void FullRowCheck()
     {
         for (int y = PlayingField.Height - 1; y >= 0; y--)
         {
@@ -175,7 +175,7 @@ public class PlayingFieldController : MonoBehaviour, IPlayingFieldController
         }
     }
 
-    private IEnumerator DeleteFullRow(int numberOfRowToDelete)
+    protected virtual IEnumerator DeleteFullRow(int numberOfRowToDelete)
     {
         // Удаление ряда с задержкой
         for (int x = 0; x < PlayingField.Width; x++)
@@ -200,16 +200,16 @@ public class PlayingFieldController : MonoBehaviour, IPlayingFieldController
         FullRowsCount = 0;
     }
 
-    private void MoveRowsAboveDeletedRow(int numberOfRowToDelete)
+    protected virtual void MoveRowsAboveDeletedRow(int numberOfRowToDelete)
     {
-        for (int y = numberOfRowToDelete - 1; y >= 0; y--)
+        for (int y = numberOfRowToDelete; y >= 0; y--)
         {
             for (int x = 0; x < PlayingFieldWidth; x++)
             {
                 // Проверка, чтобы НЕ опускать падающий элемент
-                if (PlayingField.Matrix[y, x] == FieldState.Falling)
+                if (PlayingField.Matrix[y - 1, x] == FieldState.Falling)
                     return;
-                PlayingField.Matrix[y + 1, x] = PlayingField.Matrix[y, x];
+                PlayingField.Matrix[y, x] = PlayingField.Matrix[y - 1, x];
             }
         }
     }

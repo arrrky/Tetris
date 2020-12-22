@@ -162,7 +162,7 @@ public class Elements
         }
         if (sum != sumOfChances)
         {
-            Debug.LogError("Chances are incorrect!");
+            Debug.LogWarning("Chances are incorrect!");
         } 
     }
 
