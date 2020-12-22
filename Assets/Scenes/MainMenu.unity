@@ -2698,10 +2698,10 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: d75c72c213c77d2499c7b36aaef6501b, type: 3}
-    m_FontSize: 50
+    m_FontSize: 25
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 5
+    m_MinSize: 0
     m_MaxSize: 50
     m_Alignment: 1
     m_AlignByGeometry: 0
@@ -2709,7 +2709,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: FUN
+  m_Text: 'FUN
+
+    (in development)'
 --- !u!222 &1142818876
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4860,7 +4862,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1164184256}
         m_TargetAssemblyTypeName: GameModeToggleController, Assembly-CSharp
-        m_MethodName: FunModeChoice
+        m_MethodName: FunModeChange
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

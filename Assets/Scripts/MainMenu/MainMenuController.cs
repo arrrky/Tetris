@@ -43,26 +43,10 @@ public class MainMenuController : MonoBehaviour
         mainMenuBorder.CreateBorder(screenBounds.x * 2 - 1, screenBounds.y * 2 - 1, mainMenuBorderBlockPrefab, mainMenuBorderBlocksParent);
     }
 
-    public void PlayTheGame()
-    {
-        //SceneManager.LoadScene(1);       
-        Tools.LoadScene(Scenes.Game);
-    }
-
-    public void QuitTheGame()
-    {
-        Application.Quit();
-    }
-
-    public void GoToRegisterInputFields()
-    {
-        registerInputFields.SetActive(true);
-    }
-
-    public void GoToLoginInputFuelds()
-    {
-        loginInputFields.SetActive(true);
-    }
+    public void PlayTheGame() => Tools.LoadScene(Scenes.Game);
+    public void QuitTheGame() => Application.Quit();
+    public void GoToRegisterInputFields() => registerInputFields.SetActive(true);
+    public void GoToLoginInputFuelds() => loginInputFields.SetActive(true);
 
     private void UpdatePlayerDisplay()
     {

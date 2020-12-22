@@ -4,19 +4,31 @@ using UnityEngine;
 using MiscTools;
 
 public class Elements
-{    
+{
     private List<Element> listOfElements;
-    private const int sumOfChances = 100;
+    private const int expectedSumOfChances = 100;
 
     private Elements()
     {
         listOfElements = new List<Element>();
         ElementsInit();
         CorrectChancesCheck();
-    }   
+    }
+
+    private void ElementsInit()
+    {
+        if(GameModeManager.Instance.IsFunMode)
+        {
+            ElementsInitFunMode();
+        }
+        else
+        {
+            ElementsInitNormalMode();
+        }
+    }
 
     #region Инициализация элементов
-    private void ElementsInit()
+    private void ElementsInitNormalMode()
     {
         listOfElements.Add(new Element
         {
@@ -39,7 +51,7 @@ public class Elements
                 {0,1,0},
                 {0,0,0}
             }),
-            SpawnChance = 10,
+            SpawnChance = 20,
             Color = Tools.rainbowColors["orange"],
         });
 
@@ -92,7 +104,7 @@ public class Elements
                 {0,1,1},
                 {0,0,0}
             }),
-            SpawnChance = 20,
+            SpawnChance = 15,
             Color = Tools.rainbowColors["blue"],
         });
 
@@ -105,68 +117,161 @@ public class Elements
                 {1,1,0},
                 {0,0,0}
             }),
-            SpawnChance = 20,
+            SpawnChance = 15,
+            Color = Tools.rainbowColors["violet"],
+        });               
+    }
+    #endregion
+
+    #region Инициализация элементов (новый режим)
+    private void ElementsInitFunMode()
+    {
+        listOfElements.Add(new Element
+        {
+            Name = "O",
+            Matrix = Tools.ConvertToFieldState(new int[,]
+            {
+                 {1,1},
+                 {1,1}
+            }),
+            SpawnChance = 10,
+            Color = Tools.rainbowColors["red"],
+        });
+
+        listOfElements.Add(new Element
+        {
+            Name = "T",
+            Matrix = Tools.ConvertToFieldState(new int[,]
+            {
+                {1,1,1},
+                {0,1,0},
+                {0,0,0}
+            }),
+            SpawnChance = 5,
+            Color = Tools.rainbowColors["orange"],
+        });
+
+        listOfElements.Add(new Element
+        {
+            Name = "I",
+            Matrix = Tools.ConvertToFieldState(new int[,]
+            {
+                {1,1,1,1},
+                {0,0,0,0},
+                {0,0,0,0},
+                {0,0,0,0}
+            }),
+            SpawnChance = 10,
+            Color = Tools.rainbowColors["yellow"],
+        });
+
+        listOfElements.Add(new Element
+        {
+            Name = "L",
+            Matrix = Tools.ConvertToFieldState(new int[,]
+            {
+                {1,1,1},
+                {1,0,0},
+                {0,0,0}
+            }),
+            SpawnChance = 15,
+            Color = Tools.rainbowColors["green"],
+        });
+
+        listOfElements.Add(new Element
+        {
+            Name = "J",
+            Matrix = Tools.ConvertToFieldState(new int[,]
+            {
+                {1,1,1},
+                {0,0,1},
+                {0,0,0}
+            }),
+            SpawnChance = 15,
+            Color = Tools.rainbowColors["lightblue"],
+        });
+
+        listOfElements.Add(new Element
+        {
+            Name = "Z",
+            Matrix = Tools.ConvertToFieldState(new int[,]
+            {
+                {1,1,0},
+                {0,1,1},
+                {0,0,0}
+            }),
+            SpawnChance = 15,
+            Color = Tools.rainbowColors["blue"],
+        });
+
+        listOfElements.Add(new Element
+        {
+            Name = "S",
+            Matrix = Tools.ConvertToFieldState(new int[,]
+            {
+                {0,1,1},
+                {1,1,0},
+                {0,0,0}
+            }),
+            SpawnChance = 15,
             Color = Tools.rainbowColors["violet"],
         });
 
-        if (GameModeManager.Instance.IsFunMode)
+        listOfElements.Add(new Element
         {
-            listOfElements.Add(new Element
-            {
-                Name = "Cross",
-                Matrix = Tools.ConvertToFieldState(new int[,]
-            {
+            Name = "Cross",
+            Matrix = Tools.ConvertToFieldState(new int[,]
+        {
                 {0,1,0},
                 {1,1,1},
                 {0,1,0}
-            }),
-                SpawnChance = 20,
-                Color = Tools.additionalColors["grey"],
-            });
+        }),
+            SpawnChance = 5,
+            Color = Tools.additionalColors["grey"],
+        });
 
-            listOfElements.Add(new Element
-            {
-                Name = "Bench",
-                Matrix = Tools.ConvertToFieldState(new int[,]
-            {
+        listOfElements.Add(new Element
+        {
+            Name = "Bench",
+            Matrix = Tools.ConvertToFieldState(new int[,]
+        {
                 {1,1,1},
                 {1,0,1},
                 {0,0,0}
-            }),
-                SpawnChance = 20,
-                Color = Tools.additionalColors["brown"],
-            });
+        }),
+            SpawnChance = 5,
+            Color = Tools.additionalColors["brown"],
+        });
 
-            listOfElements.Add(new Element
-            {
-                Name = "Stair",
-                Matrix = Tools.ConvertToFieldState(new int[,]
-            {
+        listOfElements.Add(new Element
+        {
+            Name = "Stair",
+            Matrix = Tools.ConvertToFieldState(new int[,]
+        {
                 {1,0,0},
                 {1,1,0},
                 {0,1,1}
-            }),
-                SpawnChance = 20,
-                Color = Tools.additionalColors["pink"],
-            });
-        }
+        }),
+            SpawnChance = 5,
+            Color = Tools.additionalColors["pink"],
+        });
     }
     #endregion
 
     private void CorrectChancesCheck()
     {
         int sum = 0;
-        foreach(var element in listOfElements)
+        foreach (var element in listOfElements)
         {
             sum += element.SpawnChance;
         }
-        if (sum != sumOfChances)
+        if (sum != expectedSumOfChances)
         {
             Debug.LogWarning("Chances are incorrect!");
-        } 
+        }
     }
 
-    private int GetSumOfChances ()
+    private int GetSumOfChances()
     {
         int sumOfChances = 0;
 
@@ -194,13 +299,13 @@ public class Elements
         }
         return null;
     }
-    
+
     private void ElementsSortByChance()
-    {        
+    {
         var sortedElements =
             from element in listOfElements
             orderby element.SpawnChance
-            select element;      
+            select element;
 
         listOfElements = sortedElements.ToList();
     }

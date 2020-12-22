@@ -40,23 +40,23 @@ public class PlayerInput : MonoBehaviour
             gameController.GamePause();
         }
 
-        // Звук
-        if (Input.GetButton("VolumeLevel+"))
-        {
-            AudioController.Instance.IncreaseVolumeLevel();
-        }
-        if (Input.GetButton("VolumeLevel-"))
-        {
-            AudioController.Instance.DecreaseVolumeLevel();
-        }
-        if (Input.GetButtonDown("RandomSong"))
-        {
-            AudioController.Instance.PlayRandomSong();
-        }
-        if (Input.GetButtonDown("Mute"))
-        {
-            AudioController.Instance.MuteUnmute();
-        }
+        //// Звук - TODO
+        //if (Input.GetButton("VolumeLevel+"))
+        //{
+        //    AudioController.Instance.IncreaseVolumeLevel();
+        //}
+        //if (Input.GetButton("VolumeLevel-"))
+        //{
+        //    AudioController.Instance.DecreaseVolumeLevel();
+        //}
+        //if (Input.GetButtonDown("RandomSong"))
+        //{
+        //    AudioController.Instance.PlayRandomSong();
+        //}
+        //if (Input.GetButtonDown("Mute"))
+        //{
+        //    AudioController.Instance.MuteUnmute();
+        //}
     }
 
     private void CheckManualFallingDown()

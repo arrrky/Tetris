@@ -9,12 +9,9 @@ public class GameModeToggleController : MonoBehaviour
 
     private void Start()
     {
-
         levelMode.isOn = true;
         levelMode.interactable = false;
-       
-
-
+        GameModeManager.Instance.IsFunMode = funMode.isOn;
     }
 
     public void LevelModeOn()
@@ -31,10 +28,5 @@ public class GameModeToggleController : MonoBehaviour
         scoreMode.interactable = false;
     }
 
-    public void FunModeChoice()
-    {
-        GameModeManager.Instance.IsFunMode = !GameModeManager.Instance.IsFunMode;
-        Debug.Log($"Fun mode: {GameModeManager.Instance.IsFunMode}");
-
-    }
+    public void FunModeChange() => GameModeManager.Instance.IsFunMode = funMode.isOn;
 }

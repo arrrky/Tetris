@@ -167,6 +167,7 @@ public class PlayingFieldController : MonoBehaviour, IPlayingFieldController
             {
                 isFullRow &= PlayingField.Matrix[y, x] == FieldState.Fallen;
             }
+
             if (isFullRow)
             {
                 FullRowsCount++;
@@ -201,7 +202,7 @@ public class PlayingFieldController : MonoBehaviour, IPlayingFieldController
     }
 
     protected virtual void MoveRowsAboveDeletedRow(int numberOfRowToDelete)
-    {
+    {        
         for (int y = numberOfRowToDelete; y >= 0; y--)
         {
             for (int x = 0; x < PlayingFieldWidth; x++)

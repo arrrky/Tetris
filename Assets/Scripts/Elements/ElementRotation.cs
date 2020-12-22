@@ -7,7 +7,7 @@ public class ElementRotation : MonoBehaviour, IRotate
 
     private IPlayingFieldController playingFieldController;
     private FieldState[,] currentElementMatrixOnTheField; 
-
+    
     private int xShift;
     private int yShift;
 

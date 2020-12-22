@@ -17,13 +17,6 @@ public class EasterEggController : MonoBehaviour
         buttonCheck = !buttonCheck;
     }
 
-    protected virtual void ButtonOn()
-    {
-        sprite.SetActive(true);
-    }
-
-    protected virtual void ButtonOff()
-    {
-        sprite.SetActive(false);             
-    }   
+    protected virtual void ButtonOn() => sprite.SetActive(true);
+    protected virtual void ButtonOff() => sprite.SetActive(false);
 }

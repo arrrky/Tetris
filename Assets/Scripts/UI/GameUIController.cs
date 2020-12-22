@@ -14,7 +14,6 @@ public class GameUIController : MonoBehaviour
 
     [SerializeField] private Text lblLevel;
     [SerializeField] private Text lblGoal;
-
  
     private void Start()
     {

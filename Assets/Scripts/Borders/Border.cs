@@ -3,7 +3,15 @@
 public class Border : MonoBehaviour
 {
     public Vector2 SpriteShift { get; set; }
-    public Vector2 TopLeftPoint { get; set; }     
+    public Vector2 TopLeftPoint { get; set; }
+
+    /// <summary>
+    /// Создает прямоугольную границу, беря за основу указанный верхний левый угол.
+    /// </summary>
+    /// <param name="width"></param>
+    /// <param name="height"></param>
+    /// <param name="borderBlockPrefab"> Префаб (в нашем случае - спрайт), который будет служить основой границы. </param>
+    /// <param name="parentOfBlocks"> Объект на сцене, куда будут "складироваться" все префабы-спрайты, чтобы не мешались. </param>
 
     public void CreateBorder(float width, float height, GameObject borderBlockPrefab, GameObject parentOfBlocks)
     {

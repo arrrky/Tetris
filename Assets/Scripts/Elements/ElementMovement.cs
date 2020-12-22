@@ -103,6 +103,7 @@ public class ElementMovement : MonoBehaviour, IMove
         CancelInvoke();
     }
 
+    // Используется в Score моде, чтобы на одной сцене постоянно увеличивать скорость падения элемента
     public void RestartAutoFallingDown()
     {
         CancelInvoke(nameof(FallingDown));
