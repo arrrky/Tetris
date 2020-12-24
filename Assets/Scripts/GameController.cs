@@ -6,10 +6,9 @@ using MiscTools;
 public class GameController : MonoBehaviour
 { 
     [SerializeField] private GameObject playerInput;
-    [SerializeField] public GameObject blockPrefab;
-    [SerializeField] public GameObject blocksParent;
-    [SerializeField] public ElementMovement elementMovement;
-    [SerializeField] public ElementRotation elementRotation;
+    [SerializeField] private GameObject blockPrefab;
+    [SerializeField] private GameObject blocksParentForPlayingField;
+    [SerializeField] private GameObject blocksParentForNextElementField;
 
     public event Action GameStarted;
     public event Action GameOver;
@@ -17,23 +16,48 @@ public class GameController : MonoBehaviour
     public event Action<bool> GamePaused;
 
     private bool isGameOver = false;
+
+    private IPlayingFieldController playingFieldController;
+    private IMove elementMovement;
+    private IRotate elementRotation;
+    private INextElementFieldController nextElementFieldController;
+
+    private SpawnController spawnController;
+
+    #region PROPERTIES
     public bool IsGameOver { get => isGameOver; set => isGameOver = value; }
-
-
-    public IPlayingFieldController PlayingFieldController;
-
+    public IPlayingFieldController PlayingFieldController { get => playingFieldController; set => playingFieldController = value; }
+    public IMove ElementMovement { get => elementMovement; set => elementMovement = value; }
+    public IRotate ElementRotation { get => elementRotation; set => elementRotation = value; }
+    public INextElementFieldController NextElementFieldController { get => nextElementFieldController; set => nextElementFieldController = value; }
+    public SpawnController SpawnController { get => spawnController; set => spawnController = value; }
+    #endregion
 
     private void Awake()
     {
-        switch(GameModeManager.Instance.IsFunMode)
-        {
-            case true:
-                PlayingFieldController = gameObject.AddComponent<PlayingFieldControllerFunMode>();
-                break;
-            case false:
-                PlayingFieldController = gameObject.AddComponent<PlayingFieldController>();
-                break;
-        }
+        MainInit();        
+    }
+
+    private void MainInit()
+    {
+        ElementRotation = gameObject.AddComponent<ElementRotation>();
+
+        ElementMovement = GameModeManager.Instance.IsFunMode
+            ? gameObject.AddComponent<ElementMovementFunMode>()
+            : gameObject.AddComponent<ElementMovement>();
+
+        PlayingFieldController = GameModeManager.Instance.IsFunMode
+            ? gameObject.AddComponent<PlayingFieldControllerFunMode>()
+            : gameObject.AddComponent<PlayingFieldController>();
+
+        PlayingFieldController.FieldControllerInit(blockPrefab, blocksParentForPlayingField);
+        PlayingFieldController.PlayingFieldControllerInit(ElementMovement, ElementRotation);
+
+        NextElementFieldController = gameObject.AddComponent<NextElementFieldController>();
+        NextElementFieldController.FieldControllerInit(blockPrefab, blocksParentForNextElementField);        
+
+        SpawnController = gameObject.AddComponent<SpawnController>();
+        SpawnController.SpawnControllerInit(this, NextElementFieldController, PlayingFieldController);
     }
 
     private void Start()

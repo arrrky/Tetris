@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class ElementMovement : MonoBehaviour, IMove
 {
-    [SerializeField] private GameController gameController;
-    [SerializeField] private ScoreController scoreController;
+    private GameController gameController;
+    private ScoreController scoreController;
 
     private Field playingField;
 
@@ -13,13 +13,17 @@ public class ElementMovement : MonoBehaviour, IMove
     public event Action LastRowOrElementsCollided;
     public event Action<FieldState[,], Vector2> ElementMoved;
 
+    private void Awake()
+    {
+        gameController = FindObjectOfType<GameController>();
+        scoreController = FindObjectOfType<ScoreController>();
+    }
+
     private void Start()
     {
         playingField = gameController.PlayingFieldController.PlayingField;
-
         StartAutoFallingDown();
-        EventsSetup();
-        
+        EventsSetup();        
     }
 
     private void EventsSetup()
@@ -60,7 +64,7 @@ public class ElementMovement : MonoBehaviour, IMove
         ElementMoved?.Invoke(tempMatrix, new Vector2(0, 1));
     }
 
-    public void HorizontalMovement()
+    public virtual void HorizontalMovement()
     {
         FieldState[,] tempMatrix = new FieldState[playingField.Height, playingField.Width];
         int direction = 0;
@@ -83,9 +87,11 @@ public class ElementMovement : MonoBehaviour, IMove
                 if (playingField.Matrix[y, x] == FieldState.Falling)
                 {
                     if (BorderCheck(x))
-                        return;
+                        return;  
+
                     if (IsOtherBlockNear(x, y, direction))
                         return;
+
                     tempMatrix[y, x + direction] = FieldState.Falling;
                 }
             }

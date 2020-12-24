@@ -1,30 +1,19 @@
 ﻿using System;
 using UnityEngine;
 
-public interface IPlayingFieldController
+public interface IPlayingFieldController : IFieldController
 {
-    FieldState[,] CurrentElementArray { get; set; }
-    Color32 CurrentElementColor { get; set; }
-    int CurrentElementSize { get; set; }
-    int FullRowsCount { get; set; }
-    Field PlayingField { get; set; }
-    Vector2 TopLeftPositionOfCurrentElement { get; set; }
+    void PlayingFieldControllerInit(IMove elementMovement, IRotate elementRotation);
 
-    int PlayingFieldHeight { get; }
-    int PlayingFieldWidth { get; }
-
-    float PlayingFieldXShift { get; }
-    float PlayingFieldYShift { get; }
+    int FullRowsCount { get; set; }    
+    Vector2 TopLeftPositionOfCurrentElement { get; set; }       
 
     event Action ElementFell;
     event Action RowDeleted;
-
-    void ClearField(Field field);
+    
     void FallenToTemp(FieldState[,] tempMatrix);
-    void FallingToFallen();
-    void FillTheField(Field field, float xShift, float yShift);
+    void FallingToFallen();    
     void FullRowCheck();
     void UpdateAfterMovement(FieldState[,] tempMatrix, Vector2 topLeftPointOfElementShift);
-    void UpdateAfterRotation();
-    void UpdatePlayingFieldState(Field field, Color32 elementColor);
+    void UpdateAfterRotation();  
 }

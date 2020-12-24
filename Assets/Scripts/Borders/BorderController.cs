@@ -18,7 +18,7 @@ public class BorderController : MonoBehaviour
     private int nextElementBorderXShift; // смещение относительно центра экрана
     private int nextElementBorderSize;
 
-    public Vector2 TopLeftPointOfNextElementBorder { get; set; }
+    public static Vector2 TopLeftPointOfNextElementBorder { get; set; }
 
     public static Vector3 ScreenBounds { get; set; }
 

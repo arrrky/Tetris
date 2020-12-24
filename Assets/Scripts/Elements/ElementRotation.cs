@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class ElementRotation : MonoBehaviour, IRotate
 {
-    [SerializeField] private GameController gameController;
+    private GameController gameController;
 
     private IPlayingFieldController playingFieldController;
     private FieldState[,] currentElementMatrixOnTheField; 
@@ -13,10 +13,11 @@ public class ElementRotation : MonoBehaviour, IRotate
 
     public event Action ElementWasRotated;
 
-    private void Start()
+    private void Awake()
     {
+        gameController = FindObjectOfType<GameController>();
         playingFieldController = gameController.PlayingFieldController;
-    }
+    }   
 
     private bool IsRotateValid()
     {

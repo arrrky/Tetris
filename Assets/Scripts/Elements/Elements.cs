@@ -134,7 +134,7 @@ public class Elements
                  {1,1},
                  {1,1}
             }),
-            SpawnChance = 10,
+            SpawnChance = 100000000,
             Color = Tools.rainbowColors["red"],
         });
 

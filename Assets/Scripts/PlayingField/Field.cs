@@ -14,4 +14,13 @@ public class Field
     public GameObject[,] Objects { get; set; }
     public SpriteRenderer[,] Sprites { get; set; }
     public FieldState[,] Matrix { get; set; }
+    
+    public Field(int width, int height)
+    {
+        Width = width;
+        Height = height;
+        Objects = new GameObject[Width, Height];
+        Sprites = new SpriteRenderer[Width, Height];
+        Matrix = new FieldState[Width, Height];
+    }
 }

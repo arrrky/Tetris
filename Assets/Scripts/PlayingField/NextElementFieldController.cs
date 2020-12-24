@@ -2,16 +2,11 @@
 using System;
 using Zenject;
 
-public class NextElementFieldController : PlayingFieldController
-{
-    [SerializeField] private BorderController borderController;
-
+public class NextElementFieldController : FieldController, INextElementFieldController
+{  
     private Elements elements;
     private Field nextElementField;
-    private Element nextElement;
-
-    public static readonly int NextElementFieldHeight = 4;
-    public static readonly int NextElementFieldWidth = 4;
+    private Element nextElement;    
 
     public event Action<FieldState[,], Field> FirstElementSpawned;
 
@@ -20,17 +15,13 @@ public class NextElementFieldController : PlayingFieldController
     public Field NextElementField { get => nextElementField; set => nextElementField = value; }
     public Element NextElement { get => nextElement; set => nextElement = value; }
 
-    #endregion
+    #endregion    
 
-    private new void Start()
-    {      
-        NextElementFieldInit();
-
-        NextElement = elements.GetRandomElement();
-
+    private void Start()
+    { 
         FirstElementSpawned?.Invoke(NextElementField.Matrix, NextElementField);
         
-        UpdatePlayingFieldState(NextElementField, NextElement.Color);
+        //UpdatePlayingFieldState(NextElementField, NextElement.Color);
     }   
 
     [Inject]
@@ -39,19 +30,23 @@ public class NextElementFieldController : PlayingFieldController
         this.elements = elements;
     }
 
-    private void NextElementFieldInit()
+    public void NextElementFieldControllerInit(GameObject blockPrefab, GameObject blocksParent)
     {
-        int nextElementFieldXShift = (int)borderController.TopLeftPointOfNextElementBorder.x + 3;
-        int nextElementFieldYShift = (int)borderController.TopLeftPointOfNextElementBorder.y - 7;
+        Height = 4;
+        Width = 4;
 
-        NextElementField = new Field
-        {
-            Height = NextElementFieldHeight,
-            Width = NextElementFieldWidth,
-            Matrix = new FieldState[NextElementFieldHeight, NextElementFieldWidth],
-            Objects = new GameObject[NextElementFieldHeight, NextElementFieldWidth],
-            Sprites = new SpriteRenderer[NextElementFieldHeight, NextElementFieldWidth]
-        };
+        NextElementFieldInit();
+
+        NextElement = elements.GetRandomElement();
+    }
+
+    public void NextElementFieldInit()
+    {
+        int nextElementFieldXShift = (int)BorderController.TopLeftPointOfNextElementBorder.x + 3;
+        int nextElementFieldYShift = (int)BorderController.TopLeftPointOfNextElementBorder.y - 7;
+
+        NextElementField = new Field(Width, Height);       
         FillTheField(NextElementField, nextElementFieldXShift, nextElementFieldYShift);
+        UpdatePlayingFieldState(NextElementField, NextElement.Color);
     }
 }

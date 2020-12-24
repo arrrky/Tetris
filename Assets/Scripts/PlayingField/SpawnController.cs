@@ -3,17 +3,18 @@ using Zenject;
 
 public class SpawnController : MonoBehaviour
 {
-    [SerializeField] private GameController gameController;
-    [SerializeField] private NextElementFieldController nextElementFieldController;
-
-    private Elements elements;
+    private GameController gameController;
+    private INextElementFieldController nextElementFieldController;
     private IPlayingFieldController playingFieldController;
+    private Elements elements;
 
     public static int SpawnPoint = 4;
-
-    private void Awake()
+   
+    public void SpawnControllerInit(GameController gameController, INextElementFieldController nextElementFieldController, IPlayingFieldController playingFieldController)
     {
-        playingFieldController = gameController.PlayingFieldController;
+        this.gameController = gameController;
+        this.nextElementFieldController = nextElementFieldController;
+        this.playingFieldController = playingFieldController;
     }
 
     private void Start()
@@ -59,23 +60,23 @@ public class SpawnController : MonoBehaviour
         {
             for (int x = 0; x < element.Matrix.GetLength(1); x++)
             {
-                if (playingFieldController.PlayingField.Matrix[y, x + SpawnPoint] == FieldState.Fallen)
+                if (playingFieldController.Field.Matrix[y, x + SpawnPoint] == FieldState.Fallen)
                 {
                     PlayerProfileController.Instance.CallSavePlayerData();
                     StartCoroutine(gameController.GameOverRoutine());                    
                 }
-                playingFieldController.PlayingField.Matrix[y, x + SpawnPoint] = element.Matrix[y, x];
+                playingFieldController.Field.Matrix[y, x + SpawnPoint] = element.Matrix[y, x];
             }
         }
-        playingFieldController.UpdatePlayingFieldState(playingFieldController.PlayingField, playingFieldController.CurrentElementColor);
+        playingFieldController.UpdatePlayingFieldState(playingFieldController.Field, playingFieldController.CurrentElementColor);
         SpawnNextElement();
     }
 
     private void SpawnNextElement()
     {
         nextElementFieldController.NextElement = elements.GetRandomElement();
-        nextElementFieldController.ClearField(nextElementFieldController.NextElementField);
-        SpawnElement(nextElementFieldController.NextElement.Matrix, nextElementFieldController.NextElementField);
-        nextElementFieldController.UpdatePlayingFieldState(nextElementFieldController.NextElementField, nextElementFieldController.NextElement.Color);
+        nextElementFieldController.ClearField(nextElementFieldController.Field);
+        SpawnElement(nextElementFieldController.NextElement.Matrix, nextElementFieldController.Field);
+        nextElementFieldController.UpdatePlayingFieldState(nextElementFieldController.Field, nextElementFieldController.NextElement.Color);
     }
 }
