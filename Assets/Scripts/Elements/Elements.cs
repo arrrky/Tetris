@@ -17,7 +17,7 @@ public class Elements
 
     private void ElementsInit()
     {
-        if(GameModeManager.Instance.IsFunMode)
+        if (GameModeManager.Instance.IsFunMode)
         {
             ElementsInitFunMode();
         }
@@ -119,7 +119,7 @@ public class Elements
             }),
             SpawnChance = 15,
             Color = Tools.rainbowColors["violet"],
-        });               
+        });
     }
     #endregion
 

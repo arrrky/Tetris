@@ -2,7 +2,8 @@
 
 public interface IFieldController
 {
-    void FieldControllerInit(GameObject blockPrefab, GameObject blocksParent);    
+    void FieldControllerInit(GameObject blockPrefab, GameObject blocksParent);
+    void FieldInit();
 
     Field Field { get; set; }
     FieldState[,] CurrentElementArray { get; set; }

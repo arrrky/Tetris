@@ -33,11 +33,11 @@ public class ElementRotation : MonoBehaviour, IRotate
             for (int x = 0; x < playingFieldController.CurrentElementSize; x++)
             {
                 // Если в пределах поворота элемента (квадрат n*n, где n - самая длинная сторона элемента) есть упавшие блоки - не даем поворачивать
-                if (playingFieldController.PlayingField.Matrix[y + yShift, x + xShift] == FieldState.Fallen)
+                if (playingFieldController.Field.Blocks[y + yShift, x + xShift].State == FieldState.Fallen)
                     return false;
 
-                if (playingFieldController.PlayingField.Matrix[y + yShift, x + xShift] == FieldState.Falling)
-                    currentElementMatrixOnTheField[y, x] = playingFieldController.PlayingField.Matrix[y + yShift, x + xShift];
+                if (playingFieldController.Field.Blocks[y + yShift, x + xShift].State == FieldState.Falling)
+                    currentElementMatrixOnTheField[y, x] = playingFieldController.Field.Blocks[y + yShift, x + xShift].State;
             }
         }
         return true;
@@ -57,7 +57,7 @@ public class ElementRotation : MonoBehaviour, IRotate
             // Записываем в базовую матрицу-поле перевернутый элемент
             for (int y = 0; y < playingFieldController.CurrentElementSize; y++)
                 for (int x = 0; x < playingFieldController.CurrentElementSize; x++)
-                    playingFieldController.PlayingField.Matrix[y + yShift, x + xShift] = temp[y, x];
+                    playingFieldController.Field.Blocks[y + yShift, x + xShift].State = temp[y, x];
 
             ElementWasRotated?.Invoke();
         }

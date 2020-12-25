@@ -49,18 +49,18 @@ public class BorderController : MonoBehaviour
     {
         playingFieldBorder = gameObject.AddComponent(typeof(Border)) as Border;
         playingFieldBorder.SpriteShift = Tools.GetSpriteShift(borderBlockPrefab);
-        playingFieldBorder.TopLeftPoint = new Vector2(-gameController.PlayingFieldController.PlayingField.Width / 2 - 1, ScreenBounds.y - 1);
+        playingFieldBorder.TopLeftPoint = new Vector2(-gameController.PlayingFieldController.Field.Width / 2 - 1, ScreenBounds.y - 1);
 
         playingFieldBorder.CreateBorder(
-            gameController.PlayingFieldController.PlayingField.Width + 1,
-            gameController.PlayingFieldController.PlayingField.Height + 1,
+            gameController.PlayingFieldController.Field.Width + 1,
+            gameController.PlayingFieldController.Field.Height + 1,
             borderBlockPrefab,
             playingFiedBorderBlocksParent);
     }
 
     private void NextElementBorderInit()
     {
-        nextElementBorderXShift = gameController.PlayingFieldController.PlayingField.Width / 2 + 3;
+        nextElementBorderXShift = gameController.PlayingFieldController.Field.Width / 2 + 3;
         nextElementBorderSize = 8;
 
         nextElementBorder = gameObject.AddComponent(typeof(Border)) as Border;

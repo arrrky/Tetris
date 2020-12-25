@@ -38,8 +38,8 @@ public class FieldController : MonoBehaviour, IFieldController
         {
             for (int x = 0; x < field.Width; x++)
             {
-                field.Objects[y, x] = Instantiate(blockPrefab, new Vector3(x + xShift, field.Height - y + yShift, 0), Quaternion.identity, blocksParent.transform);
-                field.Sprites[y, x] = field.Objects[y, x].GetComponent<SpriteRenderer>();
+                field.Blocks[y, x].Object = Instantiate(blockPrefab, new Vector3(x + xShift, field.Height - y + yShift, 0), Quaternion.identity, blocksParent.transform);
+                field.Blocks[y, x].Sprite = field.Blocks[y, x].Object.GetComponent<SpriteRenderer>();
             }
         }
     }
@@ -50,12 +50,27 @@ public class FieldController : MonoBehaviour, IFieldController
         {
             for (int x = 0; x < field.Width; x++)
             {
-                field.Objects[y, x].SetActive(field.Matrix[y, x] != FieldState.Empty);
+                field.Blocks[y, x].Object.SetActive(field.Blocks[y, x].State != FieldState.Empty);
 
-                if (field.Matrix[y, x] == FieldState.Falling)
+                if (field.Blocks[y, x].State == FieldState.Falling)
                 {
-                    field.Sprites[y, x].color = elementColor;
+                    field.Blocks[y, x].Sprite.color = elementColor;
                 }
+            }
+        }
+    }
+
+    /// <summary>
+    /// Записываем временную матрицу в актуальную
+    /// </summary>
+    /// <param name="tempMatrix"></param>
+    protected void TempToActual(FieldState[,] tempMatrix)
+    {
+        for (int y = Field.Height - 1; y > 0; y--)
+        {
+            for (int x = Field.Width - 1; x >= 0; x--)
+            {
+                Field.Blocks[y, x].State = tempMatrix[y, x];
             }
         }
     }
@@ -66,7 +81,7 @@ public class FieldController : MonoBehaviour, IFieldController
         {
             for (int x = 0; x < field.Width; x++)
             {
-                field.Matrix[y, x] = FieldState.Empty;
+                field.Blocks[y, x].State = FieldState.Empty;
             }
         }
     }     

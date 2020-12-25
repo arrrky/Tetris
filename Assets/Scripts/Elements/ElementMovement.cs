@@ -21,7 +21,7 @@ public class ElementMovement : MonoBehaviour, IMove
 
     private void Start()
     {
-        playingField = gameController.PlayingFieldController.PlayingField;
+        playingField = gameController.PlayingFieldController.Field;
         StartAutoFallingDown();
         EventsSetup();        
     }
@@ -55,7 +55,7 @@ public class ElementMovement : MonoBehaviour, IMove
                     return;
                 }
 
-                if (playingField.Matrix[y, x] == FieldState.Falling)
+                if (playingField.Blocks[y, x].State == FieldState.Falling)
                 {
                     tempMatrix[y + 1, x] = FieldState.Falling;
                 }
@@ -84,7 +84,7 @@ public class ElementMovement : MonoBehaviour, IMove
         {
             for (int x = playingField.Width - 1; x >= 0; x--)
             {
-                if (playingField.Matrix[y, x] == FieldState.Falling)
+                if (playingField.Blocks[y, x].State == FieldState.Falling)
                 {
                     if (BorderCheck(x))
                         return;  
@@ -119,14 +119,14 @@ public class ElementMovement : MonoBehaviour, IMove
 
     private bool IsFallingElementAboveFallen(int x, int y)
     {
-        return (playingField.Matrix[y, x] == FieldState.Fallen &&
-                playingField.Matrix[y - 1, x] == FieldState.Falling);
+        return (playingField.Blocks[y, x].State == FieldState.Fallen &&
+                playingField.Blocks[y - 1, x].State == FieldState.Falling);
     }
 
     private bool IsLastRow(int x, int y)
     {
         return (y == playingField.Height - 1 &&
-                playingField.Matrix[y, x] == FieldState.Falling);
+                playingField.Blocks[y, x].State == FieldState.Falling);
     }
 
     private bool IsLeftBorderNear(int x) => x == 0;
@@ -134,6 +134,6 @@ public class ElementMovement : MonoBehaviour, IMove
 
     private bool IsOtherBlockNear(int x, int y, int direction)
     {
-        return (playingField.Matrix[y, x + direction] == FieldState.Fallen);
+        return (playingField.Blocks[y, x + direction].State == FieldState.Fallen);
     }     
 }

@@ -35,11 +35,16 @@ public class GameController : MonoBehaviour
 
     private void Awake()
     {
-        MainInit();        
+        MainInit();
+
+    }
+    private void Start()
+    {
+        StartCoroutine(StartTheGameRoutine());
     }
 
     private void MainInit()
-    {
+    {      
         ElementRotation = gameObject.AddComponent<ElementRotation>();
 
         ElementMovement = GameModeManager.Instance.IsFunMode
@@ -52,18 +57,16 @@ public class GameController : MonoBehaviour
 
         PlayingFieldController.FieldControllerInit(blockPrefab, blocksParentForPlayingField);
         PlayingFieldController.PlayingFieldControllerInit(ElementMovement, ElementRotation);
+        PlayingFieldController.FieldInit();
 
-        NextElementFieldController = gameObject.AddComponent<NextElementFieldController>();
-        NextElementFieldController.FieldControllerInit(blockPrefab, blocksParentForNextElementField);        
+        NextElementFieldController = gameObject.AddComponent<NextElementFieldController>();       
+        NextElementFieldController.FieldControllerInit(blockPrefab, blocksParentForNextElementField);
+        NextElementFieldController.NextElementFieldControllerInit();
+        NextElementFieldController.FieldInit();
 
         SpawnController = gameObject.AddComponent<SpawnController>();
         SpawnController.SpawnControllerInit(this, NextElementFieldController, PlayingFieldController);
-    }
-
-    private void Start()
-    {             
-        StartCoroutine(StartTheGameRoutine());
-    }    
+    }   
 
     private IEnumerator StartTheGameRoutine()
     {

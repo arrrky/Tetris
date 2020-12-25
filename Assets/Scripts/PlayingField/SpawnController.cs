@@ -41,7 +41,7 @@ public class SpawnController : MonoBehaviour
         {
             for (int x = 0; x < element.GetLength(1); x++)
             {
-                field.Matrix[y, x] = element[y, x];
+                field.Blocks[y, x].State = element[y, x];
             }
         }
     }
@@ -60,12 +60,12 @@ public class SpawnController : MonoBehaviour
         {
             for (int x = 0; x < element.Matrix.GetLength(1); x++)
             {
-                if (playingFieldController.Field.Matrix[y, x + SpawnPoint] == FieldState.Fallen)
+                if (playingFieldController.Field.Blocks[y, x + SpawnPoint].State == FieldState.Fallen)
                 {
                     PlayerProfileController.Instance.CallSavePlayerData();
                     StartCoroutine(gameController.GameOverRoutine());                    
                 }
-                playingFieldController.Field.Matrix[y, x + SpawnPoint] = element.Matrix[y, x];
+                playingFieldController.Field.Blocks[y, x + SpawnPoint].State = element.Matrix[y, x];
             }
         }
         playingFieldController.UpdatePlayingFieldState(playingFieldController.Field, playingFieldController.CurrentElementColor);

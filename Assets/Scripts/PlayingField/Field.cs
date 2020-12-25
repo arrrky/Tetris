@@ -1,26 +1,22 @@
-﻿using UnityEngine;
-
-public enum FieldState
+﻿public class Field
 {
-    Empty = 0,
-    Falling = 1,
-    Fallen = 2
-}
+    public int Width { get; set; }
+    public int Height { get; set; }
+    public Block[,] Blocks { get; set; }
 
-public class Field
-{  
-    public int Width { get; set; }    
-    public int Height { get; set; }   
-    public GameObject[,] Objects { get; set; }
-    public SpriteRenderer[,] Sprites { get; set; }
-    public FieldState[,] Matrix { get; set; }
-    
     public Field(int width, int height)
     {
         Width = width;
         Height = height;
-        Objects = new GameObject[Width, Height];
-        Sprites = new SpriteRenderer[Width, Height];
-        Matrix = new FieldState[Width, Height];
+
+        Blocks = new Block[Height, Width];
+
+        for (int y = 0; y < height; y++)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                Blocks[y, x] = new Block();
+            }
+        }
     }
 }
