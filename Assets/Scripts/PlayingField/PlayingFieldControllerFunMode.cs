@@ -4,19 +4,19 @@ using UnityEngine;
 using System;
 using System.Linq;
 
-public class PlayingFieldControllerFunMode : PlayingFieldController, IPlayingFieldController
+public class PlayingFieldControllerFunMode : PlayingFieldController, IPlayingFieldController, IFieldController
 {
     public new event Action RowDeleted;
 
     private List<int> rowsToDelete = new List<int>();
 
-    public void PlayingFieldControllerFunModeInit(IMove elementMovement, IRotate elementRotation)
+    public override void PlayingFieldControllerInit(IElementMovement elementMovement, IElementRotation elementRotation)
     {
         this.elementMovement = elementMovement;
         this.elementRotation = elementRotation;
 
-        Height = 22;
-        Width = 10;
+        Height = 20;
+        Width = 12;
 
         FieldXShift = -5.5f;
         FieldYShift = -10.5f;

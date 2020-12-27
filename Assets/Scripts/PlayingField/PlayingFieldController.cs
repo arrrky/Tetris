@@ -5,8 +5,8 @@ using System.Collections;
 
 public class PlayingFieldController : FieldController, IPlayingFieldController, IFieldController
 {
-    protected IRotate elementRotation;
-    protected IMove elementMovement;
+    protected IElementRotation elementRotation;
+    protected IElementMovement elementMovement;
 
     private Vector2 topLeftPositionOfCurrentElement;
     private int fullRowsCount;
@@ -54,7 +54,7 @@ public class PlayingFieldController : FieldController, IPlayingFieldController, 
         TopLeftPositionOfCurrentElement = TopLeftPositionDefault;
     }
 
-    public void PlayingFieldControllerInit(IMove elementMovement, IRotate elementRotation)
+    public virtual void PlayingFieldControllerInit(IElementMovement elementMovement, IElementRotation elementRotation)
     {
         this.elementMovement = elementMovement;
         this.elementRotation = elementRotation;
@@ -79,8 +79,8 @@ public class PlayingFieldController : FieldController, IPlayingFieldController, 
         {
             for (int x = 0; x < Field.Width; x++)
             {
-                if (Field.Blocks[y, x].State != FieldState.Empty)
-                    Field.Blocks[y, x].State = FieldState.Fallen;
+                if (Field.Matrix[y, x] != FieldState.Empty)
+                    Field.Matrix[y, x] = FieldState.Fallen;
             }
         }
         FullRowCheck();
@@ -95,7 +95,7 @@ public class PlayingFieldController : FieldController, IPlayingFieldController, 
 
             for (int x = Field.Width - 1; x >= 0; x--)
             {
-                isFullRow &= Field.Blocks[y, x].State == FieldState.Fallen;
+                isFullRow &= Field.Matrix[y, x] == FieldState.Fallen;
             }
 
             if (isFullRow)
@@ -111,8 +111,8 @@ public class PlayingFieldController : FieldController, IPlayingFieldController, 
         // Удаление ряда с задержкой
         for (int x = 0; x < Field.Width; x++)
         {
-            Field.Blocks[numberOfRowToDelete, x].State = FieldState.Empty;
-            Field.Blocks[numberOfRowToDelete, x].Object.SetActive(false);
+            Field.Matrix[numberOfRowToDelete, x] = FieldState.Empty;
+            Field.Objects[numberOfRowToDelete, x].SetActive(false);
             yield return new WaitForSeconds(RowDeletingDelay);
         }
 
@@ -138,9 +138,9 @@ public class PlayingFieldController : FieldController, IPlayingFieldController, 
             for (int x = 0; x < Width; x++)
             {
                 // Проверка, чтобы НЕ опускать падающий элемент
-                if (Field.Blocks[y - 1, x].State == FieldState.Falling)
+                if (Field.Matrix[y - 1, x] == FieldState.Falling)
                     return;
-                Field.Blocks[y, x].State = Field.Blocks[y - 1, x].State;
+                Field.Matrix[y, x] = Field.Matrix[y - 1, x];
             }
         }
     }
@@ -154,13 +154,18 @@ public class PlayingFieldController : FieldController, IPlayingFieldController, 
         {
             for (int x = Field.Width - 1; x >= 0; x--)
             {
-                if (Field.Blocks[y, x].State == FieldState.Fallen)
+                if (Field.Matrix[y, x] == FieldState.Fallen)
                 {
                     tempMatrix[y, x] = FieldState.Fallen;
                 }
             }
         }
-    }    
+    }
+
+    /// <summary>
+    /// Записываем временную матрицу в актуальную
+    /// </summary>
+    /// <param name="tempMatrix"></param>    
 
     public void UpdateAfterRotation()
     {
@@ -168,10 +173,9 @@ public class PlayingFieldController : FieldController, IPlayingFieldController, 
     }
 
     public void UpdateAfterMovement(FieldState[,] tempMatrix, Vector2 topLeftPointOfElementShift)
-    {
-        FieldState[,] temp = tempMatrix;
-        FallenToTemp(temp);
-        TempToActual(temp);
+    {        
+        FallenToTemp(tempMatrix);
+        Field.Matrix = tempMatrix;
         FullRowCheck();
         UpdatePlayingFieldState(Field, CurrentElementColor);
         TopLeftPositionOfCurrentElement += topLeftPointOfElementShift;

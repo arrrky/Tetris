@@ -8,7 +8,7 @@ public class Elements
     private List<Element> listOfElements;
     private const int expectedSumOfChances = 100;
 
-    private Elements()
+    public Elements()
     {
         listOfElements = new List<Element>();
         ElementsInit();
@@ -134,7 +134,7 @@ public class Elements
                  {1,1},
                  {1,1}
             }),
-            SpawnChance = 100000000,
+            SpawnChance = 10,
             Color = Tools.rainbowColors["red"],
         });
 

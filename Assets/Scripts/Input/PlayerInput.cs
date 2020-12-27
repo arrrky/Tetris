@@ -4,8 +4,8 @@ public class PlayerInput : MonoBehaviour
 {
     [SerializeField] private GameController gameController;    
 
-    private IRotate elementRotation;
-    private IMove elementMovement;
+    private IElementRotation elementRotation;
+    private IElementMovement elementMovement;
     private float timeOfButtonPress;
 
     private void Awake()

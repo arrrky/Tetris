@@ -3,9 +3,7 @@ using System;
 using Zenject;
 
 public class NextElementFieldController : FieldController, INextElementFieldController, IFieldController
-{  
-    private Elements elements;
-
+{    
     public event Action<FieldState[,], Field> FirstElementSpawned;
 
     #region PROPERTIES
@@ -13,26 +11,19 @@ public class NextElementFieldController : FieldController, INextElementFieldCont
     #endregion    
 
     private void Start()
-    { 
-        //FirstElementSpawned?.Invoke(NextElementField.Matrix, NextElementField);
-        
-        UpdatePlayingFieldState(Field, NextElement.Color);
-    }   
+    {         
+        FirstElementSpawned?.Invoke(NextElement.Matrix, Field);        
+        //UpdatePlayingFieldState(Field, NextElement.Color);
+    }       
 
-    [Inject]
-    private void ElementsInit(Elements elements)
-    {
-        this.elements = elements;
-    }
-
-    public void NextElementFieldControllerInit()
+    public void NextElementFieldControllerInit(Elements elements)
     {
         Height = 4;
         Width = 4;
 
-        FieldXShift = (int)BorderController.TopLeftPointOfNextElementBorder.x + 3;
-        FieldYShift = (int)BorderController.TopLeftPointOfNextElementBorder.y - 7;
+        FieldXShift = 12;
+        FieldYShift = -7;
         
         NextElement = elements.GetRandomElement();
-    }   
+    }      
 }

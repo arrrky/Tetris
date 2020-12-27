@@ -10,11 +10,13 @@ public class SpawnController : MonoBehaviour
 
     public static int SpawnPoint = 4;
    
-    public void SpawnControllerInit(GameController gameController, INextElementFieldController nextElementFieldController, IPlayingFieldController playingFieldController)
+    public void SpawnControllerInit(GameController gameController, INextElementFieldController nextElementFieldController,
+                                    IPlayingFieldController playingFieldController, Elements elements)
     {
         this.gameController = gameController;
         this.nextElementFieldController = nextElementFieldController;
         this.playingFieldController = playingFieldController;
+        this.elements = elements;
     }
 
     private void Start()
@@ -41,7 +43,7 @@ public class SpawnController : MonoBehaviour
         {
             for (int x = 0; x < element.GetLength(1); x++)
             {
-                field.Blocks[y, x].State = element[y, x];
+                field.Matrix[y, x] = element[y, x];
             }
         }
     }
@@ -60,12 +62,12 @@ public class SpawnController : MonoBehaviour
         {
             for (int x = 0; x < element.Matrix.GetLength(1); x++)
             {
-                if (playingFieldController.Field.Blocks[y, x + SpawnPoint].State == FieldState.Fallen)
+                if (playingFieldController.Field.Matrix[y, x + SpawnPoint] == FieldState.Fallen)
                 {
                     PlayerProfileController.Instance.CallSavePlayerData();
                     StartCoroutine(gameController.GameOverRoutine());                    
                 }
-                playingFieldController.Field.Blocks[y, x + SpawnPoint].State = element.Matrix[y, x];
+                playingFieldController.Field.Matrix[y, x + SpawnPoint] = element.Matrix[y, x];
             }
         }
         playingFieldController.UpdatePlayingFieldState(playingFieldController.Field, playingFieldController.CurrentElementColor);

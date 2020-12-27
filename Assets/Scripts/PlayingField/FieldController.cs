@@ -3,8 +3,9 @@
 public class FieldController : MonoBehaviour, IFieldController
 {
     private GameObject blockPrefab;
-    private GameObject blocksParent;    
+    private GameObject blocksParent;
 
+    #region PROPERTIES
     public Field Field { get; set; }
     public FieldState[,] CurrentElementArray { get; set; }
     public Color32 CurrentElementColor { get; set; }
@@ -13,7 +14,7 @@ public class FieldController : MonoBehaviour, IFieldController
     public int Width { get; set; }
     public float FieldXShift { get; set; }
     public float FieldYShift { get; set; }
-
+    #endregion
 
     public void FieldControllerInit(GameObject blockPrefab, GameObject blocksParent)
     {
@@ -38,8 +39,8 @@ public class FieldController : MonoBehaviour, IFieldController
         {
             for (int x = 0; x < field.Width; x++)
             {
-                field.Blocks[y, x].Object = Instantiate(blockPrefab, new Vector3(x + xShift, field.Height - y + yShift, 0), Quaternion.identity, blocksParent.transform);
-                field.Blocks[y, x].Sprite = field.Blocks[y, x].Object.GetComponent<SpriteRenderer>();
+                field.Objects[y, x] = Instantiate(blockPrefab, new Vector3(x + xShift, field.Height - y + yShift, 0), Quaternion.identity, blocksParent.transform);
+                field.Sprites[y, x] = field.Objects[y, x].GetComponent<SpriteRenderer>();
             }
         }
     }
@@ -50,30 +51,15 @@ public class FieldController : MonoBehaviour, IFieldController
         {
             for (int x = 0; x < field.Width; x++)
             {
-                field.Blocks[y, x].Object.SetActive(field.Blocks[y, x].State != FieldState.Empty);
+                field.Objects[y, x].SetActive(field.Matrix[y, x] != FieldState.Empty);
 
-                if (field.Blocks[y, x].State == FieldState.Falling)
+                if (field.Matrix[y, x] == FieldState.Falling)
                 {
-                    field.Blocks[y, x].Sprite.color = elementColor;
+                    field.Sprites[y, x].color = elementColor;
                 }
             }
         }
-    }
-
-    /// <summary>
-    /// Записываем временную матрицу в актуальную
-    /// </summary>
-    /// <param name="tempMatrix"></param>
-    protected void TempToActual(FieldState[,] tempMatrix)
-    {
-        for (int y = Field.Height - 1; y > 0; y--)
-        {
-            for (int x = Field.Width - 1; x >= 0; x--)
-            {
-                Field.Blocks[y, x].State = tempMatrix[y, x];
-            }
-        }
-    }
+    }    
 
     public void ClearField(Field field)
     {
@@ -81,7 +67,7 @@ public class FieldController : MonoBehaviour, IFieldController
         {
             for (int x = 0; x < field.Width; x++)
             {
-                field.Blocks[y, x].State = FieldState.Empty;
+                field.Matrix[y, x] = FieldState.Empty;
             }
         }
     }     

@@ -1,21 +1,21 @@
 ﻿using System;
 using UnityEngine;
 
-public class ElementMovement : MonoBehaviour, IMove
+public class ElementMovement : MonoBehaviour, IElementMovement
 {
     private GameController gameController;
-    private ScoreController scoreController;
+    private ScoreController scoreController;      
 
-    private Field playingField;
+    protected Field playingField;
 
-    private Func<int, bool> BorderCheck;    
-
+    protected Func<int, bool> BorderCheck;
+    
     public event Action LastRowOrElementsCollided;
-    public event Action<FieldState[,], Vector2> ElementMoved;
-
-    private void Awake()
+    public event Action<FieldState[,], Vector2> ElementMoved;   
+   
+    public void ElementsMovementInit(GameController gameController)
     {
-        gameController = FindObjectOfType<GameController>();
+        this.gameController = gameController;
         scoreController = FindObjectOfType<ScoreController>();
     }
 
@@ -30,6 +30,10 @@ public class ElementMovement : MonoBehaviour, IMove
     {
         gameController.GameOver += StopAutoFallingDown;
         gameController.NextLevel += StopAutoFallingDown;
+    }
+    protected virtual void OnElementMoved(FieldState[,] tempMatrix, Vector2 direction)
+    {
+        ElementMoved?.Invoke(tempMatrix, direction);
     }
 
     public void FallingDown()
@@ -55,13 +59,13 @@ public class ElementMovement : MonoBehaviour, IMove
                     return;
                 }
 
-                if (playingField.Blocks[y, x].State == FieldState.Falling)
+                if (playingField.Matrix[y, x] == FieldState.Falling)
                 {
                     tempMatrix[y + 1, x] = FieldState.Falling;
                 }
             }
         }
-        ElementMoved?.Invoke(tempMatrix, new Vector2(0, 1));
+        OnElementMoved(tempMatrix, new Vector2(0, 1));
     }
 
     public virtual void HorizontalMovement()
@@ -84,7 +88,7 @@ public class ElementMovement : MonoBehaviour, IMove
         {
             for (int x = playingField.Width - 1; x >= 0; x--)
             {
-                if (playingField.Blocks[y, x].State == FieldState.Falling)
+                if (playingField.Matrix[y, x] == FieldState.Falling)
                 {
                     if (BorderCheck(x))
                         return;  
@@ -96,7 +100,7 @@ public class ElementMovement : MonoBehaviour, IMove
                 }
             }
         }
-        ElementMoved?.Invoke(tempMatrix, new Vector2(direction, 0));
+        OnElementMoved(tempMatrix, new Vector2(direction, 0));
     }
 
     public void StartAutoFallingDown()
@@ -119,21 +123,21 @@ public class ElementMovement : MonoBehaviour, IMove
 
     private bool IsFallingElementAboveFallen(int x, int y)
     {
-        return (playingField.Blocks[y, x].State == FieldState.Fallen &&
-                playingField.Blocks[y - 1, x].State == FieldState.Falling);
+        return (playingField.Matrix[y, x] == FieldState.Fallen &&
+                playingField.Matrix[y - 1, x] == FieldState.Falling);
     }
 
     private bool IsLastRow(int x, int y)
     {
         return (y == playingField.Height - 1 &&
-                playingField.Blocks[y, x].State == FieldState.Falling);
+                playingField.Matrix[y, x] == FieldState.Falling);
     }
 
-    private bool IsLeftBorderNear(int x) => x == 0;
-    private bool IsRightBorderNear(int x) => x == playingField.Width - 1;
+    protected bool IsLeftBorderNear(int x) => x == 0;
+    protected bool IsRightBorderNear(int x) => x == playingField.Width - 1;
 
-    private bool IsOtherBlockNear(int x, int y, int direction)
+    protected bool IsOtherBlockNear(int x, int y, int direction)
     {
-        return (playingField.Blocks[y, x + direction].State == FieldState.Fallen);
+        return (playingField.Matrix[y, x + direction] == FieldState.Fallen);
     }     
 }
