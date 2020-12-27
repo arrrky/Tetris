@@ -5,7 +5,8 @@ public interface IPlayingFieldController : IFieldController
 {
     void PlayingFieldControllerInit(IElementMovement elementMovement, IElementRotation elementRotation);
 
-    int FullRowsCount { get; set; }    
+    int FullRowsCount { get; set; } 
+    bool IsElementDivided { get; set; }
     Vector2 TopLeftPositionOfCurrentElement { get; set; }       
 
     event Action ElementFell;

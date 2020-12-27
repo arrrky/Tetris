@@ -3,20 +3,23 @@ using UnityEngine;
 
 public class ElementRotation : MonoBehaviour, IElementRotation
 {
-    private IPlayingFieldController playingFieldController;
-    private FieldState[,] currentElementMatrixOnTheField; 
+    protected IPlayingFieldController playingFieldController;
+    protected FieldState[,] currentElementMatrixOnTheField;
+
+    protected GameController gameController;
     
-    private int xShift;
-    private int yShift;
+    protected int xShift;
+    protected int yShift;
 
     public event Action ElementWasRotated;   
 
-    public void ElementRotationInit(IPlayingFieldController playingFieldController)
-    {       
+    public void ElementRotationInit(GameController gameController, IPlayingFieldController playingFieldController)
+    {
+        this.gameController = gameController;
         this.playingFieldController = playingFieldController;
     }
 
-    private bool IsRotateValid()
+    protected virtual bool IsRotateValid()
     {
         // Все матрицы элементов квадратные по дефолту
         currentElementMatrixOnTheField = new FieldState[playingFieldController.CurrentElementSize, playingFieldController.CurrentElementSize]; 
@@ -34,7 +37,9 @@ public class ElementRotation : MonoBehaviour, IElementRotation
                     return false;
 
                 if (playingFieldController.Field.Matrix[y + yShift, x + xShift] == FieldState.Falling)
+                {
                     currentElementMatrixOnTheField[y, x] = playingFieldController.Field.Matrix[y + yShift, x + xShift];
+                }
             }
         }
         return true;
@@ -48,15 +53,27 @@ public class ElementRotation : MonoBehaviour, IElementRotation
 
             // Меняем столбцы и строки местами, заполняя temp матрицу уже перевернутым элементом
             for (int y = 0; y < playingFieldController.CurrentElementSize; y++)
+            {
                 for (int x = 0; x < playingFieldController.CurrentElementSize; x++)
+                {
                     temp[y, x] = currentElementMatrixOnTheField[playingFieldController.CurrentElementSize - 1 - x, y];
+                }
+            }
 
             // Записываем в базовую матрицу-поле перевернутый элемент
             for (int y = 0; y < playingFieldController.CurrentElementSize; y++)
+            {
                 for (int x = 0; x < playingFieldController.CurrentElementSize; x++)
+                {
                     playingFieldController.Field.Matrix[y + yShift, x + xShift] = temp[y, x];
-
-            ElementWasRotated?.Invoke();
+                }
+            }
+            OnElementWasRotated();
         }
+    }
+
+    protected void OnElementWasRotated()
+    {
+        ElementWasRotated?.Invoke();
     }
 }

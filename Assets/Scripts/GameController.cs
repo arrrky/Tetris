@@ -15,18 +15,18 @@ public class GameController : MonoBehaviour
     public event Action NextLevel;
     public event Action<bool> GamePaused;
 
-    private bool isGameOver = false;
+    private bool isGameOver = false;    
 
     private IPlayingFieldController playingFieldController;
+    private INextElementFieldController nextElementFieldController;
     private IElementMovement elementMovement;
     private IElementRotation elementRotation;
-    private INextElementFieldController nextElementFieldController;
 
     private SpawnController spawnController;
     private Elements elements;   
 
     #region PROPERTIES
-    public bool IsGameOver { get => isGameOver; set => isGameOver = value; }
+    public bool IsGameOver { get => isGameOver; set => isGameOver = value; }    
     public IPlayingFieldController PlayingFieldController { get => playingFieldController; set => playingFieldController = value; }
     public IElementMovement ElementMovement { get => elementMovement; set => elementMovement = value; }
     public IElementRotation ElementRotation { get => elementRotation; set => elementRotation = value; }
@@ -39,40 +39,44 @@ public class GameController : MonoBehaviour
     {
         MainInit();
     }
-    private void Start()
-    {
-        StartCoroutine(StartTheGameRoutine());
-    }
-
+    
     private void MainInit()
-    {        
-        Elements = new Elements();        
+    {
+        Elements = new Elements();
 
         ElementMovement = GameModeManager.Instance.IsFunMode
             ? gameObject.AddComponent<ElementMovementFunMode>()
             : gameObject.AddComponent<ElementMovement>();
 
-        ElementMovement.ElementsMovementInit(this);
+        ElementMovement.ElementsMovementInit(this, PlayingFieldController);
 
         PlayingFieldController = GameModeManager.Instance.IsFunMode
             ? gameObject.AddComponent<PlayingFieldControllerFunMode>()
             : gameObject.AddComponent<PlayingFieldController>();
 
-        ElementRotation = gameObject.AddComponent<ElementRotation>();
-        ElementRotation.ElementRotationInit(PlayingFieldController);
+        ElementRotation = GameModeManager.Instance.IsFunMode
+            ? gameObject.AddComponent<ElementRotationFunMode>()
+            : gameObject.AddComponent<ElementRotation>();
+
+        ElementRotation.ElementRotationInit(this, PlayingFieldController);
 
         PlayingFieldController.FieldControllerInit(blockPrefab, blocksParentForPlayingField);
         PlayingFieldController.PlayingFieldControllerInit(ElementMovement, ElementRotation);
-        PlayingFieldController.FieldInit();        
+        PlayingFieldController.FieldInit();
 
-        NextElementFieldController = gameObject.AddComponent<NextElementFieldController>();       
+        NextElementFieldController = gameObject.AddComponent<NextElementFieldController>();
         NextElementFieldController.FieldControllerInit(blockPrefab, blocksParentForNextElementField);
         NextElementFieldController.NextElementFieldControllerInit(Elements);
         NextElementFieldController.FieldInit();
 
         SpawnController = gameObject.AddComponent<SpawnController>();
         SpawnController.SpawnControllerInit(this, NextElementFieldController, PlayingFieldController, Elements);
-    }   
+    }
+
+    private void Start()
+    {
+        StartCoroutine(StartTheGameRoutine());
+    }    
 
     private IEnumerator StartTheGameRoutine()
     {

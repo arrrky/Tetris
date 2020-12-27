@@ -2,7 +2,7 @@
 
 public interface IElementRotation
 {
-    void ElementRotationInit(IPlayingFieldController playingFieldController);
+    void ElementRotationInit(GameController gameController, IPlayingFieldController playingFieldController);
     event Action ElementWasRotated;
     void Rotate();
 }

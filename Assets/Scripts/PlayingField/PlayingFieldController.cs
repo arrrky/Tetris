@@ -8,12 +8,13 @@ public class PlayingFieldController : FieldController, IPlayingFieldController, 
     protected IElementRotation elementRotation;
     protected IElementMovement elementMovement;
 
-    private Vector2 topLeftPositionOfCurrentElement;
+    protected Vector2 topLeftPositionOfCurrentElement;
     private int fullRowsCount;
+    private bool isElementDivided; // для нового режима
 
     #region PROPERTIES   
 
-    public Vector2 TopLeftPositionOfCurrentElement
+    public virtual Vector2 TopLeftPositionOfCurrentElement
     {
         get => topLeftPositionOfCurrentElement;
         set
@@ -38,8 +39,9 @@ public class PlayingFieldController : FieldController, IPlayingFieldController, 
     }
 
     public int FullRowsCount { get => fullRowsCount; set => fullRowsCount = value; }
+    public bool IsElementDivided { get => isElementDivided; set => isElementDivided = value; }
 
-    #endregion    
+    #endregion
 
     public readonly Vector2 TopLeftPositionDefault = new Vector2(SpawnController.SpawnPoint, 0);
 
@@ -142,7 +144,7 @@ public class PlayingFieldController : FieldController, IPlayingFieldController, 
                     return;
                 Field.Matrix[y, x] = Field.Matrix[y - 1, x];
             }
-        }
+        }       
     }
 
     /// <summary>
@@ -160,12 +162,7 @@ public class PlayingFieldController : FieldController, IPlayingFieldController, 
                 }
             }
         }
-    }
-
-    /// <summary>
-    /// Записываем временную матрицу в актуальную
-    /// </summary>
-    /// <param name="tempMatrix"></param>    
+    }    
 
     public void UpdateAfterRotation()
     {

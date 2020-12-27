@@ -3,8 +3,10 @@ using UnityEngine;
 
 public class ElementMovement : MonoBehaviour, IElementMovement
 {
-    private GameController gameController;
-    private ScoreController scoreController;      
+    protected GameController gameController;
+    private ScoreController scoreController;
+
+    protected IPlayingFieldController playingFieldController;
 
     protected Field playingField;
 
@@ -13,14 +15,15 @@ public class ElementMovement : MonoBehaviour, IElementMovement
     public event Action LastRowOrElementsCollided;
     public event Action<FieldState[,], Vector2> ElementMoved;   
    
-    public void ElementsMovementInit(GameController gameController)
+    public void ElementsMovementInit(GameController gameController, IPlayingFieldController playingFieldController)
     {
         this.gameController = gameController;
         scoreController = FindObjectOfType<ScoreController>();
     }
 
-    private void Start()
+    protected virtual void Start()
     {
+        playingFieldController = gameController.PlayingFieldController;
         playingField = gameController.PlayingFieldController.Field;
         StartAutoFallingDown();
         EventsSetup();        
@@ -136,8 +139,8 @@ public class ElementMovement : MonoBehaviour, IElementMovement
     protected bool IsLeftBorderNear(int x) => x == 0;
     protected bool IsRightBorderNear(int x) => x == playingField.Width - 1;
 
-    protected bool IsOtherBlockNear(int x, int y, int direction)
-    {
+    protected virtual bool IsOtherBlockNear(int x, int y, int direction)
+    {        
         return (playingField.Matrix[y, x + direction] == FieldState.Fallen);
     }     
 }
