@@ -19,7 +19,7 @@ public class Elements
     {
         if (GameModeManager.Instance.IsNewMode)
         {
-            ElementsInitFunMode();
+            ElementsInitNewMode();
         }
         else
         {
@@ -124,7 +124,7 @@ public class Elements
     #endregion
 
     #region Инициализация элементов (новый режим)
-    private void ElementsInitFunMode()
+    private void ElementsInitNewMode()
     {
         listOfElements.Add(new Element
         {

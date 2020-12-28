@@ -45,6 +45,64 @@ public class PlayingFieldControllerNewMode : PlayingFieldController, IPlayingFie
         FieldYShift = -10.5f;
 
         FieldInit();
-    }    
+    }
+
+    public override void FullRowCheck()
+    {
+        for (int y = Field.Height - 1; y >= 0; y--)
+        {
+            bool isFullRow = true;
+
+            for (int x = Field.Width - 1; x >= 0; x--)
+            {
+                isFullRow &= Field.Matrix[y, x] == FieldState.Fallen;
+            }
+
+            if (isFullRow)
+            {
+                FullRowsCount++;
+                StartCoroutine(DeleteFullRow(y));
+            }
+        }
+    }
+
+    protected override IEnumerator DeleteFullRow(int numberOfRowToDelete)
+    {
+        // Удаление ряда с задержкой
+        for (int x = 0; x < Field.Width; x++)
+        {
+            Field.Matrix[numberOfRowToDelete, x] = FieldState.Empty;
+            Field.Objects[numberOfRowToDelete, x].SetActive(false);
+            yield return new WaitForSeconds(RowDeletingDelay);
+        }
+
+        FullRowCheck(); // повторная проверка на случай, если заполненных рядов несколько
+
+        if (FullRowsCount != 0)
+        {
+            RowDeleted?.Invoke();
+        }
+
+        for (int i = 0; i < FullRowsCount; i++)
+        {
+            MoveRowsAboveDeletedRow(numberOfRowToDelete);
+        }
+
+        FullRowsCount = 0;
+    }
+
+    protected override void MoveRowsAboveDeletedRow(int numberOfRowToDelete)
+    {
+        for (int y = numberOfRowToDelete; y >= 0; y--)
+        {
+            for (int x = 0; x < Width; x++)
+            {
+                // Проверка, чтобы НЕ опускать падающий элемент
+                if (Field.Matrix[y - 1, x] == FieldState.Moving)
+                    return;
+                Field.Matrix[y, x] = Field.Matrix[y - 1, x];
+            }
+        }
+    }
 }
 

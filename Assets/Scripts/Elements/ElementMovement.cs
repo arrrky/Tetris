@@ -25,7 +25,7 @@ public class ElementMovement : MonoBehaviour, IElementMovement
     {
         playingFieldController = gameController.PlayingFieldController;
         playingField = gameController.PlayingFieldController.Field;
-        //StartAutoFallingDown();
+        StartAutoFallingDown();
         EventsSetup();        
     }
 
