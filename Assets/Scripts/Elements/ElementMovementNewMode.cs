@@ -3,8 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ElementMovementFunMode : ElementMovement, IElementMovement
+public class ElementMovementNewMode : ElementMovement, IElementMovement
 {
+    protected override void Start()
+    {
+        base.Start();
+    }
+
     public override void HorizontalMovement()
     {
         FieldState[,] tempMatrix = new FieldState[playingField.Height, playingField.Width];
@@ -29,29 +34,23 @@ public class ElementMovementFunMode : ElementMovement, IElementMovement
         {
             for (int x = playingField.Width - 1; x >= 0; x--)
             {
-                if (playingField.Matrix[y, x] == FieldState.Falling)
+                if (playingField.Matrix[y, x] == FieldState.Moving)
                 {
-                    Debug.Log($"X coordinate: {x}");
+                   
                     if (BorderCheck(x))
-                    {                        
-                        tempMatrix[y, x + direction + nearBorderShift] = FieldState.Falling;
-                        playingFieldController.IsElementDivided = true;
-                        Debug.Log("through borders!");
+                    {
+                        tempMatrix[y, x + direction + nearBorderShift] = FieldState.Moving;                        
                     }
                     else
                     {
                         if (IsOtherBlockNear(x, y, direction))
                             return;
 
-                        tempMatrix[y, x + direction] = FieldState.Falling;
-                        Debug.Log("inside borders!");
-                        playingFieldController.IsElementDivided = false;
-                    }
+                        tempMatrix[y, x + direction] = FieldState.Moving;                       
+                    }                        
                 }
             }
         }
-        OnElementMoved(tempMatrix, new Vector2(direction, 0));
-        Debug.Log($"Is element divided: {playingFieldController.IsElementDivided}");
-
+        OnElementMoved(tempMatrix, new Vector2(direction, 0));    
     }
 }

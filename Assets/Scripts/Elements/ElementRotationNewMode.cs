@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ElementRotationFunMode : ElementRotation, IElementRotation
+public class ElementRotationNewMode : ElementRotation, IElementRotation
 {
     protected override bool IsRotateValid()
     {
-        // Не даем поворачиывать, если элемент разделен, т.е. "торчит" и с одной, и с другой стороны
-        if (playingFieldController.IsElementDivided)
+        if (IsElementDivided())
             return false;
 
         currentElementMatrixOnTheField = new FieldState[playingFieldController.CurrentElementSize, playingFieldController.CurrentElementSize];
@@ -24,12 +23,18 @@ public class ElementRotationFunMode : ElementRotation, IElementRotation
                 if (playingFieldController.Field.Matrix[y + yShift, x + xShift] == FieldState.Fallen)
                     return false;
 
-                if (playingFieldController.Field.Matrix[y + yShift, x + xShift] == FieldState.Falling)
+                if (playingFieldController.Field.Matrix[y + yShift, x + xShift] == FieldState.Moving)
                 {
                     currentElementMatrixOnTheField[y, x] = playingFieldController.Field.Matrix[y + yShift, x + xShift];
                 }
             }
         }
         return true;
-    }    
+    }
+
+    private bool IsElementDivided()
+    {
+        return playingFieldController.TopLeftPositionOfCurrentElement.x < 0
+            || playingFieldController.TopLeftPositionOfCurrentElement.x > playingFieldController.Width - playingFieldController.CurrentElementSize;
+    }
 }

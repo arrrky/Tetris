@@ -36,7 +36,7 @@ public class ElementRotation : MonoBehaviour, IElementRotation
                 if (playingFieldController.Field.Matrix[y + yShift, x + xShift] == FieldState.Fallen)
                     return false;
 
-                if (playingFieldController.Field.Matrix[y + yShift, x + xShift] == FieldState.Falling)
+                if (playingFieldController.Field.Matrix[y + yShift, x + xShift] == FieldState.Moving)
                 {
                     currentElementMatrixOnTheField[y, x] = playingFieldController.Field.Matrix[y + yShift, x + xShift];
                 }

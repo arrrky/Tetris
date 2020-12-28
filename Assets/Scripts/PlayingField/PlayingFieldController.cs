@@ -9,8 +9,7 @@ public class PlayingFieldController : FieldController, IPlayingFieldController, 
     protected IElementMovement elementMovement;
 
     protected Vector2 topLeftPositionOfCurrentElement;
-    private int fullRowsCount;
-    private bool isElementDivided; // для нового режима
+    private int fullRowsCount;   
 
     #region PROPERTIES   
 
@@ -38,8 +37,7 @@ public class PlayingFieldController : FieldController, IPlayingFieldController, 
         }
     }
 
-    public int FullRowsCount { get => fullRowsCount; set => fullRowsCount = value; }
-    public bool IsElementDivided { get => isElementDivided; set => isElementDivided = value; }
+    public int FullRowsCount { get => fullRowsCount; set => fullRowsCount = value; }   
 
     #endregion
 
@@ -140,7 +138,7 @@ public class PlayingFieldController : FieldController, IPlayingFieldController, 
             for (int x = 0; x < Width; x++)
             {
                 // Проверка, чтобы НЕ опускать падающий элемент
-                if (Field.Matrix[y - 1, x] == FieldState.Falling)
+                if (Field.Matrix[y - 1, x] == FieldState.Moving)
                     return;
                 Field.Matrix[y, x] = Field.Matrix[y - 1, x];
             }

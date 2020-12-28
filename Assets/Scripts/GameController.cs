@@ -44,18 +44,18 @@ public class GameController : MonoBehaviour
     {
         Elements = new Elements();
 
-        ElementMovement = GameModeManager.Instance.IsFunMode
-            ? gameObject.AddComponent<ElementMovementFunMode>()
+        ElementMovement = GameModeManager.Instance.IsNewMode
+            ? gameObject.AddComponent<ElementMovementNewMode>()
             : gameObject.AddComponent<ElementMovement>();
 
         ElementMovement.ElementsMovementInit(this, PlayingFieldController);
 
-        PlayingFieldController = GameModeManager.Instance.IsFunMode
-            ? gameObject.AddComponent<PlayingFieldControllerFunMode>()
+        PlayingFieldController = GameModeManager.Instance.IsNewMode
+            ? gameObject.AddComponent<PlayingFieldControllerNewMode>()
             : gameObject.AddComponent<PlayingFieldController>();
 
-        ElementRotation = GameModeManager.Instance.IsFunMode
-            ? gameObject.AddComponent<ElementRotationFunMode>()
+        ElementRotation = GameModeManager.Instance.IsNewMode
+            ? gameObject.AddComponent<ElementRotationNewMode>()
             : gameObject.AddComponent<ElementRotation>();
 
         ElementRotation.ElementRotationInit(this, PlayingFieldController);

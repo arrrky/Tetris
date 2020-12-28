@@ -17,7 +17,7 @@ public class Elements
 
     private void ElementsInit()
     {
-        if (GameModeManager.Instance.IsFunMode)
+        if (GameModeManager.Instance.IsNewMode)
         {
             ElementsInitFunMode();
         }

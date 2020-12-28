@@ -25,7 +25,7 @@ public class ElementMovement : MonoBehaviour, IElementMovement
     {
         playingFieldController = gameController.PlayingFieldController;
         playingField = gameController.PlayingFieldController.Field;
-        StartAutoFallingDown();
+        //StartAutoFallingDown();
         EventsSetup();        
     }
 
@@ -62,9 +62,9 @@ public class ElementMovement : MonoBehaviour, IElementMovement
                     return;
                 }
 
-                if (playingField.Matrix[y, x] == FieldState.Falling)
+                if (playingField.Matrix[y, x] == FieldState.Moving)
                 {
-                    tempMatrix[y + 1, x] = FieldState.Falling;
+                    tempMatrix[y + 1, x] = FieldState.Moving;
                 }
             }
         }
@@ -91,7 +91,7 @@ public class ElementMovement : MonoBehaviour, IElementMovement
         {
             for (int x = playingField.Width - 1; x >= 0; x--)
             {
-                if (playingField.Matrix[y, x] == FieldState.Falling)
+                if (playingField.Matrix[y, x] == FieldState.Moving)
                 {
                     if (BorderCheck(x))
                         return;  
@@ -99,7 +99,7 @@ public class ElementMovement : MonoBehaviour, IElementMovement
                     if (IsOtherBlockNear(x, y, direction))
                         return;
 
-                    tempMatrix[y, x + direction] = FieldState.Falling;
+                    tempMatrix[y, x + direction] = FieldState.Moving;
                 }
             }
         }
@@ -127,13 +127,13 @@ public class ElementMovement : MonoBehaviour, IElementMovement
     private bool IsFallingElementAboveFallen(int x, int y)
     {
         return (playingField.Matrix[y, x] == FieldState.Fallen &&
-                playingField.Matrix[y - 1, x] == FieldState.Falling);
+                playingField.Matrix[y - 1, x] == FieldState.Moving);
     }
 
     private bool IsLastRow(int x, int y)
     {
         return (y == playingField.Height - 1 &&
-                playingField.Matrix[y, x] == FieldState.Falling);
+                playingField.Matrix[y, x] == FieldState.Moving);
     }
 
     protected bool IsLeftBorderNear(int x) => x == 0;

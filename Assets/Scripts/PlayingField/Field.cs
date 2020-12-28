@@ -3,7 +3,7 @@
 public enum FieldState
 {
     Empty = 0,
-    Falling = 1,
+    Moving = 1,
     Fallen = 2,
 }
 

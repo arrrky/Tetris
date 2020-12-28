@@ -4,32 +4,32 @@ using UnityEngine;
 using System;
 using System.Linq;
 
-public class PlayingFieldControllerFunMode : PlayingFieldController, IPlayingFieldController, IFieldController
+public class PlayingFieldControllerNewMode : PlayingFieldController, IPlayingFieldController, IFieldController
 {
     public new event Action RowDeleted;    
 
-    private List<int> rowsToDelete = new List<int>();
+    private List<int> rowsToDelete = new List<int>(); // TODO - удаления рядов
 
     public override Vector2 TopLeftPositionOfCurrentElement
     {
         get => base.TopLeftPositionOfCurrentElement;
         
         set
-        {
+        {            
             if (value.x < 0)
             {
-                topLeftPositionOfCurrentElement.x = 0;
+                topLeftPositionOfCurrentElement.x = Field.Width - 1;
                 topLeftPositionOfCurrentElement.y = value.y;
             }
-            else if (value.x > Field.Width - CurrentElementSize)
+            else if (value.x > Field.Width - 1)
             {
-                topLeftPositionOfCurrentElement.x = Field.Width - CurrentElementSize;
+                topLeftPositionOfCurrentElement.x = 0;
                 topLeftPositionOfCurrentElement.y = value.y;
             }
             else
             {
                 topLeftPositionOfCurrentElement = value;
-            }
+            }           
         }
     }
 

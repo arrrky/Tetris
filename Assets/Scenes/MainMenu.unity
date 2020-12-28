@@ -2709,7 +2709,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'FUN
+  m_Text: 'NEW
 
     (in development)'
 --- !u!222 &1142818876
@@ -2896,7 +2896,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelMode: {fileID: 701400675}
   scoreMode: {fileID: 1927114524}
-  funMode: {fileID: 1841665864}
+  newMode: {fileID: 1841665864}
 --- !u!114 &1164184257
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4787,7 +4787,7 @@ GameObject:
   - component: {fileID: 1841665863}
   - component: {fileID: 1841665864}
   m_Layer: 5
-  m_Name: FunMode
+  m_Name: NewMode
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4862,7 +4862,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1164184256}
         m_TargetAssemblyTypeName: GameModeToggleController, Assembly-CSharp
-        m_MethodName: FunModeChange
+        m_MethodName: NewModeChange
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

@@ -53,7 +53,7 @@ public class FieldController : MonoBehaviour, IFieldController
             {
                 field.Objects[y, x].SetActive(field.Matrix[y, x] != FieldState.Empty);
 
-                if (field.Matrix[y, x] == FieldState.Falling)
+                if (field.Matrix[y, x] == FieldState.Moving)
                 {
                     field.Sprites[y, x].color = elementColor;
                 }
