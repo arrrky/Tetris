@@ -6,16 +6,15 @@ using System.Linq;
 
 public class PlayingFieldControllerNewMode : PlayingFieldController, IPlayingFieldController, IFieldController
 {
-    public new event Action RowDeleted;    
 
-    private List<int> rowsToDelete = new List<int>(); // TODO - удаления рядов
+    private List<int> rowsToDelete = new List<int>(); // TODO - удаления рядов    
 
     public override Vector2 TopLeftPositionOfCurrentElement
     {
         get => base.TopLeftPositionOfCurrentElement;
-        
+
         set
-        {            
+        {
             if (value.x < 0)
             {
                 topLeftPositionOfCurrentElement.x = Field.Width - 1;
@@ -29,7 +28,7 @@ public class PlayingFieldControllerNewMode : PlayingFieldController, IPlayingFie
             else
             {
                 topLeftPositionOfCurrentElement = value;
-            }           
+            }
         }
     }
 
@@ -58,43 +57,48 @@ public class PlayingFieldControllerNewMode : PlayingFieldController, IPlayingFie
                 isFullRow &= Field.Matrix[y, x] == FieldState.Fallen;
             }
 
-            if (isFullRow)
+            if (isFullRow && !rowsToDelete.Contains(y))
             {
+                rowsToDelete.Add(y);
                 FullRowsCount++;
-                StartCoroutine(DeleteFullRow(y));
             }
+        }
+
+        if (rowsToDelete.Count >= 2)
+        {
+            DeleteFullRowsNew();
         }
     }
 
-    protected override IEnumerator DeleteFullRow(int numberOfRowToDelete)
+    protected void DeleteFullRowsNew()
     {
-        // Удаление ряда с задержкой
-        for (int x = 0; x < Field.Width; x++)
+        for (int i = 0; i < rowsToDelete.Count; i++)
         {
-            Field.Matrix[numberOfRowToDelete, x] = FieldState.Empty;
-            Field.Objects[numberOfRowToDelete, x].SetActive(false);
-            yield return new WaitForSeconds(RowDeletingDelay);
+            Debug.Log($"row to delete: {rowsToDelete[i]}");
+            for (int x = 0; x < Field.Width; x++)
+            {
+                Field.Matrix[rowsToDelete[i], x] = FieldState.Empty;
+            }
         }
 
-        FullRowCheck(); // повторная проверка на случай, если заполненных рядов несколько
+        for (int i = rowsToDelete.Count - 1; i >= 0; i--)
+        {
+            MoveRowAboveDeletedRow(i);
+        }
 
         if (FullRowsCount != 0)
         {
-            RowDeleted?.Invoke();
-        }
-
-        for (int i = 0; i < FullRowsCount; i++)
-        {
-            MoveRowsAboveDeletedRow(numberOfRowToDelete);
+            OnRowDeleted();
         }
 
         FullRowsCount = 0;
+        rowsToDelete.Clear();
     }
 
-    protected override void MoveRowsAboveDeletedRow(int numberOfRowToDelete)
-    {
-        for (int y = numberOfRowToDelete; y >= 0; y--)
-        {
+    protected override void MoveRowAboveDeletedRow(int numberOfRowInList)
+    {        
+        for (int y = rowsToDelete[numberOfRowInList]; y > 0; y--)
+        {           
             for (int x = 0; x < Width; x++)
             {
                 // Проверка, чтобы НЕ опускать падающий элемент

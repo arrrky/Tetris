@@ -73,7 +73,17 @@ public class PlayingFieldController : FieldController, IPlayingFieldController, 
         elementRotation.ElementWasRotated += UpdateAfterRotation;
     }
 
-    public void FallingToFallen()
+    protected void OnRowDeleted()
+    {
+        RowDeleted?.Invoke();
+    }
+
+    protected void OnElementFell()
+    {
+        ElementFell?.Invoke();
+    }
+
+    public virtual void FallingToFallen()
     {
         for (int y = 0; y < Field.Height; y++)
         {
@@ -84,7 +94,7 @@ public class PlayingFieldController : FieldController, IPlayingFieldController, 
             }
         }
         FullRowCheck();
-        ElementFell?.Invoke();
+        OnElementFell();
     }
 
     public virtual void FullRowCheck()
@@ -106,32 +116,32 @@ public class PlayingFieldController : FieldController, IPlayingFieldController, 
         }
     }
 
-    protected virtual IEnumerator DeleteFullRow(int numberOfRowToDelete)
+    private IEnumerator DeleteFullRow(int numberOfRowToDelete)
     {
         // Удаление ряда с задержкой
         for (int x = 0; x < Field.Width; x++)
         {
             Field.Matrix[numberOfRowToDelete, x] = FieldState.Empty;
             Field.Objects[numberOfRowToDelete, x].SetActive(false);
-            yield return new WaitForSeconds(RowDeletingDelay);
+            yield return new WaitForSeconds(RowDeletingDelay);            
         }
 
         FullRowCheck(); // повторная проверка на случай, если заполненных рядов несколько
 
         if (FullRowsCount != 0)
         {
-            RowDeleted?.Invoke();
+            OnRowDeleted();
         }
 
         for (int i = 0; i < FullRowsCount; i++)
         {
-            MoveRowsAboveDeletedRow(numberOfRowToDelete);
+            MoveRowAboveDeletedRow(numberOfRowToDelete);
         }
 
         FullRowsCount = 0;
     }
 
-    protected virtual void MoveRowsAboveDeletedRow(int numberOfRowToDelete)
+    protected virtual void MoveRowAboveDeletedRow(int numberOfRowToDelete)
     {
         for (int y = numberOfRowToDelete; y >= 0; y--)
         {

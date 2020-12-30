@@ -51,8 +51,8 @@ public class SpawnController : MonoBehaviour
     public void SpawnRandomElement()
     {      
         Element element = nextElementFieldController.NextElement;
-        playingFieldController.CurrentElementColor = nextElementFieldController.NextElement.Color;
 
+        playingFieldController.CurrentElementColor = element.Color;
         playingFieldController.CurrentElementArray = element.Matrix;
         playingFieldController.CurrentElementSize = element.Matrix.GetLength(0);
 
