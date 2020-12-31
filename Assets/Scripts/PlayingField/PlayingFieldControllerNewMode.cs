@@ -7,7 +7,8 @@ using System.Linq;
 public class PlayingFieldControllerNewMode : PlayingFieldController, IPlayingFieldController, IFieldController
 {
 
-    private List<int> rowsToDelete = new List<int>(); // TODO - удаления рядов    
+    private List<int> rowsToDelete = new List<int>();
+    private readonly int rowsCountToInitDeleting = 2;
 
     public override Vector2 TopLeftPositionOfCurrentElement
     {
@@ -64,10 +65,15 @@ public class PlayingFieldControllerNewMode : PlayingFieldController, IPlayingFie
             }
         }
 
-        if (rowsToDelete.Count >= 2)
+        StackedRowsCheck();
+
+        if (rowsToDelete.Count >= rowsCountToInitDeleting)
         {
             DeleteFullRowsNew();
         }
+
+        FullRowsCount = 0;
+        rowsToDelete.Clear();
     }
 
     protected void DeleteFullRowsNew()
@@ -89,10 +95,7 @@ public class PlayingFieldControllerNewMode : PlayingFieldController, IPlayingFie
         if (FullRowsCount != 0)
         {
             OnRowDeleted();
-        }
-
-        FullRowsCount = 0;
-        rowsToDelete.Clear();
+        }       
     }
 
     protected override void MoveRowAboveDeletedRow(int numberOfRowInList)
@@ -105,6 +108,32 @@ public class PlayingFieldControllerNewMode : PlayingFieldController, IPlayingFie
                 if (Field.Matrix[y - 1, x] == FieldState.Moving)
                     return;
                 Field.Matrix[y, x] = Field.Matrix[y - 1, x];
+            }
+        }
+    }
+
+    // Если в игре будет элемент "палка" длиной в 5 блоков, и возникнет ситуация 19-18-16-14-13 (или аналогичная) - метод нормально работать не будет    
+    private void StackedRowsCheck()
+    {
+        bool isRowsStacked = false;
+        for (int i = 0; i < rowsToDelete.Count - 1; i++)
+        {
+            // Если разность идущих подряд рядов в списке равна 1 - значит они идут подряд
+            if ((rowsToDelete[i] - rowsToDelete[i + 1]) == 1)
+            {
+                isRowsStacked = true;
+            }
+            // Если нет, но уже есть застаканные ряды - удаляем из списка крайний ряд
+            // Например, случай 19-18-16
+            else if(isRowsStacked)
+            {
+                rowsToDelete.RemoveAt(i + 1);
+            }
+            // Если застаканных рядов нет, можно удалять из списка первый ряд
+            // Например, случай 19-17-16
+            else
+            {
+                rowsToDelete.RemoveAt(i);
             }
         }
     }
