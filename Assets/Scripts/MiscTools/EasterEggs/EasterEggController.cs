@@ -1,12 +1,13 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using MiscTools;
 
 public class EasterEggController : MonoBehaviour
 {
-    [SerializeField] private GameObject sprite; 
     [SerializeField] private GameObject button;
+    [SerializeField] private GameObject spritesParent;
 
-    private bool buttonCheck = true;   
+    private bool buttonCheck = true;
 
     public void Button()
     {
@@ -17,6 +18,6 @@ public class EasterEggController : MonoBehaviour
         buttonCheck = !buttonCheck;
     }
 
-    protected virtual void ButtonOn() => sprite.SetActive(true);
-    protected virtual void ButtonOff() => sprite.SetActive(false);
+    protected virtual void ButtonOn() => spritesParent.SetActive(true);
+    protected virtual void ButtonOff() => spritesParent.SetActive(false);
 }

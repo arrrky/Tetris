@@ -4,24 +4,39 @@ using MiscTools;
 using UnityEngine.UI;
 using System.Linq;
 
-public class Rainbow : EasterEggController
+public class HappyNewYear : EasterEggController
 {
     [SerializeField] private Text title;
+    [SerializeField] private AudioClip christmasSong;
+    [SerializeField] private AudioSource audioSource;
 
     private Color32 randomColor;    
     private Coroutine colorChangeRoutine;
 
+    private void Start()
+    {        
+        audioSource.clip = christmasSong;
+    }
+
     protected override void ButtonOn()
     {
         base.ButtonOn();
+
         colorChangeRoutine = StartCoroutine(ColorChange());
+        if(!audioSource.isPlaying)
+        {
+            audioSource.Play();
+        }
+        audioSource.mute = false;
     }
 
     protected override void ButtonOff()
     {
         base.ButtonOff();
+
         StopCoroutine(colorChangeRoutine);
         title.color = Color.white;
+        audioSource.mute = true;
     }
 
     private Color32 SetRandomRainbowColor()
