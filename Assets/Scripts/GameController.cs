@@ -22,6 +22,7 @@ public class GameController : MonoBehaviour
     private IElementMovement elementMovement;
     private IElementRotation elementRotation;
 
+    private ScoreController scoreController;
     private SpawnController spawnController;
     private Elements elements;   
 
@@ -33,6 +34,7 @@ public class GameController : MonoBehaviour
     public INextElementFieldController NextElementFieldController { get => nextElementFieldController; set => nextElementFieldController = value; }
     public SpawnController SpawnController { get => spawnController; set => spawnController = value; }
     public Elements Elements { get => elements; set => elements = value; }
+    public ScoreController ScoreController { get => scoreController; set => scoreController = value; }
     #endregion
 
     private void Awake()
@@ -48,7 +50,7 @@ public class GameController : MonoBehaviour
             ? gameObject.AddComponent<ElementMovementNewMode>()
             : gameObject.AddComponent<ElementMovement>();
 
-        ElementMovement.ElementsMovementInit(this, PlayingFieldController);
+        ElementMovement.ElementsMovementInit(this);
 
         PlayingFieldController = GameModeManager.Instance.IsNewMode
             ? gameObject.AddComponent<PlayingFieldControllerNewMode>()
@@ -61,7 +63,7 @@ public class GameController : MonoBehaviour
         ElementRotation.ElementRotationInit(this, PlayingFieldController);
 
         PlayingFieldController.FieldControllerInit(blockPrefab, blocksParentForPlayingField);
-        PlayingFieldController.PlayingFieldControllerInit(ElementMovement, ElementRotation);
+        PlayingFieldController.PlayingFieldControllerInit(this, ElementMovement, ElementRotation);
         PlayingFieldController.FieldInit();
 
         NextElementFieldController = gameObject.AddComponent<NextElementFieldController>();
@@ -71,6 +73,8 @@ public class GameController : MonoBehaviour
 
         SpawnController = gameObject.AddComponent<SpawnController>();
         SpawnController.SpawnControllerInit(this, NextElementFieldController, PlayingFieldController, Elements);
+
+        ScoreController = FindObjectOfType<ScoreController>();
     }
 
     private void Start()
@@ -97,7 +101,7 @@ public class GameController : MonoBehaviour
     }
 
     public IEnumerator NextLevelRoutine()
-    {
+    {        
         NextLevel?.Invoke();       
         playerInput.SetActive(false);
 

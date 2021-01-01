@@ -3,7 +3,7 @@ using UnityEngine;
 
 public interface IPlayingFieldController : IFieldController
 {
-    void PlayingFieldControllerInit(IElementMovement elementMovement, IElementRotation elementRotation);
+    void PlayingFieldControllerInit(GameController gameController, IElementMovement elementMovement, IElementRotation elementRotation);
 
     int FullRowsCount { get; set; }    
     Vector2 TopLeftPositionOfCurrentElement { get; set; }       

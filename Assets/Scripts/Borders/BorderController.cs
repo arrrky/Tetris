@@ -61,7 +61,7 @@ public class BorderController : MonoBehaviour
     private void NextElementBorderInit()
     {
         nextElementBorderXShift = gameController.PlayingFieldController.Field.Width / 2 + 3;
-        nextElementBorderSize = 8;
+        nextElementBorderSize = 9;
 
         nextElementBorder = gameObject.AddComponent(typeof(Border)) as Border;
         nextElementBorder.SpriteShift = Tools.GetSpriteShift(borderBlockPrefab);

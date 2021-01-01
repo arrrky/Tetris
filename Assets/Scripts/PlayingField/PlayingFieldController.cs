@@ -5,6 +5,7 @@ using System.Collections;
 
 public class PlayingFieldController : FieldController, IPlayingFieldController, IFieldController
 {
+    protected GameController gameController;
     protected IElementRotation elementRotation;
     protected IElementMovement elementMovement;
 
@@ -42,7 +43,6 @@ public class PlayingFieldController : FieldController, IPlayingFieldController, 
     #endregion
 
     public readonly Vector2 TopLeftPositionDefault = new Vector2(SpawnController.SpawnPoint, 0);
-
     protected const float RowDeletingDelay = 0.01f;
 
     public event Action RowDeleted;
@@ -54,8 +54,9 @@ public class PlayingFieldController : FieldController, IPlayingFieldController, 
         TopLeftPositionOfCurrentElement = TopLeftPositionDefault;
     }
 
-    public virtual void PlayingFieldControllerInit(IElementMovement elementMovement, IElementRotation elementRotation)
+    public virtual void PlayingFieldControllerInit(GameController gameController, IElementMovement elementMovement, IElementRotation elementRotation)
     {
+        this.gameController = gameController;
         this.elementMovement = elementMovement;
         this.elementRotation = elementRotation;
 
@@ -73,15 +74,8 @@ public class PlayingFieldController : FieldController, IPlayingFieldController, 
         elementRotation.ElementWasRotated += UpdateAfterRotation;
     }
 
-    protected void OnRowDeleted()
-    {
-        RowDeleted?.Invoke();
-    }
-
-    protected void OnElementFell()
-    {
-        ElementFell?.Invoke();
-    }
+    protected void OnRowDeleted() => RowDeleted?.Invoke();
+    protected void OnElementFell() => ElementFell?.Invoke();
 
     public virtual void FallingToFallen()
     {
@@ -126,16 +120,16 @@ public class PlayingFieldController : FieldController, IPlayingFieldController, 
             yield return new WaitForSeconds(RowDeletingDelay);            
         }
 
-        FullRowCheck(); // повторная проверка на случай, если заполненных рядов несколько
-
-        if (FullRowsCount != 0)
-        {
-            OnRowDeleted();
-        }
+        FullRowCheck(); // повторная проверка на случай, если заполненных рядов несколько       
 
         for (int i = 0; i < FullRowsCount; i++)
         {
             MoveRowAboveDeletedRow(numberOfRowToDelete);
+        }
+
+        if (FullRowsCount != 0)
+        {
+            OnRowDeleted();
         }
 
         FullRowsCount = 0;
@@ -184,5 +178,11 @@ public class PlayingFieldController : FieldController, IPlayingFieldController, 
         FullRowCheck();
         UpdatePlayingFieldState(Field, CurrentElementColor);
         TopLeftPositionOfCurrentElement += topLeftPointOfElementShift;
+
+        // Переместил сюда, чтобы отработало удаление рядов, элементы сместились, и только после этого запустилась смена раунда
+        if (gameController.ScoreController.Score >= LevelController.Instance.Goal && GameModeManager.Instance.ChosenGameMode == GameMode.Level)
+        {
+            StartCoroutine(gameController.NextLevelRoutine());
+        }
     }
 }

@@ -27,10 +27,10 @@ public class ScoreController : MonoBehaviour
         Score += (int)Mathf.Pow(scoreForOneRow, playingFieldController.FullRowsCount);
         lblScore.text = $"Score: {Score}";
 
-        if (Score >= LevelController.Instance.Goal && GameModeManager.Instance.ChosenGameMode == GameMode.Level)
-        {
-            StartCoroutine(gameController.NextLevelRoutine());
-        }
+        //if (Score >= LevelController.Instance.Goal && GameModeManager.Instance.ChosenGameMode == GameMode.Level)
+        //{
+        //    StartCoroutine(gameController.NextLevelRoutine());
+        //}
 
         if (Score > PlayerProfileController.Instance.PlayerProfile.MaxScore && GameModeManager.Instance.ChosenGameMode == GameMode.Score)
         {

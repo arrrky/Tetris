@@ -3,22 +3,20 @@ using UnityEngine;
 
 public class ElementMovement : MonoBehaviour, IElementMovement
 {
-    protected GameController gameController;
-    private ScoreController scoreController;
+    protected GameController gameController;   
 
     protected IPlayingFieldController playingFieldController;
 
     protected Field playingField;
 
     protected Func<int, bool> BorderCheck;
-    
+
     public event Action LastRowOrElementsCollided;
-    public event Action<FieldState[,], Vector2> ElementMoved;   
-   
-    public void ElementsMovementInit(GameController gameController, IPlayingFieldController playingFieldController)
+    public event Action<FieldState[,], Vector2> ElementMoved;
+
+    public void ElementsMovementInit(GameController gameController)
     {
-        this.gameController = gameController;
-        scoreController = FindObjectOfType<ScoreController>();
+        this.gameController = gameController;        
     }
 
     protected virtual void Start()
@@ -26,7 +24,7 @@ public class ElementMovement : MonoBehaviour, IElementMovement
         playingFieldController = gameController.PlayingFieldController;
         playingField = gameController.PlayingFieldController.Field;
         StartAutoFallingDown();
-        EventsSetup();        
+        EventsSetup();
     }
 
     private void EventsSetup()
@@ -53,12 +51,11 @@ public class ElementMovement : MonoBehaviour, IElementMovement
                 if (IsFallingElementAboveFallen(x, y) || IsLastRow(x, y))
                 {
                     LastRowOrElementsCollided?.Invoke();
-                    if (GameModeManager.Instance.ChosenGameMode == GameMode.Score)
-                    {
-                        if (gameController.IsGameOver)
-                            return;
-                        RestartAutoFallingDown();
-                    }
+
+                    if (gameController.IsGameOver)
+                        return;
+
+                    RestartAutoFallingDown();
                     return;
                 }
 
@@ -94,7 +91,7 @@ public class ElementMovement : MonoBehaviour, IElementMovement
                 if (playingField.Matrix[y, x] == FieldState.Moving)
                 {
                     if (BorderCheck(x))
-                        return;  
+                        return;
 
                     if (IsOtherBlockNear(x, y, direction))
                         return;
@@ -120,7 +117,7 @@ public class ElementMovement : MonoBehaviour, IElementMovement
     public void RestartAutoFallingDown()
     {
         CancelInvoke(nameof(FallingDown));
-        LevelController.Instance.IncreaseScoreModeAutoFallingSpeed();
+        LevelController.Instance.IncreaseAutoFallingSpeed();
         InvokeRepeating(nameof(FallingDown), LevelController.Instance.FallingDownAutoSpeed, LevelController.Instance.FallingDownAutoSpeed);
     }
 
@@ -140,7 +137,7 @@ public class ElementMovement : MonoBehaviour, IElementMovement
     protected bool IsRightBorderNear(int x) => x == playingField.Width - 1;
 
     protected virtual bool IsOtherBlockNear(int x, int y, int direction)
-    {        
+    {
         return (playingField.Matrix[y, x + direction] == FieldState.Fallen);
-    }     
+    }
 }

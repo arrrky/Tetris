@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public enum GameMode
 {
@@ -23,5 +24,24 @@ public class GameModeManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += Reset;
+    }
+
+    private void Reset(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == Scenes.MainMenu.ToString())
+        {
+            IsNewMode = false;
+            ChosenGameMode = GameMode.Level;
+        }
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= Reset;
     }
 }

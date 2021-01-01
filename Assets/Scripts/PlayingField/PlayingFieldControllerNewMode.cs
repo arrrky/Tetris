@@ -6,7 +6,6 @@ using System.Linq;
 
 public class PlayingFieldControllerNewMode : PlayingFieldController, IPlayingFieldController, IFieldController
 {
-
     private List<int> rowsToDelete = new List<int>();
     private readonly int rowsCountToInitDeleting = 2;
 
@@ -33,8 +32,9 @@ public class PlayingFieldControllerNewMode : PlayingFieldController, IPlayingFie
         }
     }
 
-    public override void PlayingFieldControllerInit(IElementMovement elementMovement, IElementRotation elementRotation)
+    public override void PlayingFieldControllerInit(GameController gameController, IElementMovement elementMovement, IElementRotation elementRotation)
     {
+        this.gameController = gameController;        
         this.elementMovement = elementMovement;
         this.elementRotation = elementRotation;
 

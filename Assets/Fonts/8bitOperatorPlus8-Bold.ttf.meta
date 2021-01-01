@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: d75c72c213c77d2499c7b36aaef6501b
+guid: 84df34c6298978f49bbc73cd59df2304
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -9,8 +9,9 @@ TrueTypeFontImporter:
   characterPadding: 1
   includeFontData: 1
   fontNames:
-  - Airstrike
-  fallbackFontReferences: []
+  - 8-bit Operator+ 8
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: f8cbbc92c49d73a458601f681a5aaac7, type: 3}
   customCharacters: 
   fontRenderingMode: 0
   ascentCalculationMode: 1
