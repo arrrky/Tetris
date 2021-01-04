@@ -6,6 +6,16 @@ public class InputFieldController : MonoBehaviour
     [SerializeField] protected InputField nameInputField;
     [SerializeField] protected InputField passwordInputField;
     [SerializeField] protected Button submitButton;
+    [SerializeField] protected GameObject messageText;
+    [SerializeField] protected GameObject messageOKButton;
+    [SerializeField] protected GameObject background;
+
+    protected Text message;
+
+    private void Awake()
+    {
+        message = messageText.GetComponent<Text>();
+    }
 
     public void VerifyInput()
     {
@@ -31,5 +41,12 @@ public class InputFieldController : MonoBehaviour
         {
             nameInputField.Select();
         }
+    }
+
+    protected void ShowMessage()
+    {
+        messageText.SetActive(true);
+        messageOKButton.SetActive(true);
+        background.SetActive(true);
     }
 }

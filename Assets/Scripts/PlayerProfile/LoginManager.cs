@@ -1,17 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.Networking;
-using UnityEngine;
 using System;
-using MiscTools;
 
 public class LoginManager : InputFieldController
-{
+{    
     public event Action PlayerLoggedIn;
 
     public void CallLogin()
     {
         StartCoroutine(LoginRoutine());
+        ShowMessage();
     }
 
     private IEnumerator LoginRoutine()
@@ -26,18 +25,17 @@ public class LoginManager : InputFieldController
 
         if (www.downloadHandler.text[0] == '0')
         {
-            Debug.Log("User succesfully logged in");      
+            message.text = "User succesfully logged in";              
 
             PlayerProfileController.Instance.PlayerProfile.Name = nameInputField.text;
             PlayerProfileController.Instance.PlayerProfile.MaxLevel = int.Parse(www.downloadHandler.text.Split('\t')[1]);
             PlayerProfileController.Instance.PlayerProfile.MaxScore = int.Parse(www.downloadHandler.text.Split('\t')[2]);
 
-            PlayerLoggedIn?.Invoke();
-            Tools.LoadScene(Scenes.MainMenu);
+            PlayerLoggedIn?.Invoke();            
         }
         else
         {
-            Debug.Log("Login failed. Error #" + www.downloadHandler.text);
+            message.text = "Login failed. Error #" + www.downloadHandler.text;           
         }
     }
 }

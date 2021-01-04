@@ -1,14 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using MiscTools;
 using UnityEngine.Networking;
 
 public class RegisterManager : InputFieldController
-{
+{   
+
     public void CallRegister()
     {
         StartCoroutine(RegisterRoutine());
+        ShowMessage();
     }
 
     private IEnumerator RegisterRoutine()
@@ -23,12 +23,11 @@ public class RegisterManager : InputFieldController
 
         if (www.isHttpError || www.isNetworkError)
         {
-            Debug.Log("Account creation failed " + www.downloadHandler.text);
+            message.text = "Account creation failed " + www.downloadHandler.text;            
         }
         if (www.downloadHandler.text == "0")
         {
-            Debug.Log("User succesfully created an account");
-            Tools.LoadScene(Scenes.MainMenu);
+            message.text = "User succesfully created an account";                      
         }       
-    }
+    }   
 }
