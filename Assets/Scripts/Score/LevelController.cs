@@ -10,8 +10,9 @@ public class LevelController : MonoBehaviour
     private const float FallingDownAutoSpeedAtStart = 1.5f;    
     private const float FallingDownAutoSpeedLerpRatio = 0.02f;
 
-    [SerializeField] private float fallingDownAutoSpeed;
     private readonly int[] goalMultipliers = new int[2] { 5, 2 };
+
+    private float fallingDownAutoSpeed;
 
     public int Goal { get; set; } = GoalAtStart;
     public int Level { get; set; } = LevelAtStart;

@@ -43,6 +43,7 @@ public class PlayerProfileController : MonoBehaviour
     private IEnumerator SavePlayerDataRoutine()
     {
         List<IMultipartFormSection> formData = new List<IMultipartFormSection>();
+
         formData.Add(new MultipartFormDataSection("name", PlayerProfile.Name));
         formData.Add(new MultipartFormDataSection("max_level", PlayerProfile.MaxLevel.ToString()));
         formData.Add(new MultipartFormDataSection("max_score", PlayerProfile.MaxScore.ToString()));

@@ -4,9 +4,7 @@ using MiscTools;
 public class BorderController : MonoBehaviour
 {
     [SerializeField] private GameController gameController;
-
     [SerializeField] private GameObject borderBlockPrefab;
-
     [SerializeField] private GameObject mainBorderBlocksParent;   
     [SerializeField] private GameObject playingFiedBorderBlocksParent;   
     [SerializeField] private GameObject nextFieldBorderBlocksParent;
@@ -19,7 +17,6 @@ public class BorderController : MonoBehaviour
     private int nextElementBorderSize;
 
     public static Vector2 TopLeftPointOfNextElementBorder { get; set; }
-
     public static Vector3 ScreenBounds { get; set; }
 
    
@@ -61,7 +58,7 @@ public class BorderController : MonoBehaviour
     private void NextElementBorderInit()
     {
         nextElementBorderXShift = gameController.PlayingFieldController.Field.Width / 2 + 3;
-        nextElementBorderSize = 9;
+        nextElementBorderSize = 8;
 
         nextElementBorder = gameObject.AddComponent(typeof(Border)) as Border;
         nextElementBorder.SpriteShift = Tools.GetSpriteShift(borderBlockPrefab);

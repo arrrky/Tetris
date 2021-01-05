@@ -16,6 +16,7 @@ public class LoginManager : InputFieldController
     private IEnumerator LoginRoutine()
     {
         List<IMultipartFormSection> formData = new List<IMultipartFormSection>();
+
         formData.Add(new MultipartFormDataSection("name", nameInputField.text));
         formData.Add(new MultipartFormDataSection("password", passwordInputField.text));
 

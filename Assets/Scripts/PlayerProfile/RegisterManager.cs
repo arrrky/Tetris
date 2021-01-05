@@ -14,6 +14,7 @@ public class RegisterManager : InputFieldController
     private IEnumerator RegisterRoutine()
     {
         List<IMultipartFormSection> formData = new List<IMultipartFormSection>();
+
         formData.Add(new MultipartFormDataSection("name", nameInputField.text));
         formData.Add(new MultipartFormDataSection("password", passwordInputField.text));
 

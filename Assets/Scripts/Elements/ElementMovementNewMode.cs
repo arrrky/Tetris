@@ -4,12 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ElementMovementNewMode : ElementMovement, IElementMovement
-{
-    protected override void Start()
-    {
-        base.Start();
-    }
-
+{    
     public override void HorizontalMovement()
     {
         FieldState[,] tempMatrix = new FieldState[playingField.Height, playingField.Width];

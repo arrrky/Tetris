@@ -60,12 +60,13 @@ public class PlayingFieldControllerNewMode : PlayingFieldController, IPlayingFie
 
             if (isFullRow && !rowsToDelete.Contains(y))
             {
-                rowsToDelete.Add(y);
-                FullRowsCount++;
+                rowsToDelete.Add(y);                
             }
         }
 
         StackedRowsCheck();
+
+        FullRowsCount = rowsToDelete.Count;
 
         if (rowsToDelete.Count >= rowsCountToInitDeleting)
         {

@@ -32,6 +32,7 @@ public class ElementMovement : MonoBehaviour, IElementMovement
         gameController.GameOver += StopAutoFallingDown;
         gameController.NextLevel += StopAutoFallingDown;
     }
+
     protected virtual void OnElementMoved(FieldState[,] tempMatrix, Vector2 direction)
     {
         ElementMoved?.Invoke(tempMatrix, direction);
