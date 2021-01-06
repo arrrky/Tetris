@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using System;
-using System.Linq;
+
 
 public class PlayingFieldControllerNewMode : PlayingFieldController, IPlayingFieldController, IFieldController
 {
@@ -80,8 +78,7 @@ public class PlayingFieldControllerNewMode : PlayingFieldController, IPlayingFie
     protected void DeleteFullRowsNew()
     {
         for (int i = 0; i < rowsToDelete.Count; i++)
-        {
-            Debug.Log($"row to delete: {rowsToDelete[i]}");
+        {            
             for (int x = 0; x < Field.Width; x++)
             {
                 Field.Matrix[rowsToDelete[i], x] = FieldState.Empty;

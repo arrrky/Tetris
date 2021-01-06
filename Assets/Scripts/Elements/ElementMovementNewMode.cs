@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class ElementMovementNewMode : ElementMovement, IElementMovement
 {    
@@ -30,10 +27,13 @@ public class ElementMovementNewMode : ElementMovement, IElementMovement
             for (int x = playingField.Width - 1; x >= 0; x--)
             {
                 if (playingField.Matrix[y, x] == FieldState.Moving)
-                {
-                   
+                {                   
                     if (BorderCheck(x))
                     {
+                        // Проверка, чтобы элемент не проходил сквозь упавшие элементы с другой стороны стены
+                        if (IsOtherBlockBehindTheWall(x, y, direction, nearBorderShift))
+                            return;
+
                         tempMatrix[y, x + direction + nearBorderShift] = FieldState.Moving;                        
                     }
                     else
@@ -47,5 +47,10 @@ public class ElementMovementNewMode : ElementMovement, IElementMovement
             }
         }
         OnElementMoved(tempMatrix, new Vector2(direction, 0));    
+    }
+
+    private bool IsOtherBlockBehindTheWall(int x, int y, int direction, int nearBorderShift)
+    {
+        return playingField.Matrix[y, x + direction + nearBorderShift] == FieldState.Fallen;
     }
 }

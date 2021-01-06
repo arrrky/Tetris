@@ -4,7 +4,6 @@ using UnityEngine.Networking;
 
 public class RegisterManager : InputFieldController
 {   
-
     public void CallRegister()
     {
         StartCoroutine(RegisterRoutine());

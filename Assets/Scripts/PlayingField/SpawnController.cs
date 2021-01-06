@@ -6,12 +6,12 @@ public class SpawnController : MonoBehaviour
     private GameController gameController;
     private INextElementFieldController nextElementFieldController;
     private IPlayingFieldController playingFieldController;
-    private Elements elements;
+    private ElementsList elements;
 
     public static int SpawnPoint = 4;
    
     public void SpawnControllerInit(GameController gameController, INextElementFieldController nextElementFieldController,
-                                    IPlayingFieldController playingFieldController, Elements elements)
+                                    IPlayingFieldController playingFieldController, ElementsList elements)
     {
         this.gameController = gameController;
         this.nextElementFieldController = nextElementFieldController;
@@ -25,7 +25,7 @@ public class SpawnController : MonoBehaviour
     }
 
     [Inject]
-    private void ElementsInit(Elements elements)
+    private void ElementsInit(ElementsList elements)
     {
         this.elements = elements;
     }

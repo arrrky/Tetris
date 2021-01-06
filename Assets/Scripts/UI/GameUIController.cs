@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class GameUIController : MonoBehaviour
 {
-    [SerializeField] GameController gameController;
+    [SerializeField] private GameController gameController;
 
     [SerializeField] private GameObject gameOverText;
     [SerializeField] private GameObject youWinText;

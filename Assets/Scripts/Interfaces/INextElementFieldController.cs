@@ -3,7 +3,7 @@ using UnityEngine;
 
 public interface INextElementFieldController : IFieldController
 {
-    void NextElementFieldControllerInit(Elements elements);
+    void NextElementFieldControllerInit(ElementsList elements);
     event Action<FieldState[,], Field> FirstElementSpawned;        
     Element NextElement { get; set; }
 }

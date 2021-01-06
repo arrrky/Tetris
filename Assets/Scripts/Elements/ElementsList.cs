@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using MiscTools;
 
-public class Elements
+public class ElementsList
 {
     private List<Element> listOfElements;
     private const int expectedSumOfChances = 100;
 
-    public Elements()
+    public ElementsList()
     {
         listOfElements = new List<Element>();
         ElementsInit();

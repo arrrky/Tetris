@@ -24,7 +24,7 @@ public class GameController : MonoBehaviour
 
     private ScoreController scoreController;
     private SpawnController spawnController;
-    private Elements elements;   
+    private ElementsList elements;   
 
     #region PROPERTIES
     public bool IsGameOver { get => isGameOver; set => isGameOver = value; }    
@@ -33,7 +33,7 @@ public class GameController : MonoBehaviour
     public IElementRotation ElementRotation { get => elementRotation; set => elementRotation = value; }
     public INextElementFieldController NextElementFieldController { get => nextElementFieldController; set => nextElementFieldController = value; }
     public SpawnController SpawnController { get => spawnController; set => spawnController = value; }
-    public Elements Elements { get => elements; set => elements = value; }
+    public ElementsList Elements { get => elements; set => elements = value; }
     public ScoreController ScoreController { get => scoreController; set => scoreController = value; }
     #endregion
 
@@ -44,7 +44,7 @@ public class GameController : MonoBehaviour
     
     private void MainInit()
     {
-        Elements = new Elements();
+        Elements = new ElementsList();
 
         ElementMovement = GameModeManager.Instance.IsNewMode
             ? gameObject.AddComponent<ElementMovementNewMode>()

@@ -16,7 +16,7 @@ public class NextElementFieldController : FieldController, INextElementFieldCont
         //UpdatePlayingFieldState(Field, NextElement.Color);
     }       
 
-    public void NextElementFieldControllerInit(Elements elements)
+    public void NextElementFieldControllerInit(ElementsList elements)
     {
         Height = 4;
         Width = 4;

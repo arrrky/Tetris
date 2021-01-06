@@ -12,6 +12,7 @@ public class HappyNewYear : EasterEggController
 
     private Color32 randomColor;    
     private Coroutine colorChangeRoutine;
+    private readonly float colorChangeTime = 1f;
 
     private void Start()
     {        
@@ -41,6 +42,7 @@ public class HappyNewYear : EasterEggController
 
     private Color32 SetRandomRainbowColor()
     {
+        // Чтобы не показывались 2 одинаковых цвета подряд
         do
         {
             randomColor = Tools.rainbowColors.ElementAt(Random.Range(0, Tools.rainbowColors.Count)).Value;
@@ -55,7 +57,7 @@ public class HappyNewYear : EasterEggController
         while (true)
         {
             title.color = SetRandomRainbowColor();
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(colorChangeTime);
         }
     }
 }
