@@ -1,0 +1,15 @@
+lblPlay	Play
+lblQuit	Quit
+lblEnterNickname	EnterNickname
+lblEnterPassword	EnterPassword
+lblGameMode	GameMode
+lblLevel	Level
+lblLogIn	Login
+lblModeInfo	ModeInfo
+lblName	Name
+lblNew	New
+lblOK	OK
+lblPassword	Password
+lblRegister	Register
+lblScore	Score
+lblScoreboard	Scoreboard
