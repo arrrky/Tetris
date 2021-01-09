@@ -18,14 +18,14 @@ public class ScoreController : MonoBehaviour
 
     private void Start()
     {
-        lblScore.text = $"{LocalizationManager.dicToUse["lblScore"]}: {Score}";
+        lblScore.text = $"{LocalizationManager.currentDictionary["lblScore"]}: {Score}";
         playingFieldController.RowDeleted += IncreaseScore;
     }
 
     public void IncreaseScore()
     {
         Score += (int)Mathf.Pow(scoreForOneRow, playingFieldController.FullRowsCount);
-        lblScore.text = $"{LocalizationManager.dicToUse["lblScore"]}: {Score}";
+        lblScore.text = $"{LocalizationManager.currentDictionary["lblScore"]}: {Score}";
 
         //if (Score >= LevelController.Instance.Goal && GameModeManager.Instance.ChosenGameMode == GameMode.Level)
         //{

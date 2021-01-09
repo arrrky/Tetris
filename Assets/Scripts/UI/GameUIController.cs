@@ -26,8 +26,8 @@ public class GameUIController : MonoBehaviour
         switch (GameModeManager.Instance.ChosenGameMode)
         {
             case GameMode.Level:
-                lblGoal.text = $"{LocalizationManager.dicToUse["lblGoal"]}: {LevelController.Instance.Goal}";
-                lblLevel.text = $"{LocalizationManager.dicToUse["lblLevel"]}: {LevelController.Instance.Level}";
+                lblGoal.text = $"{LocalizationManager.currentDictionary["lblGoal"]}: {LevelController.Instance.Goal}";
+                lblLevel.text = $"{LocalizationManager.currentDictionary["lblLevel"]}: {LevelController.Instance.Level}";
                 break;
             case GameMode.Score:
                 lblGoal.text = "";

@@ -13,7 +13,7 @@ lblPassword	Password
 lblRegister	Register
 lblScore	Score
 lblScoreboard	Scoreboard
-lblGameOver	GameOver
+lblGameOver	Game Over
 lblGoal	Goal
 lblNextElement	Next Element
 lblPause Pause
