@@ -2,7 +2,7 @@ lblPlay	Играть
 lblQuit	Выйти
 lblEnterNickname	Введите имя
 lblEnterPassword	Введите пароль
-lblGameMode	Режим игры
+lblGameMode	Режим
 lblLevel	Уровень
 lblLogIn	Войти
 lblModeInfo	О режимах
@@ -11,5 +11,12 @@ lblNew	Новый
 lblOK	OK
 lblPassword	Пароль
 lblRegister	Регистрация
-lblScore	Очки
+lblScore	Счет
 lblScoreboard	Игроки
+lblGameOver	Конец игры
+lblGoal	Цель
+lblNextElement	Следующий элемент
+lblPause	Пауза
+lblPressToStart	Нажмите TAB для начала игры
+lblYouWin	Вы победили!
+lblGoToMainMenu	Главное меню

@@ -1,7 +1,7 @@
 lblPlay	Play
 lblQuit	Quit
-lblEnterNickname	EnterNickname
-lblEnterPassword	EnterPassword
+lblEnterNickname	Enter nickname
+lblEnterPassword	Enter password
 lblGameMode	GameMode
 lblLevel	Level
 lblLogIn	Login
@@ -13,3 +13,10 @@ lblPassword	Password
 lblRegister	Register
 lblScore	Score
 lblScoreboard	Scoreboard
+lblGameOver	GameOver
+lblGoal	Goal
+lblNextElement	Next Element
+lblPause Pause
+lblPressToStart Press TAB to start
+lblYouWin	You win!
+lblGoToMainMenu	Go to main menu

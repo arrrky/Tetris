@@ -110,7 +110,6 @@ public class PlayingFieldControllerNewMode : PlayingFieldController, IPlayingFie
         }
     }
 
-    // Если в игре будет элемент "палка" длиной в 5 блоков, и возникнет ситуация 19-18-16-14-13 (или аналогичная) - метод нормально работать не будет    
     private void StackedRowsCheck()
     {
         bool isRowsStacked = false;

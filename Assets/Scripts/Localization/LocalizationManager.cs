@@ -1,15 +1,14 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+public enum Language
+{
+    English = 0,
+    Russian = 1,
+}
 
 public class LocalizationManager : MonoBehaviour
-{
-    public enum Language
-    {
-        English = 0,
-        Russian = 1,
-    }
-
+{    
     [SerializeField] private TextAsset english;
     [SerializeField] private TextAsset russian;
 
@@ -18,15 +17,12 @@ public class LocalizationManager : MonoBehaviour
     private Dictionary<string, string> ruLoc = new Dictionary<string, string>();
     private Dictionary<string, string> enLoc = new Dictionary<string, string>();
 
-
-    private void Awake()
-    {
-        FillTheDics();
-    }
+    public static Dictionary<string, string> dicToUse = new Dictionary<string, string>();
 
     private void Start()
     {
-        InitTextObjects("english");
+        FillTheDics();
+        InitTextObjects(ChosenLanguage.Instance.Language.ToString());       
     }
 
     private void FillTheDics()
@@ -47,34 +43,26 @@ public class LocalizationManager : MonoBehaviour
     }
 
     public void InitTextObjects(string language)
-    {
-        Dictionary<string, string> dicToUse = new Dictionary<string, string>();
-
+    {       
         switch (language)
         {
             case "english":
                 dicToUse = enLoc;
+                ChosenLanguage.Instance.Language = Language.English;
                 break;
 
             case "russian":
                 dicToUse = ruLoc;
+                ChosenLanguage.Instance.Language = Language.Russian;
                 break;
-        }
+        }       
 
         for (int i = 0; i < allTextObjects.Count; i++)
         {
             if (dicToUse.ContainsKey(allTextObjects[i].name))
             {
-                allTextObjects[i].text = dicToUse[allTextObjects[i].name];
+                allTextObjects[i].text = dicToUse[allTextObjects[i].name];                
             }
-        }
+        }       
     }
-
-
-
-
-
-
-
-
 }
