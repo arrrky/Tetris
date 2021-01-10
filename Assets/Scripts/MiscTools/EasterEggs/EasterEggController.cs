@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
-using MiscTools;
+﻿using UnityEngine;
 
 public class EasterEggController : MonoBehaviour
 {

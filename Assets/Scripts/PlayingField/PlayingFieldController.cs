@@ -1,12 +1,15 @@
 ﻿using UnityEngine;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 
 public class PlayingFieldController : FieldController, IPlayingFieldController, IFieldController
 {
     protected GameController gameController;
     protected IElementRotation elementRotation;
     protected IElementMovement elementMovement;
+
+    protected List<int> rowsToDelete = new List<int>();
+    protected int rowsCountToInitDeleting;
 
     protected Vector2 topLeftPositionOfCurrentElement;
     private int fullRowsCount;   
@@ -63,7 +66,9 @@ public class PlayingFieldController : FieldController, IPlayingFieldController, 
         Width = 10;
 
         FieldXShift = -4.5f;
-        FieldYShift = -10.5f;       
+        FieldYShift = -10.5f;
+
+        rowsCountToInitDeleting = 1;
     }
 
     private void EventsSetup()
@@ -101,42 +106,52 @@ public class PlayingFieldController : FieldController, IPlayingFieldController, 
                 isFullRow &= Field.Matrix[y, x] == FieldState.Fallen;
             }
 
-            if (isFullRow)
+            if (isFullRow && !rowsToDelete.Contains(y))
             {
-                FullRowsCount++;
-                StartCoroutine(DeleteFullRow(y));
+                rowsToDelete.Add(y);
             }
+        }     
+        
+        if(GameModeManager.Instance.IsNewMode)
+        {
+            StackedRowsCheck();
         }
+
+        FullRowsCount = rowsToDelete.Count;
+
+        if (rowsToDelete.Count >= rowsCountToInitDeleting)
+        {
+            DeleteFullRowsNew();
+        }
+
+        FullRowsCount = 0;
+        rowsToDelete.Clear();
     }
 
-    private IEnumerator DeleteFullRow(int numberOfRowToDelete)
+    protected virtual void DeleteFullRowsNew()
     {
-        // Удаление ряда с задержкой
-        for (int x = 0; x < Field.Width; x++)
+        for (int i = 0; i < rowsToDelete.Count; i++)
         {
-            Field.Matrix[numberOfRowToDelete, x] = FieldState.Empty;
-            Field.Objects[numberOfRowToDelete, x].SetActive(false);
-            yield return new WaitForSeconds(RowDeletingDelay);            
+            for (int x = 0; x < Field.Width; x++)
+            {
+                Field.Matrix[rowsToDelete[i], x] = FieldState.Empty;
+            }
         }
 
-        FullRowCheck(); // повторная проверка на случай, если заполненных рядов несколько       
-
-        for (int i = 0; i < FullRowsCount; i++)
+        for (int i = rowsToDelete.Count - 1; i >= 0; i--)
         {
-            MoveRowAboveDeletedRow(numberOfRowToDelete);
+            MoveRowAboveDeletedRow(i);
         }
 
         if (FullRowsCount != 0)
         {
             OnRowDeleted();
         }
-
-        FullRowsCount = 0;
     }
 
-    protected virtual void MoveRowAboveDeletedRow(int numberOfRowToDelete)
+    protected virtual void MoveRowAboveDeletedRow(int numberOfRowInList)
     {
-        for (int y = numberOfRowToDelete; y >= 0; y--)
+        for (int y = rowsToDelete[numberOfRowInList]; y > 0; y--)
         {
             for (int x = 0; x < Width; x++)
             {
@@ -145,7 +160,7 @@ public class PlayingFieldController : FieldController, IPlayingFieldController, 
                     return;
                 Field.Matrix[y, x] = Field.Matrix[y - 1, x];
             }
-        }       
+        }
     }
 
     /// <summary>
@@ -182,6 +197,31 @@ public class PlayingFieldController : FieldController, IPlayingFieldController, 
         if (gameController.ScoreController.Score >= LevelController.Instance.Goal && GameModeManager.Instance.ChosenGameMode == GameMode.Level)
         {
             StartCoroutine(gameController.NextLevelRoutine());
+        }
+    }
+
+    private void StackedRowsCheck()
+    {
+        bool isRowsStacked = false;
+        for (int i = 0; i < rowsToDelete.Count - 1; i++)
+        {
+            // Если разность идущих подряд рядов в списке равна 1 - значит они идут подряд
+            if ((rowsToDelete[i] - rowsToDelete[i + 1]) == 1)
+            {
+                isRowsStacked = true;
+            }
+            // Если нет, но уже есть застаканные ряды - удаляем из списка крайний ряд
+            // Например, случай 19-18-16
+            else if (isRowsStacked)
+            {
+                rowsToDelete.RemoveAt(i + 1);
+            }
+            // Если застаканных рядов нет, можно удалять из списка первый ряд
+            // Например, случай 19-17-16
+            else
+            {
+                rowsToDelete.RemoveAt(i);
+            }
         }
     }
 }

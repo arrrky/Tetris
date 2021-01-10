@@ -19,8 +19,7 @@ public class InputFieldController : MonoBehaviour
 
     public void VerifyInput()
     {
-        submitButton.interactable = (nameInputField.text.Length >= 5 && passwordInputField.text.Length >= 8);
-        // сделать более сложную проверку?
+        submitButton.interactable = (nameInputField.text.Length >= 5 && passwordInputField.text.Length >= 8);        
     }
 
     private void Update()

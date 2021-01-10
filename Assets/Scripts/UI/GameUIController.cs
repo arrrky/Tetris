@@ -14,6 +14,7 @@ public class GameUIController : MonoBehaviour
 
     [SerializeField] private Text lblLevel;
     [SerializeField] private Text lblGoal;
+    [SerializeField] private Text lblControls;
  
     private void Start()
     {
@@ -26,12 +27,22 @@ public class GameUIController : MonoBehaviour
         switch (GameModeManager.Instance.ChosenGameMode)
         {
             case GameMode.Level:
-                lblGoal.text = $"{LocalizationManager.currentDictionary["lblGoal"]}: {LevelController.Instance.Goal}";
-                lblLevel.text = $"{LocalizationManager.currentDictionary["lblLevel"]}: {LevelController.Instance.Level}";
+                lblGoal.text = $"{ChosenLanguage.Instance.currentDictionary["lblGoal"]}: {LevelController.Instance.Goal}";
+                lblLevel.text = $"{ChosenLanguage.Instance.currentDictionary["lblLevel"]}: {LevelController.Instance.Level}";
                 break;
             case GameMode.Score:
                 lblGoal.text = "";
                 lblLevel.text = "";
+                break;
+        }
+
+        switch(ChosenLanguage.Instance.Language)
+        {
+            case Language.English:
+                lblControls.text = "Controls:\nA - left\nD - right\nS - down\nSpace - fall\nR - rotate\nEsc - pause";
+                break;
+            case Language.Russian:
+                lblControls.text = "Управление:\nA - влево\nD - вправо\nS - вниз\nSpace - падение\nR - поворот\nEsc - пауза";
                 break;
         }
     }

@@ -2214,7 +2214,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: GameMode
+  m_Text: Game mode
 --- !u!222 &728756494
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2331,8 +2331,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bbf82dd905862a419c4c495b5a72de2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  english: {fileID: 4900000, guid: 1f389b406c7978a43a79e3d100b396dc, type: 3}
-  russian: {fileID: 4900000, guid: c747527df16394741a98d86ac8badaa8, type: 3}
   allTextObjects:
   - {fileID: 1313550775}
   - {fileID: 251047404}
@@ -2341,7 +2339,6 @@ MonoBehaviour:
   - {fileID: 728756493}
   - {fileID: 580513946}
   - {fileID: 19981462}
-  - {fileID: 908977101}
   - {fileID: 1270070214}
   - {fileID: 1521516076}
   - {fileID: 1142818875}
@@ -2512,7 +2509,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: a92c235a9676b2a4ca263573b3f45f34, type: 3}
-    m_FontSize: 50
+    m_FontSize: 40
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 4
@@ -5806,6 +5803,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d08e62c7eff2fa1458d93ccbb55db997, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  english: {fileID: 4900000, guid: 1f389b406c7978a43a79e3d100b396dc, type: 3}
+  russian: {fileID: 4900000, guid: c747527df16394741a98d86ac8badaa8, type: 3}
   Language: 0
 --- !u!1 &1729079981
 GameObject:

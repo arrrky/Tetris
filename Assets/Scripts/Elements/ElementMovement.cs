@@ -4,13 +4,11 @@ using UnityEngine;
 public class ElementMovement : MonoBehaviour, IElementMovement
 {
     protected GameController gameController;   
-
     protected IPlayingFieldController playingFieldController;
 
     protected Field playingField;
 
     protected Func<int, bool> BorderCheck;
-
     public event Action LastRowOrElementsCollided;
     public event Action<FieldState[,], Vector2> ElementMoved;
 

@@ -18,19 +18,14 @@ public class ScoreController : MonoBehaviour
 
     private void Start()
     {
-        lblScore.text = $"{LocalizationManager.currentDictionary["lblScore"]}: {Score}";
+        lblScore.text = $"{ChosenLanguage.Instance.currentDictionary["lblScore"]}: {Score}";
         playingFieldController.RowDeleted += IncreaseScore;
     }
 
     public void IncreaseScore()
     {
         Score += (int)Mathf.Pow(scoreForOneRow, playingFieldController.FullRowsCount);
-        lblScore.text = $"{LocalizationManager.currentDictionary["lblScore"]}: {Score}";
-
-        //if (Score >= LevelController.Instance.Goal && GameModeManager.Instance.ChosenGameMode == GameMode.Level)
-        //{
-        //    StartCoroutine(gameController.NextLevelRoutine());
-        //}
+        lblScore.text = $"{ChosenLanguage.Instance.currentDictionary["lblScore"]}: {Score}";       
 
         if (Score > PlayerProfileController.Instance.PlayerProfile.MaxScore && GameModeManager.Instance.ChosenGameMode == GameMode.Score)
         {

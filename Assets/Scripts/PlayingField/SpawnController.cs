@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using Zenject;
 
 public class SpawnController : MonoBehaviour
 {
@@ -22,13 +21,7 @@ public class SpawnController : MonoBehaviour
     private void Start()
     {
         EventsSetup();
-    }
-
-    [Inject]
-    private void ElementsInit(ElementsList elements)
-    {
-        this.elements = elements;
-    }
+    }  
 
     private void EventsSetup()
     {

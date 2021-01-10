@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class ElementRotationNewMode : ElementRotation, IElementRotation
+﻿public class ElementRotationNewMode : ElementRotation, IElementRotation
 {
     protected override bool IsRotateValid()
     {

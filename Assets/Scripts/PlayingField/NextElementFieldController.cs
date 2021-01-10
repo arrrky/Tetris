@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-using System;
-using Zenject;
+﻿using System;
 
 public class NextElementFieldController : FieldController, INextElementFieldController, IFieldController
 {    
@@ -12,8 +10,7 @@ public class NextElementFieldController : FieldController, INextElementFieldCont
 
     private void Start()
     {         
-        FirstElementSpawned?.Invoke(NextElement.Matrix, Field);        
-        //UpdatePlayingFieldState(Field, NextElement.Color);
+        FirstElementSpawned?.Invoke(NextElement.Matrix, Field);          
     }       
 
     public void NextElementFieldControllerInit(ElementsList elements)

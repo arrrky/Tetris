@@ -52,7 +52,8 @@ public class MainMenuController : MonoBehaviour
         gameModeInfoText.GetComponent<Text>().text =
             "Level\t- you have to gain several number of points to win the round\n\n" +
             "Score\t- one life, you have to gain as much points as you can\n\n" +
-            "New\t- mode with new figures and rules (you can move elements through walls)\n";
+            "New\t- mode with new figures and rules (you can move elements through walls " +
+            "and you should stack two or more rows to delete them)\n";
     }
 
     public void PlayTheGame() => Tools.LoadScene(Scenes.Game);

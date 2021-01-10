@@ -4,10 +4,10 @@ using UnityEngine;
 public class ElementRotation : MonoBehaviour, IElementRotation
 {
     protected IPlayingFieldController playingFieldController;
+    protected GameController gameController;
+
     protected FieldState[,] currentElementMatrixOnTheField;
 
-    protected GameController gameController;
-    
     protected int xShift;
     protected int yShift;
 

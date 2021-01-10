@@ -2,7 +2,7 @@ lblPlay	Play
 lblQuit	Quit
 lblEnterNickname	Enter nickname
 lblEnterPassword	Enter password
-lblGameMode	GameMode
+lblGameMode	Game mode
 lblLevel	Level
 lblLogIn	Login
 lblModeInfo	ModeInfo

@@ -15,8 +15,6 @@ public class GameController : MonoBehaviour
     public event Action NextLevel;
     public event Action<bool> GamePaused;
 
-    private bool isGameOver = false;    
-
     private IPlayingFieldController playingFieldController;
     private INextElementFieldController nextElementFieldController;
     private IElementMovement elementMovement;
@@ -24,7 +22,9 @@ public class GameController : MonoBehaviour
 
     private ScoreController scoreController;
     private SpawnController spawnController;
-    private ElementsList elements;   
+    private ElementsList elements;
+
+    private bool isGameOver = false;
 
     #region PROPERTIES
     public bool IsGameOver { get => isGameOver; set => isGameOver = value; }    
